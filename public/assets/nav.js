@@ -191,6 +191,19 @@
     }
   });
 
+  // Back-navigation restores this page from the browser's cache with its DOM and
+  // this closure both intact, so an open search panel comes back open and looks
+  // stuck. Reset on every show, and on restore clear the input too, which the
+  // in-page close() deliberately leaves alone.
+  window.addEventListener('pageshow', function () {
+    state.open = false;
+    state.searching = false;
+    state.submitted = false;
+    state.query = '';
+    input.value = '';
+    render();
+  });
+
   render();
 
   // ---- horizontal scrollers: wheel + drag ---------------------------------
@@ -214,41 +227,43 @@
       el.scrollLeft += e.deltaY;
     }, { passive: false });
 
-    var down = false, startX = 0, startLeft = 0, moved = 0;
+    // 8, not 3: an ordinary trackpad tap drifts several pixels, and at 3 those taps
+    // were being read as drags, which silently killed every card link in the row.
+    var DRAG_PX = 8;
+    var down = false, startX = 0, startLeft = 0, dragged = false;
 
     el.addEventListener('pointerdown', function (e) {
-      if (e.button !== 0 || !overflows(el)) return;
-      down = true; moved = 0;
+      if (e.button !== 0) return;
+      // Reset unconditionally. Guarding this on overflows() left `dragged` true from
+      // an earlier drag, which suppressed the next genuine click.
+      down = true; dragged = false;
       startX = e.clientX; startLeft = el.scrollLeft;
-      el.classList.add('is-dragging');
     });
 
     el.addEventListener('pointermove', function (e) {
-      if (!down) return;
+      if (!down || !overflows(el)) return;
       var dx = e.clientX - startX;
-      if (Math.abs(dx) > moved) moved = Math.abs(dx);
-      if (moved > 3) {
-        el.setPointerCapture(e.pointerId);
-        el.scrollLeft = startLeft - dx;
-      }
+      if (Math.abs(dx) <= DRAG_PX) return;
+      // Deliberately no setPointerCapture: capturing on the container retargets the
+      // click away from the <a> inside it, so the link never fires.
+      dragged = true;
+      el.classList.add('is-dragging');
+      el.scrollLeft = startLeft - dx;
     });
 
-    function release(e) {
+    function release() {
       if (!down) return;
       down = false;
       el.classList.remove('is-dragging');
-      if (e && e.pointerId !== undefined && el.hasPointerCapture && el.hasPointerCapture(e.pointerId)) {
-        el.releasePointerCapture(e.pointerId);
-      }
     }
     el.addEventListener('pointerup', release);
     el.addEventListener('pointercancel', release);
     el.addEventListener('pointerleave', release);
 
-    // a drag that moved must not also fire the card's link
+    // Only a real drag swallows the click. A sloppy tap must still follow the link.
     el.addEventListener('click', function (e) {
-      if (moved > 3) { e.preventDefault(); e.stopPropagation(); }
-      moved = 0;
+      if (dragged) { e.preventDefault(); e.stopPropagation(); }
+      dragged = false;
     }, true);
   });
 })();

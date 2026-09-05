@@ -102,6 +102,12 @@ body.searching .suggest { bottom: auto; top: calc(100% + 12px); }
   color: #6C7482; letter-spacing: 0.06em; background: rgba(255,255,255,0.03); }
 .suggest-foot b { color: #E4703A; }
 
+/* nav.js hides the search panels with the `hidden` attribute, but .results and
+   .suggest both set an explicit `display`, and a class selector beats the user-agent
+   [hidden] rule. Without this, a hidden .results still painted as a 2px opaque bar
+   pinned near the top of every page. Keep this above those rules. */
+[hidden] { display: none !important; }
+
 .results {
   position: fixed; z-index: 59; left: 50%; top: 8%; transform: translateX(-50%);
   width: min(760px, calc(100vw - 40px)); max-height: 80vh;
