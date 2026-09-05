@@ -28,7 +28,7 @@
   // ---- the three lines to change --------------------------------------------
   // Usercentrics: Admin Interface > Implementation > Settings-ID.
   // Use data-ruleset-id instead if you configure geolocation rulesets.
-  var UC_SETTINGS_ID = 'PASTE_YOUR_USERCENTRICS_SETTINGS_ID';
+  var UC_SETTINGS_ID = 'IpmEXI7zzGCI5_';
 
   // Cloudflare: dashboard > Analytics & Logs > Web Analytics > Manage site > JS snippet.
   // The token is the 32-character hex string inside data-cf-beacon.
