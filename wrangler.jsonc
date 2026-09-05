@@ -15,6 +15,17 @@
     "directory": "./public",
     "binding": "ASSETS"
   },
+
+  // Both are stated explicitly because whatever this file says overrides the
+  // dashboard on every deploy, and silence here means "use the default".
+  //
+  // workers_dev stays TRUE: the .workers.dev address is currently the only way to
+  // reach the site. Set it false only once learnthespec.com is attached.
+  "workers_dev": true,
+  // preview_urls FALSE: otherwise every past deployment keeps its own public URL,
+  // leaving several complete copies of the site reachable at once. Bad before an
+  // AdSense review, and useless afterwards.
+  "preview_urls": false,
   "observability": {
     "enabled": true
   }
