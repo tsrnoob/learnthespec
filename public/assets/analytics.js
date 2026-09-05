@@ -116,9 +116,53 @@
     gtag('consent', 'update', { analytics_storage: 'denied' });
   }
 
-  // ---- bridge to the CMP through IAB TCF ------------------------------------
-  // Any certified CMP publishes __tcfapi, so this works with Usercentrics, Google's
-  // own CMP, or a replacement. It is what decides whether gtag.js is fetched at all.
+  // ---- bridge 1: Google Consent Mode ----------------------------------------
+  // This is the one that actually fires today. IAB TCF is a paid feature on the
+  // Usercentrics plan in use, so __tcfapi never appears; a GDPR-type configuration
+  // with Google Consent Mode enabled instead pushes
+  //   gtag('consent', 'update', { ... })
+  // into dataLayer once the visitor answers the banner. Watching dataLayer rather
+  // than a vendor API keeps this working with any CMP that supports Consent Mode,
+  // and it keeps working unchanged if a TCF configuration is added later.
+  //
+  // NOTE: Usercentrics maps Consent Mode to individual Google *services*, not to
+  // categories, so Google Analytics has to be declared as a service in the
+  // configuration or no update is ever pushed and GA4 stays dark.
+  function watchConsentMode() {
+    var nativePush = window.dataLayer.push;
+    window.dataLayer.push = function () {
+      var result = nativePush.apply(window.dataLayer, arguments);
+      try {
+        for (var i = 0; i < arguments.length; i++) {
+          var a = arguments[i];
+          // Consent Mode calls arrive as ('consent', 'update', {...}).
+          if (a && a[0] === 'consent' && a[1] === 'update' && a[2] &&
+              a[2].analytics_storage === 'granted') {
+            load();
+          }
+        }
+      } catch (e) { /* never let bookkeeping break a dataLayer push */ }
+      return result;
+    };
+  }
+  watchConsentMode();
+
+  // ---- bridge 2: Usercentrics' own event ------------------------------------
+  // Belt and braces. If Consent Mode is switched off in the configuration, the CMP
+  // still emits ucEvent when the visitor answers. Ask it directly in that case.
+  window.addEventListener('ucEvent', function (e) {
+    var d = e && e.detail;
+    if (!d) return;
+    // The payload names services, not categories. Accept either the Consent Mode
+    // key or an explicitly granted Google Analytics service.
+    var granted = d['Google Analytics'] === true ||
+                  (d.event === 'consent_status' && d['Google Analytics'] === true);
+    if (granted) grant();
+  });
+
+  // ---- bridge 3: IAB TCF ----------------------------------------------------
+  // Dormant on a GDPR configuration, because __tcfapi only exists under TCF. Kept
+  // so that moving to a TCF configuration later needs no code change at all.
   function bridge() {
     if (typeof window.__tcfapi !== 'function') return false;
     window.__tcfapi('addEventListener', 2, function (data, success) {
