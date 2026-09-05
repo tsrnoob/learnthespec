@@ -1,0 +1,21 @@
+{
+  // Cloudflare Workers with static assets.
+  //
+  // The site is served straight from public/ — a request that matches a file there
+  // never reaches the Worker. Anything with no matching file falls through to
+  // src/index.js, which is how POST /api/subscribe gets handled.
+  //
+  // This replaced Pages advanced mode on 5 Sep 2026. Do not reintroduce a root
+  // _worker.js: in this mode it is not an entrypoint, it is a public file, and
+  // wrangler refuses the deploy rather than expose it.
+  "name": "learnthespec",
+  "main": "src/index.js",
+  "compatibility_date": "2026-09-05",
+  "assets": {
+    "directory": "./public",
+    "binding": "ASSETS"
+  },
+  "observability": {
+    "enabled": true
+  }
+}

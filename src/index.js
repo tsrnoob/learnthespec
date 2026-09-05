@@ -1,6 +1,11 @@
-// _worker.js — Cloudflare Pages advanced mode.
-// Drag-and-drop deploys do NOT compile a functions/ folder; a root _worker.js is supported.
-// When the Astro site builds from Git, move this back to functions/api/subscribe.js.
+// Worker entrypoint, declared as `main` in wrangler.jsonc.
+//
+// Static files in public/ are served by Cloudflare before this code runs, so this
+// only sees requests with no matching file. /api/subscribe is the one that matters;
+// everything else is handed back to the asset server on the last line.
+//
+// Was a root _worker.js under Pages advanced mode until 5 Sep 2026. The logic is
+// unchanged — only its location and how it is declared.
 
 const json = (body, status) =>
   new Response(JSON.stringify(body), {
