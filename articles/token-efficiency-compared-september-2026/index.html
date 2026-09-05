@@ -1,0 +1,454 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Token Efficiency, Compared, September 2026 — Learnthespec</title>
+<meta name="description" content="Two models can charge the same per token and hand you bills that differ threefold, because one thinks for longer. Output tokens spent on one identical benchmark suite, ten models, with the bill each one ran up. Checked 4 September 2026.">
+<link rel="stylesheet" href="/assets/fonts.css">
+<style>
+
+    html, body { height: 100%; margin: 0; background: #0A0C10; }
+    a { color: #E4703A; text-decoration: none; }
+    a:hover { color: #F5936A; }
+
+    .root { position: relative; width: 100%; height: 100vh; overflow: hidden;
+      background: linear-gradient(155deg, #1B1F28 0%, #101319 46%, #090B0F 100%);
+      font-family: 'Nunito Sans', system-ui, sans-serif; font-weight: 400;
+      color: #E9EBEF; box-sizing: border-box; -webkit-font-smoothing: antialiased; }
+    .glow { position: absolute; top: -180px; right: -140px; width: 660px; height: 660px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(228,112,58,0.10) 0%, rgba(228,112,58,0) 68%); pointer-events: none; }
+
+    .page { position: relative; height: 100%; overflow-y: auto; box-sizing: border-box;
+      padding: 46px 56px 118px 56px; transition: filter .4s ease;
+      scrollbar-width: thin; scrollbar-color: rgba(255,255,255,0.16) transparent; }
+    .page::-webkit-scrollbar { width: 7px; }
+    .page::-webkit-scrollbar-track { background: transparent; }
+    .page::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 4px; }
+    .root.searching .page { filter: blur(7px); }
+
+    .top { display: flex; gap: 44px; align-items: flex-start; }
+    .col { flex-grow: 1; min-width: 0; max-width: 760px; }
+    .rail { width: 300px; flex-shrink: 0; display: flex; flex-direction: column; gap: 20px; }
+    .rail-left { width: 160px; flex-shrink: 0; display: flex; flex-direction: column; gap: 20px; }
+
+    .wordmark { font-family: 'Archivo', sans-serif; font-weight: 700; font-size: 16px; letter-spacing: 0.15em;
+      text-transform: uppercase; color: #E9EBEF; display: inline-block; margin-bottom: 30px; }
+
+    .crumb { font-family: 'JetBrains Mono', monospace; font-size: 10.5px; letter-spacing: 0.16em;
+      text-transform: uppercase; color: #E4703A; margin-bottom: 16px; }
+
+    h1 { font-family: 'Archivo', sans-serif; font-weight: 700; font-size: 44px; line-height: 1.06;
+      letter-spacing: -0.03em; margin: 0 0 16px 0; max-width: 18ch; text-wrap: balance; }
+    .standfirst { font-size: 20px; font-weight: 500; line-height: 1.5; color: #C3C9D3;
+      margin-bottom: 26px; max-width: 34em; }
+
+    .byline { display: flex; flex-wrap: wrap; gap: 10px 18px; align-items: center;
+      padding: 14px 0 16px 0; border-top: 1px solid rgba(255,255,255,0.10);
+      border-bottom: 1px solid rgba(255,255,255,0.10); margin-bottom: 30px;
+      font-family: 'JetBrains Mono', monospace; font-size: 10.5px; letter-spacing: 0.08em; color: #6C7482; }
+    .byline .who { color: #E9EBEF; }
+    .badge { border: 1px solid rgba(111,184,148,0.40); color: #6FB894; border-radius: 999px;
+      padding: 4px 11px; font-size: 9.5px; letter-spacing: 0.12em; }
+
+    .prose p { font-size: 17px; font-weight: 500; line-height: 1.65; color: #C3C9D3;
+      margin: 0 0 16px 0; max-width: 32em; }
+    .prose strong { color: #E9EBEF; font-weight: 700; }
+    .prose h2 { font-family: 'Archivo', sans-serif; font-weight: 700; font-size: 18px;
+      letter-spacing: 0.13em; text-transform: uppercase; color: #E9EBEF;
+      margin: 38px 0 14px 0; }
+    .prose sup { font-family: 'JetBrains Mono', monospace; font-size: 9.5px; }
+    .prose sup a { color: #E4703A; padding: 0 1px; }
+    .mono { font-family: 'JetBrains Mono', monospace; font-size: 15px; color: #E9EBEF; }
+
+    .def { border-left: 2px solid rgba(155,162,174,0.35); padding: 2px 0 2px 18px;
+      margin: 0 0 16px 0; max-width: 32em; }
+    .def p { font-size: 16.5px; margin: 0; color: #9BA2AE; }
+    .def .term { color: #E9EBEF; font-weight: 700; }
+
+    .tablewrap { overflow-x: auto; overscroll-behavior-x: contain; margin: 0 0 8px 0;
+      border: 1px solid rgba(255,255,255,0.10); border-radius: 8px; background: rgba(255,255,255,0.035);
+      scrollbar-width: thin; scrollbar-color: rgba(255,255,255,0.18) transparent; }
+    .tablewrap::-webkit-scrollbar { height: 7px; }
+    .tablewrap::-webkit-scrollbar-track { background: transparent; }
+    .tablewrap::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.17); border-radius: 4px; }
+    table { border-collapse: collapse; width: 100%; min-width: 660px; }
+    caption { text-align: left; padding: 15px 20px 0 20px; font-family: 'JetBrains Mono', monospace;
+      font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: #6C7482; }
+    th { font-family: 'Archivo', sans-serif; font-weight: 600; font-size: 10.5px; letter-spacing: 0.11em;
+      text-transform: uppercase; color: #9BA2AE; text-align: left; padding: 15px 20px 10px 20px;
+      border-bottom: 1px solid rgba(255,255,255,0.13); white-space: nowrap; }
+    td { padding: 12px 20px; border-bottom: 1px solid rgba(255,255,255,0.07);
+      font-size: 15px; line-height: 1.42; color: #C3C9D3; vertical-align: top; }
+    tr:last-child td { border-bottom: 0; }
+    td.name { color: #E9EBEF; font-family: 'Archivo', sans-serif; font-weight: 600;
+      font-size: 14px; white-space: nowrap; }
+    td.num { font-family: 'JetBrains Mono', monospace; font-size: 13.5px; color: #E9EBEF;
+      white-space: nowrap; font-variant-numeric: tabular-nums; }
+    td.quiet { font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: #6C7482; }
+    td.best { color: #6FB894; }
+    td.no { color: #E08876; }
+    .bar { display: block; height: 3px; background: #E4703A; border-radius: 2px; margin-top: 5px; }
+    .bar.g { background: #6FB894; }
+    .tablenote { font-family: 'JetBrains Mono', monospace; font-size: 10.5px; line-height: 1.7;
+      color: #6C7482; margin: 0 0 30px 0; max-width: 62em; }
+
+    .ad { border: 1px dashed rgba(255,255,255,0.17); background: rgba(255,255,255,0.025); border-radius: 6px;
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px;
+      box-sizing: border-box; text-align: center; }
+    .ad-tag { font-family: 'JetBrains Mono', monospace; font-size: 9.5px; letter-spacing: 0.16em;
+      text-transform: uppercase; color: #6C7482; }
+    .ad-size { font-family: 'JetBrains Mono', monospace; font-size: 10.5px; color: #565E6C; padding: 0 16px; }
+    .ad-note { font-family: 'JetBrains Mono', monospace; font-size: 9.5px; color: #4E5663; line-height: 1.6; padding: 0 22px; }
+    .ad-incontent { height: 280px; margin: 0 0 34px 0; }
+    .ad.ad-inline { display: none; }
+
+    .sources { background: rgba(255,255,255,0.035); border: 1px solid rgba(255,255,255,0.10);
+      border-radius: 8px; padding: 24px 26px; margin: 40px 0 0 0; }
+    .sources h2 { font-family: 'Archivo', sans-serif; font-weight: 600; font-size: 12px;
+      letter-spacing: 0.15em; text-transform: uppercase; color: #E9EBEF; margin: 0 0 6px 0; }
+    .sources-note { font-family: 'JetBrains Mono', monospace; font-size: 10.5px; line-height: 1.7;
+      color: #6C7482; margin-bottom: 18px; }
+    .sources ol { margin: 0; padding-left: 22px; }
+    .sources li { font-size: 14.5px; line-height: 1.55; color: #9BA2AE; margin-bottom: 12px; }
+    .sources li:last-child { margin-bottom: 0; }
+    .sources .pub { font-family: 'JetBrains Mono', monospace; font-size: 10.5px;
+      letter-spacing: 0.06em; color: #6C7482; display: block; margin-top: 3px; }
+
+    .corrections { font-family: 'JetBrains Mono', monospace; font-size: 11px; line-height: 1.75;
+      color: #6C7482; border-top: 1px solid rgba(255,255,255,0.08); margin-top: 34px; padding-top: 18px; }
+
+    .signup { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.10);
+      border-radius: 8px; padding: 26px 30px; margin-top: 34px; }
+    .signup-title { font-family: 'Archivo', sans-serif; font-weight: 700; font-size: 21px;
+      letter-spacing: -0.02em; margin-bottom: 7px; }
+    .signup-sub { font-size: 16px; line-height: 1.5; color: #9BA2AE; margin-bottom: 18px; max-width: 34em; }
+    .field-row { display: flex; align-items: stretch; max-width: 420px; }
+    .field { flex-grow: 1; min-width: 0; background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.13); border-right: 0; border-radius: 999px 0 0 999px;
+      color: #E9EBEF; font-family: 'JetBrains Mono', monospace; font-size: 12.5px; padding: 14px 20px; outline: none; }
+    .field::placeholder { color: #6C7482; }
+    .field-btn { background: #E4703A; color: #14171D; font-family: 'Archivo', sans-serif; font-weight: 700;
+      font-size: 13px; letter-spacing: 0.04em; padding: 14px 26px; border: 0;
+      border-radius: 0 999px 999px 0; cursor: pointer; white-space: nowrap; }
+    .field-btn:disabled { opacity: .6; cursor: default; }
+    .fineprint { font-family: 'JetBrains Mono', monospace; font-size: 10.5px; line-height: 1.65;
+      color: #6C7482; margin-top: 10px; }
+
+    .readnext { margin-top: 40px; }
+    .readnext-label { font-family: 'Archivo', sans-serif; font-weight: 600; font-size: 12px;
+      letter-spacing: 0.15em; text-transform: uppercase; color: #E9EBEF; margin-bottom: 14px; }
+    .rn { display: flex; gap: 16px; padding: 13px 0; border-bottom: 1px solid rgba(255,255,255,0.07); align-items: baseline; }
+    .rn:last-of-type { border-bottom: 0; }
+    .rn-chip { font-family: 'JetBrains Mono', monospace; font-size: 9.5px; color: #6C7482;
+      width: 92px; flex-shrink: 0; letter-spacing: 0.1em; }
+    .rn-title { font-family: 'Archivo', sans-serif; font-weight: 600; font-size: 16px;
+      line-height: 1.26; letter-spacing: -0.012em; color: #9BA2AE; }
+    .rn-title a { color: #E9EBEF; }
+    .rn-sub { font-size: 14px; line-height: 1.45; color: #6C7482; margin-top: 3px; }
+
+    .foot { margin-top: 40px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.07);
+      display: flex; justify-content: space-between; align-items: center; gap: 14px; flex-wrap: wrap;
+      font-family: 'JetBrains Mono', monospace; font-size: 10.5px; color: #5C6473; letter-spacing: 0.06em; }
+
+    .anchor { position: absolute; left: 0; right: 0; bottom: 0; height: 62px; z-index: 35;
+      background: rgba(14,17,22,0.96); border-top: 1px solid rgba(255,255,255,0.10);
+      backdrop-filter: blur(10px); display: flex; align-items: center; justify-content: center;
+      gap: 18px; padding: 0 44px 0 16px; box-sizing: border-box; }
+    .anchor-close { position: absolute; right: 14px; top: 50%; transform: translateY(-50%);
+      width: 22px; height: 22px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.16);
+      display: flex; align-items: center; justify-content: center; cursor: pointer;
+      font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #7C8494; }
+    .anchor.gone { display: none; }
+
+    @media (max-width: 1200px) { .ad.ad-inline { display: flex; height: 250px; margin: 0 0 34px 0; } }
+    @media (max-width: 1440px) { .rail-left { display: none; } }
+    @media (max-width: 1180px) { .rail { display: none; } }
+    @media (max-width: 900px)  { .page { padding: 38px 30px 110px 30px; } h1 { font-size: 34px; } }
+    @media (max-width: 640px)  {
+      .page { padding: 30px 20px 104px 20px; }
+      h1 { font-size: 29px; }
+      .standfirst { font-size: 18px; }
+      .field-row { flex-direction: column; }
+      .field { border-right: 1px solid rgba(255,255,255,0.13); border-radius: 8px; }
+      .field-btn { border-radius: 8px; margin-top: 8px; }
+    }
+
+</style>
+<link rel="stylesheet" href="/assets/nav.css">
+<script src="/assets/analytics.js" defer></script>
+<script src="/assets/nav.js" defer></script>
+</head>
+<body class="has-anchor">
+
+<div class="root">
+  <div class="glow"></div>
+  <div class="page">
+    <div class="top">
+
+      <div class="rail-left">
+        <div class="ad" style="height: 600px;">
+          <div class="ad-tag">Advertisement</div>
+          <div class="ad-size">160 &times; 600</div>
+          <div class="ad-note">Wide skyscraper. Hidden below 1440 px, where it would squeeze the 32em measure.</div>
+        </div>
+      </div>
+
+      <div class="col">
+
+        <a class="wordmark" href="/">Learnthespec</a>
+
+        <div class="crumb">AI &middot; Comparisons</div>
+
+        <h1>Token Efficiency, Compared, September 2026</h1>
+        <div class="standfirst">Two models can charge the same per token and hand you bills that differ threefold. One of them thinks for longer, and thinking is billed.</div>
+
+        <div class="byline">
+          <span class="who">Tsrnoob</span>
+          <span>4 SEPTEMBER 2026</span>
+          <span>COMPILED FROM 11 SOURCES</span>
+          <span class="badge">CHECKED 4 SEP 2026</span>
+        </div>
+
+        <div class="prose">
+
+          <h2>The price per token is not the price</h2>
+          <p>Every pricing page quotes dollars per million tokens. That is the rate, not the bill. The bill is the rate multiplied by how many tokens the model decides to spend.</p>
+          <div class="def"><p><span class="term">Token efficiency</span> — how many output tokens a model spends to finish the same work. Artificial Analysis publishes it as the total output tokens each model burned running its Intelligence Index, the identical suite of evaluations for every model.</p></div>
+          <p>Same tasks, same questions, same order. The only variable is how much the model wrote to get through them.</p>
+        </div>
+
+        <div class="tablewrap">
+          <table>
+            <caption>Output tokens spent on one identical benchmark suite</caption>
+            <thead><tr><th>Model</th><th>Output tokens</th><th>Peer median</th><th>Index</th><th>Cost of the run</th><th>Src</th></tr></thead>
+            <tbody>
+              <tr><td class="name">GPT-6 Astra (max)</td><td class="num best">49M</td><td class="quiet">79M</td><td class="num">55</td><td class="num">$4,063.77</td><td class="quiet"><a href="#s2">[2]</a></td></tr>
+              <tr><td class="name">Gemini 3.1 Pro</td><td class="num best">57M</td><td class="quiet">79M</td><td class="num">37</td><td class="num">$879.63</td><td class="quiet"><a href="#s6">[6]</a></td></tr>
+              <tr><td class="name">Grok 4.6 (high)</td><td class="num">79M</td><td class="quiet">79M</td><td class="num">51</td><td class="num">$1,632.13</td><td class="quiet"><a href="#s5">[5]</a></td></tr>
+              <tr><td class="name">gpt-oss-120b (high)</td><td class="num best">95M</td><td class="quiet">170M</td><td class="num no">16</td><td class="num best">$145.74</td><td class="quiet"><a href="#s11">[11]</a></td></tr>
+              <tr><td class="name">MiniMax-M3</td><td class="num best">96M</td><td class="quiet">140M</td><td class="num">36</td><td class="num">$293.46</td><td class="quiet"><a href="#s10">[10]</a></td></tr>
+              <tr><td class="name">Claude Opus 5 (max)</td><td class="num">120M</td><td class="quiet">79M</td><td class="num">54</td><td class="num">$5,545.57</td><td class="quiet"><a href="#s4">[4]</a></td></tr>
+              <tr><td class="name">DeepSeek V4 Pro</td><td class="num">140M</td><td class="quiet">140M</td><td class="num">42</td><td class="num">$706.75</td><td class="quiet"><a href="#s9">[9]</a></td></tr>
+              <tr><td class="name">Kimi K3 (max)</td><td class="num">140M</td><td class="quiet">140M</td><td class="num">50</td><td class="num">$3,069.54</td><td class="quiet"><a href="#s7">[7]</a></td></tr>
+              <tr><td class="name">Claude Fable 5.1 (max)</td><td class="num no">160M</td><td class="quiet">79M</td><td class="num best">57</td><td class="num no">$10,815.70</td><td class="quiet"><a href="#s3">[3]</a></td></tr>
+              <tr><td class="name">GLM-5.3 (max)</td><td class="num no">180M</td><td class="quiet">140M</td><td class="num">49</td><td class="num">$1,762.24</td><td class="quiet"><a href="#s8">[8]</a></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="tablenote">SORTED BY TOKENS SPENT, FEWEST FIRST. <strong>COST OF THE RUN IS THE REAL BILL ARTIFICIAL ANALYSIS PAID</strong> TO PUT THAT ONE MODEL THROUGH THE WHOLE SUITE — NOT A PER-TASK PRICE, AND DIRECTLY COMPARABLE BETWEEN ROWS BECAUSE THE WORK IS IDENTICAL. PEER MEDIAN IS EXPLAINED FOUR SECTIONS DOWN.</p>
+
+        <div class="prose">
+
+          <h2>The most efficient flagship is also near the top</h2>
+          <p>Read the first and last rows of the table together. The gap is the whole article.</p>
+        </div>
+
+        <div class="tablewrap">
+          <table>
+            <caption>The two highest-scoring models on the page</caption>
+            <thead><tr><th>Model</th><th>Output tokens</th><th>Index</th><th>Cost of the run</th><th>Src</th></tr></thead>
+            <tbody>
+              <tr><td class="name">GPT-6 Astra (max)</td><td class="num best">49M</td><td class="num">55</td><td class="num best">$4,063.77</td><td class="quiet"><a href="#s2">[2]</a></td></tr>
+              <tr><td class="name">Claude Fable 5.1 (max)</td><td class="num no">160M</td><td class="num">57</td><td class="num no">$10,815.70</td><td class="quiet"><a href="#s3">[3]</a></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="tablenote">FABLE 5.1 SPENDS <strong>3.3 TIMES THE TOKENS</strong> AND RUNS UP <strong>2.7 TIMES THE BILL</strong>, FOR TWO INDEX POINTS. WHETHER THOSE TWO POINTS ARE WORTH IT DEPENDS ENTIRELY ON THE WORK — BUT THE PRICE OF THEM IS NOT VISIBLE ON EITHER VENDOR'S PRICING PAGE.</p>
+
+        <div class="ad ad-incontent">
+          <div class="ad-tag">Advertisement</div>
+          <div class="ad-size">336 &times; 280 &mdash; in-content, below the tables</div>
+        </div>
+
+        <div class="ad ad-inline">
+          <div class="ad-tag">Advertisement</div>
+          <div class="ad-size">300 &times; 250 &mdash; rail unit, moved inline below 1200 px</div>
+        </div>
+
+        <div class="prose">
+
+          <h2>Verbosity is thinking, not padding</h2>
+          <p>A verbose model is not writing you longer answers. It is writing to itself first.</p>
+          <div class="def"><p><span class="term">Reasoning tokens</span> — the working-out a model generates before it answers. OpenAI's documentation states they are not visible via the API, occupy space in the context window, and are <strong>billed as output tokens</strong>.<sup><a href="#s1">1</a></sup></p></div>
+          <p>You pay for text you never see. The effort setting on a reasoning model is the dial that decides how much of it there is, which is why the same model at a lower effort level costs less without getting shorter on screen.</p>
+
+          <h2>The median is three different numbers</h2>
+          <p>Artificial Analysis prints a median beside each model, and it is not one figure. It is the median of that model's own comparison group.</p>
+          <p>Proprietary flagships are measured against 79M. Large open-weight models against 140M. Smaller open-weight models against 170M.<sup><a href="#s11">11</a></sup></p>
+          <p>So "concise in comparison to the median" means different things on different pages. gpt-oss-120b is called very concise at 95M; Grok 4.6 sits exactly on its median at 79M, a lower number. Compare the tokens column, not the verdicts.</p>
+
+          <h2>The open-weight models are the verbose ones</h2>
+          <p>Every model above 130M tokens except one is open-weight. GLM-5.3 is the most verbose here, and Kimi K3 scores a point higher on fewer tokens.<sup><a href="#s7">7</a></sup><sup><a href="#s8">8</a></sup></p>
+          <p>Cheap per token hides it. GLM-5.3 runs up a smaller bill than Kimi K3 despite spending more tokens, because the rate is lower — the two effects pull against each other, and only the bill shows which one won.</p>
+
+          <h2>The same work, a seventy-fold range in the bill</h2>
+          <p>One suite of tasks. Ten models. The cheapest run and the dearest run are not close.</p>
+        </div>
+
+        <div class="tablewrap">
+          <table>
+            <caption>Cost of the identical benchmark run, cheapest and dearest</caption>
+            <thead><tr><th>Model</th><th>Cost of the run</th><th>Index</th><th>Src</th></tr></thead>
+            <tbody>
+              <tr><td class="name">gpt-oss-120b (high)</td><td class="num best">$145.74</td><td class="num no">16</td><td class="quiet"><a href="#s11">[11]</a></td></tr>
+              <tr><td class="name">MiniMax-M3</td><td class="num best">$293.46</td><td class="num">36</td><td class="quiet"><a href="#s10">[10]</a></td></tr>
+              <tr><td class="name">DeepSeek V4 Pro</td><td class="num best">$706.75</td><td class="num">42</td><td class="quiet"><a href="#s9">[9]</a></td></tr>
+              <tr><td class="name">Gemini 3.1 Pro</td><td class="num">$879.63</td><td class="num">37</td><td class="quiet"><a href="#s6">[6]</a></td></tr>
+              <tr><td class="name">Grok 4.6 (high)</td><td class="num">$1,632.13</td><td class="num">51</td><td class="quiet"><a href="#s5">[5]</a></td></tr>
+              <tr><td class="name">Claude Opus 5 (max)</td><td class="num no">$5,545.57</td><td class="num">54</td><td class="quiet"><a href="#s4">[4]</a></td></tr>
+              <tr><td class="name">Claude Fable 5.1 (max)</td><td class="num no">$10,815.70</td><td class="num best">57</td><td class="quiet"><a href="#s3">[3]</a></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="tablenote">FABLE 5.1'S RUN COST <strong>74 TIMES</strong> GPT-OSS-120B'S. GROK 4.6 REACHES 51 FOR ROUGHLY A SIXTH OF FABLE'S BILL, AND IS THE CLEAREST VALUE ROW IN THIS TABLE.</p>
+
+        <div class="prose">
+
+          <h2>What this does not tell you</h2>
+          <p>Token efficiency is measured on benchmark tasks, not on your work. A model that reasons less on maths problems may still reason heavily on your code.</p>
+          <p>The scores here are Intelligence Index v4.2, and they are not comparable to figures published under earlier versions of the index.</p>
+
+          <h2>Which one to pick</h2>
+          <p>Match the row to what you are actually paying for.</p>
+        </div>
+
+        <div class="tablewrap">
+          <table>
+            <caption>Recommendation by use case</caption>
+            <thead><tr><th>If you</th><th>Pick</th><th>Why</th></tr></thead>
+            <tbody>
+              <tr><td class="name">Want the top score</td><td class="best">Claude Fable 5.1</td><td>Index 57, the highest here. Budget for 160M tokens and the bill that follows.</td></tr>
+              <tr><td class="name">Want that score cheaply</td><td class="best">GPT-6 Astra</td><td>Two points behind on 49M tokens, the most efficient model on the page.</td></tr>
+              <tr><td class="name">Run high volume</td><td class="best">Grok 4.6</td><td>Index 51 at roughly a sixth of Fable's bill, spending exactly the peer median.</td></tr>
+              <tr><td class="name">Self-host and pay per token</td><td class="best">Kimi K3 over GLM-5.3</td><td>One point higher on 40M fewer tokens. Verbosity costs you directly here.</td></tr>
+              <tr><td class="name">Need cheap bulk work</td><td class="best">MiniMax-M3</td><td>$293.46 for the full run at index 36. Concise against a 140M peer median.</td></tr>
+              <tr><td class="name">Are comparing pricing pages</td><td class="no">Do not stop there</td><td>The rate is one of two numbers. Token count is the other, and only one is advertised.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="tablenote">EVERY FIGURE HERE APPEARS WITH ITS SOURCE EARLIER IN THE ARTICLE.</p>
+
+        <div class="sources" id="sources">
+          <h2>Sources</h2>
+          <div class="sources-note">ALL PAGES READ ON 4 SEPTEMBER 2026. NOTHING HERE WAS TESTED BY US. TOKEN COUNTS, INDEX SCORES AND RUN COSTS COME FROM ARTIFICIAL ANALYSIS PER-MODEL PAGES, TAKEN IN A SINGLE PASS AT THE EFFORT LEVEL NAMED IN EACH ROW, ON INTELLIGENCE INDEX V4.2.</div>
+          <ol>
+            <li id="s1"><a href="https://developers.openai.com/api/docs/guides/reasoning" rel="nofollow noopener" target="_blank">OpenAI, Reasoning models guide</a>: reasoning tokens are not visible via the API, occupy the context window, and are billed as output tokens.<span class="pub">OPENAI · API DOCUMENTATION</span></li>
+            <li id="s2"><a href="https://artificialanalysis.ai/models/gpt-6-astra" rel="nofollow noopener" target="_blank">GPT-6 Astra (max)</a>: 49M output tokens against a 79M peer median, index 55, $4,063.77 to run the index.<span class="pub">ARTIFICIAL ANALYSIS · MODEL PAGE</span></li>
+            <li id="s3"><a href="https://artificialanalysis.ai/models/claude-fable-5-1" rel="nofollow noopener" target="_blank">Claude Fable 5.1 (max)</a>: 160M output tokens against a 79M peer median, index 57, $10,815.70 to run the index.<span class="pub">ARTIFICIAL ANALYSIS · MODEL PAGE</span></li>
+            <li id="s4"><a href="https://artificialanalysis.ai/models/claude-opus-5" rel="nofollow noopener" target="_blank">Claude Opus 5 (max)</a>: 120M output tokens against a 79M peer median, index 54, $5,545.57 to run the index.<span class="pub">ARTIFICIAL ANALYSIS · MODEL PAGE</span></li>
+            <li id="s5"><a href="https://artificialanalysis.ai/models/grok-4-6" rel="nofollow noopener" target="_blank">Grok 4.6 (high)</a>: 79M output tokens, exactly the 79M peer median, index 51, $1,632.13 to run the index.<span class="pub">ARTIFICIAL ANALYSIS · MODEL PAGE</span></li>
+            <li id="s6"><a href="https://artificialanalysis.ai/models/gemini-3-1-pro-preview" rel="nofollow noopener" target="_blank">Gemini 3.1 Pro Preview</a>: 57M output tokens against a 79M peer median, index 37, $879.63 to run the index.<span class="pub">ARTIFICIAL ANALYSIS · MODEL PAGE</span></li>
+            <li id="s7"><a href="https://artificialanalysis.ai/models/kimi-k3" rel="nofollow noopener" target="_blank">Kimi K3 (max)</a>: 140M output tokens, exactly the 140M open-weight peer median, index 50, $3,069.54 to run the index.<span class="pub">ARTIFICIAL ANALYSIS · MODEL PAGE</span></li>
+            <li id="s8"><a href="https://artificialanalysis.ai/models/glm-5-3" rel="nofollow noopener" target="_blank">GLM-5.3 (max)</a>: 180M output tokens against a 140M peer median, index 49, $1,762.24 to run the index.<span class="pub">ARTIFICIAL ANALYSIS · MODEL PAGE</span></li>
+            <li id="s9"><a href="https://artificialanalysis.ai/models/deepseek-v4-pro" rel="nofollow noopener" target="_blank">DeepSeek V4 Pro 0813</a>: 140M output tokens, exactly the 140M peer median, index 42, $706.75 to run the index.<span class="pub">ARTIFICIAL ANALYSIS · MODEL PAGE</span></li>
+            <li id="s10"><a href="https://artificialanalysis.ai/models/minimax-m3" rel="nofollow noopener" target="_blank">MiniMax-M3</a>: 96M output tokens against a 140M peer median, index 36, $293.46 to run the index.<span class="pub">ARTIFICIAL ANALYSIS · MODEL PAGE</span></li>
+            <li id="s11"><a href="https://artificialanalysis.ai/models/gpt-oss-120b" rel="nofollow noopener" target="_blank">gpt-oss-120b (high)</a>: 95M output tokens against a 170M peer median, index 16, $145.74 to run the index. The third distinct peer median on this page.<span class="pub">ARTIFICIAL ANALYSIS · MODEL PAGE</span></li>
+          </ol>
+        </div>
+
+        <div class="corrections">
+          FOUND AN ERROR? TOKEN COUNTS AND RUN COSTS ARE MEASURED ON ONE BENCHMARK SUITE AT THE EFFORT LEVEL NAMED, NOT ON ORDINARY WORK, AND THEY MOVE WHEN ARTIFICIAL ANALYSIS VERSIONS ITS INDEX.
+          MAIL <a href="mailto:contact@learnthespec.com">CONTACT@LEARNTHESPEC.COM</a> AND WE WILL CHECK IT AGAINST THE SOURCE.
+          CORRECTIONS ARE MADE IN PLACE AND NOTED HERE WITH THE DATE.
+        </div>
+
+        <div class="signup">
+          <div class="signup-title">Get the week's AI news in your inbox</div>
+          <div class="signup-sub">Everything that actually changed, in one email, every source linked.</div>
+          <form class="field-row" id="subscribe" novalidate>
+            <input class="field" type="email" name="email" required autocomplete="email"
+                   placeholder="you@example.com" aria-label="Email address">
+            <button class="field-btn" type="submit">SUBSCRIBE</button>
+            <span style="position:absolute;left:-9999px" aria-hidden="true">
+              <input type="text" name="company" tabindex="-1" autocomplete="off">
+            </span>
+          </form>
+          <div class="fineprint" id="sub-status" role="status" aria-live="polite">A confirmation link arrives first — click it to finish. One click to leave, any time.</div>
+        </div>
+
+        <div class="readnext">
+          <div class="readnext-label">Read next</div>
+          <div class="rn">
+            <div class="rn-chip">PUBLISHED</div>
+            <div>
+              <div class="rn-title"><a href="/articles/subscription-or-api-september-2026/">Subscription or API: Which Is Cheaper, September 2026</a></div>
+              <div class="rn-sub">What twenty euros buys once token count is part of the sum.</div>
+            </div>
+          </div>
+          <div class="rn">
+            <div class="rn-chip">PUBLISHED</div>
+            <div>
+              <div class="rn-title"><a href="/articles/output-speed-compared-september-2026/">Output Speed, Compared, September 2026</a></div>
+              <div class="rn-sub">The other cost of thinking longer: minutes before the first token appears.</div>
+            </div>
+          </div>
+          <div class="rn">
+            <div class="rn-chip">PUBLISHED</div>
+            <div>
+              <div class="rn-title"><a href="/articles/best-ai-model-september-2026/">Best AI Model, September 2026</a></div>
+              <div class="rn-sub">All seven measures together, token efficiency among them.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="foot">
+          <div>LEARNTHESPEC.COM — AI NEWS AND COMPARISONS, MUNICH</div>
+          <div><a href="/impressum/" style="color:#5C6473">IMPRESSUM</a> &middot; <a href="/privacy/" style="color:#5C6473">PRIVACY</a> &middot; <a href="/contact/" style="color:#5C6473">CONTACT</a></div>
+        </div>
+
+      </div>
+
+      <div class="rail">
+        <div class="ad" style="height: 600px;">
+          <div class="ad-tag">Advertisement</div>
+          <div class="ad-size">300 &times; 600</div>
+          <div class="ad-note">Half-page. Scrolls with the page — not sticky, so it never sits under the menu button.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="anchor" id="anchor">
+    <div class="ad-tag">Advertisement</div>
+    <div class="ad-size">970 &times; 50 anchor — dismissible</div>
+    <div class="anchor-close" id="anchor-close">&#10005;</div>
+  </div>
+
+</div>
+
+<script>
+(function () {
+  var close = document.getElementById('anchor-close');
+  var anchor = document.getElementById('anchor');
+  if (close && anchor) {
+    close.addEventListener('click', function () { anchor.classList.add('gone'); });
+  }
+
+  var form = document.getElementById('subscribe');
+  if (!form) return;
+  var status = document.getElementById('sub-status');
+  var btn = form.querySelector('button');
+  var idle = status.textContent;
+  form.addEventListener('submit', async function (e) {
+    e.preventDefault();
+    btn.disabled = true;
+    status.textContent = 'Sending...';
+    try {
+      var res = await fetch('/api/subscribe', { method: 'POST', body: new FormData(form) });
+      var data = await res.json();
+      status.textContent = data.message || (data.ok ? 'Done.' : 'Something went wrong.');
+      if (data.ok) form.reset();
+    } catch (err) {
+      status.textContent = 'Network problem - try again.';
+    } finally {
+      btn.disabled = false;
+      setTimeout(function () { status.textContent = idle; }, 9000);
+    }
+  });
+})();
+</script>
+
+</body>
+</html>

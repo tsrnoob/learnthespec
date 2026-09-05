@@ -1,0 +1,7 @@
+# OS clutter
+Thumbs.db
+desktop.ini
+.DS_Store
+
+# local preview config lives outside the site
+.claude/

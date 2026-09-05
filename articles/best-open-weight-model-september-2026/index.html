@@ -1,0 +1,440 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Best Open-Weight Model, September 2026 — Learnthespec</title>
+<meta name="description" content="Seven downloadable models compared on Intelligence Index v4.2, cost per task, output speed, context window and licence. The strongest is not the cheapest, and the most permissive licence is not at the top. Checked 4 September 2026.">
+<link rel="stylesheet" href="/assets/fonts.css">
+<style>
+
+    html, body { height: 100%; margin: 0; background: #0A0C10; }
+    a { color: #E4703A; text-decoration: none; }
+    a:hover { color: #F5936A; }
+
+    .root { position: relative; width: 100%; height: 100vh; overflow: hidden;
+      background: linear-gradient(155deg, #1B1F28 0%, #101319 46%, #090B0F 100%);
+      font-family: 'Nunito Sans', system-ui, sans-serif; font-weight: 400;
+      color: #E9EBEF; box-sizing: border-box; -webkit-font-smoothing: antialiased; }
+    .glow { position: absolute; top: -180px; right: -140px; width: 660px; height: 660px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(228,112,58,0.10) 0%, rgba(228,112,58,0) 68%); pointer-events: none; }
+
+    .page { position: relative; height: 100%; overflow-y: auto; box-sizing: border-box;
+      padding: 46px 56px 118px 56px; transition: filter .4s ease;
+      scrollbar-width: thin; scrollbar-color: rgba(255,255,255,0.16) transparent; }
+    .page::-webkit-scrollbar { width: 7px; }
+    .page::-webkit-scrollbar-track { background: transparent; }
+    .page::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 4px; }
+    .root.searching .page { filter: blur(7px); }
+
+    .top { display: flex; gap: 44px; align-items: flex-start; }
+    .col { flex-grow: 1; min-width: 0; max-width: 760px; }
+    .rail { width: 300px; flex-shrink: 0; display: flex; flex-direction: column; gap: 20px; }
+    .rail-left { width: 160px; flex-shrink: 0; display: flex; flex-direction: column; gap: 20px; }
+
+    .wordmark { font-family: 'Archivo', sans-serif; font-weight: 700; font-size: 16px; letter-spacing: 0.15em;
+      text-transform: uppercase; color: #E9EBEF; display: inline-block; margin-bottom: 30px; }
+
+    .crumb { font-family: 'JetBrains Mono', monospace; font-size: 10.5px; letter-spacing: 0.16em;
+      text-transform: uppercase; color: #E4703A; margin-bottom: 16px; }
+
+    h1 { font-family: 'Archivo', sans-serif; font-weight: 700; font-size: 44px; line-height: 1.06;
+      letter-spacing: -0.03em; margin: 0 0 16px 0; max-width: 18ch; text-wrap: balance; }
+    .standfirst { font-size: 20px; font-weight: 500; line-height: 1.5; color: #C3C9D3;
+      margin-bottom: 26px; max-width: 34em; }
+
+    .byline { display: flex; flex-wrap: wrap; gap: 10px 18px; align-items: center;
+      padding: 14px 0 16px 0; border-top: 1px solid rgba(255,255,255,0.10);
+      border-bottom: 1px solid rgba(255,255,255,0.10); margin-bottom: 30px;
+      font-family: 'JetBrains Mono', monospace; font-size: 10.5px; letter-spacing: 0.08em; color: #6C7482; }
+    .byline .who { color: #E9EBEF; }
+    .badge { border: 1px solid rgba(111,184,148,0.40); color: #6FB894; border-radius: 999px;
+      padding: 4px 11px; font-size: 9.5px; letter-spacing: 0.12em; }
+
+    .prose p { font-size: 17px; font-weight: 500; line-height: 1.65; color: #C3C9D3;
+      margin: 0 0 16px 0; max-width: 32em; }
+    .prose strong { color: #E9EBEF; font-weight: 700; }
+    .prose h2 { font-family: 'Archivo', sans-serif; font-weight: 700; font-size: 18px;
+      letter-spacing: 0.13em; text-transform: uppercase; color: #E9EBEF;
+      margin: 38px 0 14px 0; }
+    .prose sup { font-family: 'JetBrains Mono', monospace; font-size: 9.5px; }
+    .prose sup a { color: #E4703A; padding: 0 1px; }
+    .mono { font-family: 'JetBrains Mono', monospace; font-size: 15px; color: #E9EBEF; }
+
+    .def { border-left: 2px solid rgba(155,162,174,0.35); padding: 2px 0 2px 18px;
+      margin: 0 0 16px 0; max-width: 32em; }
+    .def p { font-size: 16.5px; margin: 0; color: #9BA2AE; }
+    .def .term { color: #E9EBEF; font-weight: 700; }
+
+    .tablewrap { overflow-x: auto; overscroll-behavior-x: contain; margin: 0 0 8px 0;
+      border: 1px solid rgba(255,255,255,0.10); border-radius: 8px; background: rgba(255,255,255,0.035);
+      scrollbar-width: thin; scrollbar-color: rgba(255,255,255,0.18) transparent; }
+    .tablewrap::-webkit-scrollbar { height: 7px; }
+    .tablewrap::-webkit-scrollbar-track { background: transparent; }
+    .tablewrap::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.17); border-radius: 4px; }
+    table { border-collapse: collapse; width: 100%; min-width: 660px; }
+    caption { text-align: left; padding: 15px 20px 0 20px; font-family: 'JetBrains Mono', monospace;
+      font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: #6C7482; }
+    th { font-family: 'Archivo', sans-serif; font-weight: 600; font-size: 10.5px; letter-spacing: 0.11em;
+      text-transform: uppercase; color: #9BA2AE; text-align: left; padding: 15px 20px 10px 20px;
+      border-bottom: 1px solid rgba(255,255,255,0.13); white-space: nowrap; }
+    td { padding: 12px 20px; border-bottom: 1px solid rgba(255,255,255,0.07);
+      font-size: 15px; line-height: 1.42; color: #C3C9D3; vertical-align: top; }
+    tr:last-child td { border-bottom: 0; }
+    td.name { color: #E9EBEF; font-family: 'Archivo', sans-serif; font-weight: 600;
+      font-size: 14px; white-space: nowrap; }
+    td.num { font-family: 'JetBrains Mono', monospace; font-size: 13.5px; color: #E9EBEF;
+      white-space: nowrap; font-variant-numeric: tabular-nums; }
+    td.quiet { font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: #6C7482; }
+    td.best { color: #6FB894; }
+    td.no { color: #E08876; }
+    .bar { display: block; height: 3px; background: #E4703A; border-radius: 2px; margin-top: 5px; }
+    .bar.g { background: #6FB894; }
+    .tablenote { font-family: 'JetBrains Mono', monospace; font-size: 10.5px; line-height: 1.7;
+      color: #6C7482; margin: 0 0 30px 0; max-width: 62em; }
+
+    .ad { border: 1px dashed rgba(255,255,255,0.17); background: rgba(255,255,255,0.025); border-radius: 6px;
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px;
+      box-sizing: border-box; text-align: center; }
+    .ad-tag { font-family: 'JetBrains Mono', monospace; font-size: 9.5px; letter-spacing: 0.16em;
+      text-transform: uppercase; color: #6C7482; }
+    .ad-size { font-family: 'JetBrains Mono', monospace; font-size: 10.5px; color: #565E6C; padding: 0 16px; }
+    .ad-note { font-family: 'JetBrains Mono', monospace; font-size: 9.5px; color: #4E5663; line-height: 1.6; padding: 0 22px; }
+    .ad-incontent { height: 280px; margin: 0 0 34px 0; }
+    .ad.ad-inline { display: none; }
+
+    .sources { background: rgba(255,255,255,0.035); border: 1px solid rgba(255,255,255,0.10);
+      border-radius: 8px; padding: 24px 26px; margin: 40px 0 0 0; }
+    .sources h2 { font-family: 'Archivo', sans-serif; font-weight: 600; font-size: 12px;
+      letter-spacing: 0.15em; text-transform: uppercase; color: #E9EBEF; margin: 0 0 6px 0; }
+    .sources-note { font-family: 'JetBrains Mono', monospace; font-size: 10.5px; line-height: 1.7;
+      color: #6C7482; margin-bottom: 18px; }
+    .sources ol { margin: 0; padding-left: 22px; }
+    .sources li { font-size: 14.5px; line-height: 1.55; color: #9BA2AE; margin-bottom: 12px; }
+    .sources li:last-child { margin-bottom: 0; }
+    .sources .pub { font-family: 'JetBrains Mono', monospace; font-size: 10.5px;
+      letter-spacing: 0.06em; color: #6C7482; display: block; margin-top: 3px; }
+
+    .corrections { font-family: 'JetBrains Mono', monospace; font-size: 11px; line-height: 1.75;
+      color: #6C7482; border-top: 1px solid rgba(255,255,255,0.08); margin-top: 34px; padding-top: 18px; }
+
+    .signup { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.10);
+      border-radius: 8px; padding: 26px 30px; margin-top: 34px; }
+    .signup-title { font-family: 'Archivo', sans-serif; font-weight: 700; font-size: 21px;
+      letter-spacing: -0.02em; margin-bottom: 7px; }
+    .signup-sub { font-size: 16px; line-height: 1.5; color: #9BA2AE; margin-bottom: 18px; max-width: 34em; }
+    .field-row { display: flex; align-items: stretch; max-width: 420px; }
+    .field { flex-grow: 1; min-width: 0; background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.13); border-right: 0; border-radius: 999px 0 0 999px;
+      color: #E9EBEF; font-family: 'JetBrains Mono', monospace; font-size: 12.5px; padding: 14px 20px; outline: none; }
+    .field::placeholder { color: #6C7482; }
+    .field-btn { background: #E4703A; color: #14171D; font-family: 'Archivo', sans-serif; font-weight: 700;
+      font-size: 13px; letter-spacing: 0.04em; padding: 14px 26px; border: 0;
+      border-radius: 0 999px 999px 0; cursor: pointer; white-space: nowrap; }
+    .field-btn:disabled { opacity: .6; cursor: default; }
+    .fineprint { font-family: 'JetBrains Mono', monospace; font-size: 10.5px; line-height: 1.65;
+      color: #6C7482; margin-top: 10px; }
+
+    .readnext { margin-top: 40px; }
+    .readnext-label { font-family: 'Archivo', sans-serif; font-weight: 600; font-size: 12px;
+      letter-spacing: 0.15em; text-transform: uppercase; color: #E9EBEF; margin-bottom: 14px; }
+    .rn { display: flex; gap: 16px; padding: 13px 0; border-bottom: 1px solid rgba(255,255,255,0.07); align-items: baseline; }
+    .rn:last-of-type { border-bottom: 0; }
+    .rn-chip { font-family: 'JetBrains Mono', monospace; font-size: 9.5px; color: #6C7482;
+      width: 92px; flex-shrink: 0; letter-spacing: 0.1em; }
+    .rn-title { font-family: 'Archivo', sans-serif; font-weight: 600; font-size: 16px;
+      line-height: 1.26; letter-spacing: -0.012em; color: #9BA2AE; }
+    .rn-title a { color: #E9EBEF; }
+    .rn-sub { font-size: 14px; line-height: 1.45; color: #6C7482; margin-top: 3px; }
+
+    .foot { margin-top: 40px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.07);
+      display: flex; justify-content: space-between; align-items: center; gap: 14px; flex-wrap: wrap;
+      font-family: 'JetBrains Mono', monospace; font-size: 10.5px; color: #5C6473; letter-spacing: 0.06em; }
+
+    .anchor { position: absolute; left: 0; right: 0; bottom: 0; height: 62px; z-index: 35;
+      background: rgba(14,17,22,0.96); border-top: 1px solid rgba(255,255,255,0.10);
+      backdrop-filter: blur(10px); display: flex; align-items: center; justify-content: center;
+      gap: 18px; padding: 0 44px 0 16px; box-sizing: border-box; }
+    .anchor-close { position: absolute; right: 14px; top: 50%; transform: translateY(-50%);
+      width: 22px; height: 22px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.16);
+      display: flex; align-items: center; justify-content: center; cursor: pointer;
+      font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #7C8494; }
+    .anchor.gone { display: none; }
+
+    @media (max-width: 1200px) { .ad.ad-inline { display: flex; height: 250px; margin: 0 0 34px 0; } }
+    @media (max-width: 1440px) { .rail-left { display: none; } }
+    @media (max-width: 1180px) { .rail { display: none; } }
+    @media (max-width: 900px)  { .page { padding: 38px 30px 110px 30px; } h1 { font-size: 34px; } }
+    @media (max-width: 640px)  {
+      .page { padding: 30px 20px 104px 20px; }
+      h1 { font-size: 29px; }
+      .standfirst { font-size: 18px; }
+      .field-row { flex-direction: column; }
+      .field { border-right: 1px solid rgba(255,255,255,0.13); border-radius: 8px; }
+      .field-btn { border-radius: 8px; margin-top: 8px; }
+    }
+
+</style>
+<link rel="stylesheet" href="/assets/nav.css">
+<script src="/assets/analytics.js" defer></script>
+<script src="/assets/nav.js" defer></script>
+</head>
+<body class="has-anchor">
+
+<div class="root">
+  <div class="glow"></div>
+  <div class="page">
+    <div class="top">
+
+      <div class="rail-left">
+        <div class="ad" style="height: 600px;">
+          <div class="ad-tag">Advertisement</div>
+          <div class="ad-size">160 &times; 600</div>
+          <div class="ad-note">Wide skyscraper. Hidden below 1440 px, where it would squeeze the 32em measure.</div>
+        </div>
+      </div>
+
+      <div class="col">
+
+        <a class="wordmark" href="/">Learnthespec</a>
+
+        <div class="crumb">AI &middot; Comparisons</div>
+
+        <h1>Best Open-Weight Model, September 2026</h1>
+        <div class="standfirst">Seven models you can download and run yourself, compared on intelligence, cost per task, speed, context and licence. The highest score is the slowest and the most expensive, and the most permissive licences sit in the middle of the table.</div>
+
+        <div class="byline">
+          <span class="who">Tsrnoob</span>
+          <span>4 SEPTEMBER 2026</span>
+          <span>COMPILED FROM 11 SOURCES</span>
+          <span class="badge">CHECKED 4 SEP 2026</span>
+        </div>
+
+        <div class="prose">
+
+          <h2>The seven you can download</h2>
+          <p>Every model here publishes its weights on Hugging Face. Every figure comes from Artificial Analysis, measured on the same index version in the same pass.</p>
+          <div class="def"><p><span class="term">Open weights</span> — the trained model file is published, so you can run it on your own hardware with no API fee and no rate limit. It is not the same as open source, which additionally requires training code and data information.<sup><a href="#s10">10</a></sup></p></div>
+        </div>
+
+        <div class="tablewrap">
+          <table>
+            <caption>Ranked by Artificial Analysis Intelligence Index v4.2</caption>
+            <thead><tr><th>Model</th><th>Index</th><th></th><th>Cost / task</th><th>Speed</th><th>Context</th><th>Src</th></tr></thead>
+            <tbody>
+              <tr><td class="name">Kimi K3 (max)</td><td class="num best">50</td><td><span class="bar g" style="width:100%"></span></td><td class="num">$1.58</td><td class="num">39.6</td><td class="num">1M</td><td class="quiet"><a href="#s3">[3]</a></td></tr>
+              <tr><td class="name">GLM-5.3 (max)</td><td class="num">49</td><td><span class="bar" style="width:98%"></span></td><td class="num">$1.26</td><td class="num">80.0</td><td class="num">1M</td><td class="quiet"><a href="#s4">[4]</a></td></tr>
+              <tr><td class="name">Qwen3.8 2.4T A95B</td><td class="num">47</td><td><span class="bar" style="width:94%"></span></td><td class="num">$1.10</td><td class="num">40.0</td><td class="num">984K</td><td class="quiet"><a href="#s6">[6]</a></td></tr>
+              <tr><td class="name">GLM-5.3-Flash</td><td class="num">46</td><td><span class="bar" style="width:92%"></span></td><td class="num best">$0.18</td><td class="num">47.6</td><td class="num">1M</td><td class="quiet"><a href="#s5">[5]</a></td></tr>
+              <tr><td class="name">DeepSeek V4 Pro</td><td class="num">42</td><td><span class="bar" style="width:84%"></span></td><td class="num">$0.33</td><td class="num">70.3</td><td class="num">1M</td><td class="quiet"><a href="#s7">[7]</a></td></tr>
+              <tr><td class="name">MiniMax-M3</td><td class="num">36</td><td><span class="bar" style="width:72%"></span></td><td class="num">$0.23</td><td class="num best">86.6</td><td class="num">1M</td><td class="quiet"><a href="#s8">[8]</a></td></tr>
+              <tr><td class="name">gpt-oss-120b (high)</td><td class="num no">16</td><td><span class="bar" style="width:32%"></span></td><td class="num best">$0.12</td><td class="num best">162.9</td><td class="num">131K</td><td class="quiet"><a href="#s9">[9]</a></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="tablenote">SPEED IS OUTPUT TOKENS PER SECOND. ALL SEVEN MEASURED ON INTELLIGENCE INDEX v4.2. <strong>SCORES FROM DIFFERENT INDEX VERSIONS ARE NOT COMPARABLE</strong> — v4.2 ADDED A TENTH EVALUATION ON 4 SEP 2026 AND EVERY NUMBER MOVED. CHECK THE VERSION BEFORE COMPARING AGAINST FIGURES PUBLISHED ELSEWHERE.</p>
+
+        <div class="prose">
+
+          <h2>The leader is the slowest</h2>
+          <p>Kimi K3 takes the top score at 50. It is also the slowest model in the table at 39.6 tokens per second, and the most expensive per task at $1.58.<sup><a href="#s3">3</a></sup></p>
+          <p>gpt-oss-120b sits at the other end on every axis: last on intelligence at 16, first on speed at 162.9, and cheapest at $0.12.<sup><a href="#s9">9</a></sup> Four times the speed of the leader, and a third of its score.</p>
+
+          <h2>The value pick is not the leader</h2>
+          <p>GLM-5.3-Flash scores 46 against Kimi K3's 50. It costs $0.18 per task against $1.58.<sup><a href="#s5">5</a></sup><sup><a href="#s3">3</a></sup></p>
+          <p>Four index points, for roughly one ninth of the cost. No other pair in the table trades that steeply.</p>
+          <div class="def"><p><span class="term">Cost per task</span> — the API spend to complete one average task from the benchmark suite, combining input, reasoning and answer tokens. It applies when you rent the model from a host. Self-host it and this number becomes your hardware bill instead.<sup><a href="#s2">2</a></sup></p></div>
+        </div>
+
+        <div class="ad ad-incontent">
+          <div class="ad-tag">Advertisement</div>
+          <div class="ad-size">336 &times; 280 &mdash; in-content, below the tables</div>
+        </div>
+
+        <div class="ad ad-inline">
+          <div class="ad-tag">Advertisement</div>
+          <div class="ad-size">300 &times; 250 &mdash; rail unit, moved inline below 1200 px</div>
+        </div>
+
+        <div class="prose">
+
+          <h2>Licence decides more than score</h2>
+          <p>Downloadable does not mean unrestricted, and the terms vary more than the benchmarks do.</p>
+        </div>
+
+        <div class="tablewrap">
+          <table>
+            <caption>Licence and size, from each publisher's own page</caption>
+            <thead><tr><th>Model</th><th>Licence</th><th>Restrictions</th><th>Parameters</th><th>Src</th></tr></thead>
+            <tbody>
+              <tr><td class="name">GLM-5.3-Flash</td><td class="best">MIT</td><td class="best">None</td><td class="quiet">not stated</td><td class="quiet"><a href="#s5">[5]</a></td></tr>
+              <tr><td class="name">DeepSeek V4 Pro</td><td class="best">MIT</td><td class="best">None</td><td class="num">1.6T / 49B active</td><td class="quiet"><a href="#s7">[7]</a></td></tr>
+              <tr><td class="name">gpt-oss-120b</td><td class="best">Apache 2.0</td><td class="best">None</td><td class="num">117B / 5.1B active</td><td class="quiet"><a href="#s9">[9]</a><a href="#s11">[11]</a></td></tr>
+              <tr><td class="name">Kimi K3</td><td>Kimi K3 License</td><td>Moonshot's own terms, code and weights</td><td class="num">2.8T / 104B active</td><td class="quiet"><a href="#s1">[1]</a></td></tr>
+              <tr><td class="name">GLM-5.3</td><td>GLM-5.3 License</td><td>Commercial use under restrictions</td><td class="quiet">not stated</td><td class="quiet"><a href="#s4">[4]</a></td></tr>
+              <tr><td class="name">Qwen3.8 2.4T</td><td>Qwen3.8-Max License</td><td>Commercial use under restrictions</td><td class="num">2.4T / 95B active</td><td class="quiet"><a href="#s6">[6]</a></td></tr>
+              <tr><td class="name">MiniMax-M3</td><td>MiniMax Community License</td><td>Commercial use with restrictions</td><td class="quiet">not stated</td><td class="quiet"><a href="#s8">[8]</a></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="tablenote">THE THREE UNRESTRICTED LICENCES SIT AT RANKS 4, 5 AND 7. THE TOP THREE SCORERS ALL SHIP UNDER THE PUBLISHER'S OWN TERMS. IF YOUR CONSTRAINT IS LEGAL RATHER THAN TECHNICAL, THE TABLE INVERTS.</p>
+
+        <div class="prose">
+
+          <h2>Total parameters are not running parameters</h2>
+          <p>Kimi K3 is 2.8 trillion parameters. That number does not tell you what it costs to run.</p>
+          <div class="def"><p><span class="term">Mixture of experts</span> — only part of the model activates per token. Kimi K3 activates 104 billion of its 2.8 trillion, selecting 16 of 896 experts.<sup><a href="#s1">1</a></sup> DeepSeek V4 Pro activates 49 billion of 1.6 trillion.<sup><a href="#s7">7</a></sup> gpt-oss-120b activates 5.1 billion of 117 billion.<sup><a href="#s11">11</a></sup></p></div>
+          <p>The whole file still has to fit in memory. Activation only decides how much compute each token costs, not how much storage the model needs.</p>
+
+          <h2>What it takes to run</h2>
+          <p>One publisher states a hardware target outright. OpenAI says gpt-oss-120b is designed to &ldquo;fit into a single 80GB GPU&rdquo; such as an H100 or MI300X, using MXFP4 quantisation.<sup><a href="#s11">11</a></sup></p>
+          <p>Nobody else on this list publishes an equivalent figure. At 2.8 trillion and 2.4 trillion parameters, Kimi K3 and Qwen3.8 are datacentre models regardless of how few experts fire per token.</p>
+
+          <h2>The gap to closed models</h2>
+          <p>Kimi K3 at 50 sits seven points below Claude Fable 5.1 at 57, the highest score on the same index.<sup><a href="#s2">2</a></sup></p>
+          <p>The cost comparison runs the other way. Fable 5.1 costs $6.12 per task against Kimi K3's $1.58, and GLM-5.3-Flash's $0.18.<sup><a href="#s2">2</a></sup><sup><a href="#s5">5</a></sup></p>
+
+          <h2>Which one to pick</h2>
+          <p>No model wins on more than two axes, so the choice follows your constraint.</p>
+        </div>
+
+        <div class="tablewrap">
+          <table>
+            <caption>Recommendation by use case</caption>
+            <thead><tr><th>If you want</th><th>Pick</th><th>Why</th></tr></thead>
+            <tbody>
+              <tr><td class="name">The highest score</td><td class="best">Kimi K3</td><td>Index 50, the top open-weight result. Slowest and dearest of the seven.</td></tr>
+              <tr><td class="name">Best value</td><td class="best">GLM-5.3-Flash</td><td>Index 46 at $0.18 per task, and MIT licensed. Four points off the leader for a ninth of the cost.</td></tr>
+              <tr><td class="name">Fewest legal questions</td><td class="best">GLM-5.3-Flash or DeepSeek V4 Pro</td><td>Both MIT. No user thresholds, no field-of-use limits.</td></tr>
+              <tr><td class="name">Speed above all</td><td class="best">gpt-oss-120b</td><td>162.9 tokens per second, Apache 2.0, and the only one with a published single-GPU target.</td></tr>
+              <tr><td class="name">A long context</td><td class="best">Any except gpt-oss</td><td>Six of the seven hold 1M tokens or close. gpt-oss holds 131K.</td></tr>
+              <tr><td class="name">To match a closed flagship</td><td class="no">None of them</td><td>The best open score is 50 against 57. The gap is real and it is narrowing.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="tablenote">EVERY FIGURE HERE APPEARS WITH ITS SOURCE EARLIER IN THE ARTICLE.</p>
+
+        <div class="sources" id="sources">
+          <h2>Sources</h2>
+          <div class="sources-note">ALL PAGES READ ON 4 SEPTEMBER 2026. NOTHING HERE WAS TESTED BY US. BENCHMARK FIGURES ARE ARTIFICIAL ANALYSIS MEASUREMENTS TAKEN FROM PER-MODEL PAGES IN A SINGLE PASS, ALL ON INTELLIGENCE INDEX v4.2. LICENCES AND PARAMETER COUNTS COME FROM EACH PUBLISHER'S OWN PAGE.</div>
+          <ol>
+            <li id="s1"><a href="https://huggingface.co/moonshotai/Kimi-K3" rel="nofollow noopener" target="_blank">Kimi K3 model card</a>: the Kimi K3 License covering code and weights, 2.8T total and 104B activated parameters, 16 of 896 experts per token.<span class="pub">MOONSHOT AI · MODEL CARD</span></li>
+            <li id="s2"><a href="https://artificialanalysis.ai/leaderboards/models" rel="nofollow noopener" target="_blank">Artificial Analysis model leaderboard</a>: index scores and cost per task, including the closed-model comparison.<span class="pub">ARTIFICIAL ANALYSIS · LEADERBOARD</span></li>
+            <li id="s3"><a href="https://artificialanalysis.ai/models/kimi-k3" rel="nofollow noopener" target="_blank">Kimi K3 (max)</a>: index 50, $1.58 per task, 39.6 tokens per second, 1M context, open weights.<span class="pub">ARTIFICIAL ANALYSIS · MODEL PAGE</span></li>
+            <li id="s4"><a href="https://artificialanalysis.ai/models/glm-5-3" rel="nofollow noopener" target="_blank">GLM-5.3 (max)</a>: index 49, $1.26 per task, 80.0 tokens per second, GLM-5.3 License with commercial restrictions.<span class="pub">ARTIFICIAL ANALYSIS · MODEL PAGE</span></li>
+            <li id="s5"><a href="https://artificialanalysis.ai/models/glm-5-3-flash" rel="nofollow noopener" target="_blank">GLM-5.3-Flash</a>: index 46, $0.18 per task, 47.6 tokens per second, MIT licence.<span class="pub">ARTIFICIAL ANALYSIS · MODEL PAGE</span></li>
+            <li id="s6"><a href="https://artificialanalysis.ai/models/qwen3-8-2-4t-a95b" rel="nofollow noopener" target="_blank">Qwen3.8 2.4T A95B</a>: index 47, $1.10 per task, 40.0 tokens per second, 984K context, 2.4T total and 95B active.<span class="pub">ARTIFICIAL ANALYSIS · MODEL PAGE</span></li>
+            <li id="s7"><a href="https://artificialanalysis.ai/models/deepseek-v4-pro" rel="nofollow noopener" target="_blank">DeepSeek V4 Pro</a>: index 42, $0.33 per task, 70.3 tokens per second, MIT licence, 1.6T total and 49B active.<span class="pub">ARTIFICIAL ANALYSIS · MODEL PAGE</span></li>
+            <li id="s8"><a href="https://artificialanalysis.ai/models/minimax-m3" rel="nofollow noopener" target="_blank">MiniMax-M3</a>: index 36, $0.23 per task, 86.6 tokens per second, MiniMax Community License.<span class="pub">ARTIFICIAL ANALYSIS · MODEL PAGE</span></li>
+            <li id="s9"><a href="https://artificialanalysis.ai/models/gpt-oss-120b" rel="nofollow noopener" target="_blank">gpt-oss-120b (high)</a>: index 16, $0.12 per task, 162.9 tokens per second, 131K context, Apache 2.0.<span class="pub">ARTIFICIAL ANALYSIS · MODEL PAGE</span></li>
+            <li id="s10"><a href="https://opensource.org/ai/open-weights" rel="nofollow noopener" target="_blank">Open Weights: not quite what you've been told</a>: why open weights is not open source.<span class="pub">OPEN SOURCE INITIATIVE · STANDARDS BODY</span></li>
+            <li id="s11"><a href="https://huggingface.co/openai/gpt-oss-120b" rel="nofollow noopener" target="_blank">gpt-oss-120b model card</a>: Apache 2.0, 117B total and 5.1B active, single 80GB GPU target, MXFP4 quantisation.<span class="pub">OPENAI · MODEL CARD</span></li>
+          </ol>
+        </div>
+
+        <div class="corrections">
+          FOUND AN ERROR? BENCHMARK INDEXES ARE VERSIONED AND SCORES MOVE WITHOUT ANY MODEL CHANGING.
+          MAIL <a href="mailto:contact@learnthespec.com">CONTACT@LEARNTHESPEC.COM</a> AND WE WILL CHECK IT AGAINST THE SOURCE.
+          CORRECTIONS ARE MADE IN PLACE AND NOTED HERE WITH THE DATE.
+          NOTHING HERE IS LEGAL ADVICE — READ THE LICENCE BEFORE YOU SHIP.
+        </div>
+
+        <div class="signup">
+          <div class="signup-title">Get the week's AI news in your inbox</div>
+          <div class="signup-sub">Everything that actually changed, in one email, every source linked.</div>
+          <form class="field-row" id="subscribe" novalidate>
+            <input class="field" type="email" name="email" required autocomplete="email"
+                   placeholder="you@example.com" aria-label="Email address">
+            <button class="field-btn" type="submit">SUBSCRIBE</button>
+            <span style="position:absolute;left:-9999px" aria-hidden="true">
+              <input type="text" name="company" tabindex="-1" autocomplete="off">
+            </span>
+          </form>
+          <div class="fineprint" id="sub-status" role="status" aria-live="polite">A confirmation link arrives first — click it to finish. One click to leave, any time.</div>
+        </div>
+
+        <div class="readnext">
+          <div class="readnext-label">Read next</div>
+          <div class="rn">
+            <div class="rn-chip">PUBLISHED</div>
+            <div>
+              <div class="rn-title"><a href="/articles/what-open-weights-mean-september-2026/">What Open Weights Actually Mean, September 2026</a></div>
+              <div class="rn-sub">Why none of these is open source, and what the licences let you do.</div>
+            </div>
+          </div>
+          <div class="rn">
+            <div class="rn-chip">PUBLISHED</div>
+            <div>
+              <div class="rn-title"><a href="/articles/best-ai-model-september-2026/">Best AI Model, September 2026</a></div>
+              <div class="rn-sub">The closed flagships these seven are measured against.</div>
+            </div>
+          </div>
+          <div class="rn">
+            <div class="rn-chip">PUBLISHED</div>
+            <div>
+              <div class="rn-title"><a href="/articles/what-hardware-runs-which-local-model-september-2026/">What Hardware Runs Which Local Model, September 2026</a></div>
+              <div class="rn-sub">Model size against VRAM at each quantisation level, as a lookup table.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="foot">
+          <div>LEARNTHESPEC.COM — AI NEWS AND COMPARISONS, MUNICH</div>
+          <div><a href="/impressum/" style="color:#5C6473">IMPRESSUM</a> &middot; <a href="/privacy/" style="color:#5C6473">PRIVACY</a> &middot; <a href="/contact/" style="color:#5C6473">CONTACT</a></div>
+        </div>
+
+      </div>
+
+      <div class="rail">
+        <div class="ad" style="height: 600px;">
+          <div class="ad-tag">Advertisement</div>
+          <div class="ad-size">300 &times; 600</div>
+          <div class="ad-note">Half-page. Scrolls with the page — not sticky, so it never sits under the menu button.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="anchor" id="anchor">
+    <div class="ad-tag">Advertisement</div>
+    <div class="ad-size">970 &times; 50 anchor — dismissible</div>
+    <div class="anchor-close" id="anchor-close">&#10005;</div>
+  </div>
+
+</div>
+
+<script>
+(function () {
+  var close = document.getElementById('anchor-close');
+  var anchor = document.getElementById('anchor');
+  if (close && anchor) {
+    close.addEventListener('click', function () { anchor.classList.add('gone'); });
+  }
+
+  var form = document.getElementById('subscribe');
+  if (!form) return;
+  var status = document.getElementById('sub-status');
+  var btn = form.querySelector('button');
+  var idle = status.textContent;
+  form.addEventListener('submit', async function (e) {
+    e.preventDefault();
+    btn.disabled = true;
+    status.textContent = 'Sending...';
+    try {
+      var res = await fetch('/api/subscribe', { method: 'POST', body: new FormData(form) });
+      var data = await res.json();
+      status.textContent = data.message || (data.ok ? 'Done.' : 'Something went wrong.');
+      if (data.ok) form.reset();
+    } catch (err) {
+      status.textContent = 'Network problem - try again.';
+    } finally {
+      btn.disabled = false;
+      setTimeout(function () { status.textContent = idle; }, 9000);
+    }
+  });
+})();
+</script>
+
+</body>
+</html>

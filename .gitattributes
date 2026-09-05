@@ -1,0 +1,5 @@
+# Normalise text to LF in the repository, native in the working copy.
+* text=auto eol=lf
+
+# Fonts are binary — never touch them.
+*.woff2 binary

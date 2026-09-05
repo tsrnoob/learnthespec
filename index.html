@@ -1,0 +1,450 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Learnthespec — AI news and comparisons</title>
+<meta name="description" content="AI and gadget comparisons compiled from public specs, pricing and benchmarks, with every source linked. One email a week.">
+<link rel="stylesheet" href="/assets/fonts.css">
+<style>
+
+    html, body { height: 100%; margin: 0; background: #0A0C10; }
+    x-dc { display: block; height: 100%; }
+    a { color: #E4703A; text-decoration: none; }
+    a:hover { color: #F5936A; }
+
+    .root { position: relative; width: 100%; height: 100vh; overflow: hidden;
+      background: linear-gradient(155deg, #1B1F28 0%, #101319 46%, #090B0F 100%);
+      font-family: 'Nunito Sans', system-ui, sans-serif; font-weight: 400; color: #E9EBEF; box-sizing: border-box; }
+    .glow { position: absolute; top: -180px; right: -140px; width: 660px; height: 660px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(228,112,58,0.10) 0%, rgba(228,112,58,0) 68%); pointer-events: none; }
+
+    .page { position: relative; height: 100%; overflow-y: auto; box-sizing: border-box;
+      padding: 46px 56px 118px 56px; transition: filter .4s ease;
+      scrollbar-width: thin; scrollbar-color: rgba(255,255,255,0.16) transparent; }
+    .page::-webkit-scrollbar { width: 7px; }
+    .page::-webkit-scrollbar-track { background: transparent; }
+    .page::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 4px; }
+    .root.searching .page { filter: blur(7px); }
+
+
+    .top { display: flex; gap: 44px; align-items: flex-start; }
+    .mission { width: 400px; flex-shrink: 0; display: flex; flex-direction: column; gap: 26px; }
+    .center { flex-grow: 1; min-width: 0; display: flex; flex-direction: column; gap: 24px; }
+    .rail { width: 300px; flex-shrink: 0; display: flex; flex-direction: column; gap: 20px; }
+
+    .wordmark { font-family: 'Archivo', sans-serif; font-weight: 700; font-size: 16px; letter-spacing: 0.15em; text-transform: uppercase; color: #E9EBEF; }
+    .kicker { font-family: 'JetBrains Mono', monospace; font-size: 10.5px; letter-spacing: 0.16em; text-transform: uppercase; color: #E4703A; }
+    .lede { font-size: 22px; line-height: 1.46; color: #E9EBEF; }
+    .body { font-size: 17px; line-height: 1.62; color: #9BA2AE; }
+
+    .panel { background: rgba(255,255,255,0.035); border: 1px solid rgba(255,255,255,0.10); border-radius: 8px; overflow: hidden; }
+    .panel-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px;
+      padding: 15px 22px; border-bottom: 1px solid rgba(255,255,255,0.10); }
+    .panel-label { font-family: 'Archivo', sans-serif; font-weight: 600; font-size: 12px; letter-spacing: 0.15em; text-transform: uppercase; color: #E9EBEF; }
+    .panel-meta { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: #6C7482; letter-spacing: 0.08em; white-space: nowrap; }
+
+    .trend-row { display: flex; gap: 16px; overflow-x: auto; overscroll-behavior-x: contain; padding: 16px 22px 20px 22px;
+      scrollbar-width: thin; scrollbar-color: rgba(255,255,255,0.18) transparent; }
+    .trend-row::-webkit-scrollbar { height: 6px; }
+    .trend-row::-webkit-scrollbar-track { background: transparent; }
+    .trend-row::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.17); border-radius: 3px; }
+    .tcard { color: inherit; text-decoration: none; width: 230px; flex-shrink: 0; display: flex; flex-direction: column; gap: 7px;
+      background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 6px; padding: 15px 16px; cursor: pointer; transition: border-color .2s ease, background .2s ease; }
+    .tcard:hover { border-color: rgba(228,112,58,0.42); background: rgba(228,112,58,0.07); }
+    .tcard-rank { font-family: 'JetBrains Mono', monospace; font-size: 9.5px; letter-spacing: 0.14em; color: #E4703A; }
+    .tcard-title { font-family: 'Archivo', sans-serif; font-weight: 600; font-size: 15.5px; line-height: 1.26; letter-spacing: -0.012em; }
+    .tcard-meta { font-family: 'JetBrains Mono', monospace; font-size: 9.5px; color: #6C7482; }
+
+    .articles { position: relative; height: 500px; display: flex; flex-direction: column; }
+    .articles-scroll { flex-grow: 1; overflow-y: auto; padding: 2px 22px 34px 22px;
+      scrollbar-width: thin; scrollbar-color: rgba(255,255,255,0.18) transparent; }
+    .articles-scroll::-webkit-scrollbar { width: 6px; }
+    .articles-scroll::-webkit-scrollbar-track { background: transparent; }
+    .articles-scroll::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.17); border-radius: 3px; }
+    .articles-fade { position: absolute; left: 1px; right: 8px; bottom: 1px; height: 58px; border-radius: 0 0 8px 8px;
+      background: linear-gradient(to bottom, rgba(17,20,27,0) 0%, rgba(15,18,24,0.94) 74%); pointer-events: none; }
+
+    .item { color: inherit; text-decoration: none; display: flex; gap: 16px; padding: 15px 0; border-bottom: 1px solid rgba(255,255,255,0.07); align-items: baseline; }
+    .item-date { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: #6C7482; width: 56px; flex-shrink: 0; padding-top: 5px; }
+    .item-body { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+    .item-title { font-family: 'Archivo', sans-serif; font-weight: 600; font-size: 17.5px; line-height: 1.24; letter-spacing: -0.014em; transition: color .2s ease; }
+    .item:hover .item-title { color: #E4703A; }
+    .item-sub { font-size: 14.5px; line-height: 1.45; color: #9BA2AE; }
+    .item-chip { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: #E4703A; }
+
+    .ad { border: 1px dashed rgba(255,255,255,0.17); background: rgba(255,255,255,0.025); border-radius: 6px;
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; box-sizing: border-box; text-align: center; }
+    .ad-tag { font-family: 'JetBrains Mono', monospace; font-size: 9.5px; letter-spacing: 0.16em; text-transform: uppercase; color: #6C7482; }
+    .ad-size { font-family: 'JetBrains Mono', monospace; font-size: 10.5px; color: #565E6C; padding: 0 16px; }
+    .ad-note { font-family: 'JetBrains Mono', monospace; font-size: 9.5px; color: #4E5663; line-height: 1.6; padding: 0 22px; }
+
+    .ad.ad-inline { display: none; }
+
+    .wide { margin-top: 82px; width: 100%; }
+    .band { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.10); border-radius: 8px;
+      padding: 40px 44px; display: flex; gap: 56px; align-items: flex-start; }
+    .band-copy { flex-grow: 1; min-width: 0; display: flex; flex-direction: column; gap: 22px; }
+    .band-title { font-family: 'Archivo', sans-serif; font-weight: 700; font-size: 31px; letter-spacing: -0.024em; line-height: 1.1; }
+    .benefit-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 26px; }
+    .benefit { display: flex; gap: 13px; align-items: baseline; }
+    .benefit-mark { width: 5px; height: 5px; border-radius: 50%; background: #E4703A; flex-shrink: 0; transform: translateY(-3px); }
+    .benefit-text { font-size: 15.5px; line-height: 1.52; color: #C3C9D3; }
+    .band-form { width: 320px; flex-shrink: 0; display: flex; flex-direction: column; gap: 10px; }
+    .field-row { display: flex; gap: 0; align-items: stretch; }
+    .field { flex-grow: 1; min-width: 0; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.13); border-right: 0;
+      border-radius: 999px 0 0 999px; color: #6C7482; font-family: 'JetBrains Mono', monospace; font-size: 12.5px;
+      padding: 15px 20px; display: flex; align-items: center; }
+    .field-btn { background: #E4703A; color: #14171D; font-family: 'Archivo', sans-serif; font-weight: 700; font-size: 13px;
+      letter-spacing: 0.04em; padding: 15px 26px; border-radius: 0 999px 999px 0; display: flex; align-items: center; white-space: nowrap; }
+    .fineprint { font-family: 'JetBrains Mono', monospace; font-size: 10.5px; line-height: 1.65; color: #6C7482; }
+    .foot { margin-top: 30px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.07);
+      display: flex; justify-content: space-between; align-items: center; gap: 14px; flex-wrap: wrap;
+      font-family: 'JetBrains Mono', monospace; font-size: 10.5px; color: #5C6473; letter-spacing: 0.06em; }
+
+    .anchor { position: absolute; left: 0; right: 0; bottom: 0; height: 62px; z-index: 35;
+      background: rgba(14,17,22,0.96); border-top: 1px solid rgba(255,255,255,0.10);
+      backdrop-filter: blur(10px); display: flex; align-items: center; justify-content: center; gap: 18px; padding: 0 44px 0 16px; box-sizing: border-box; }
+    .anchor-close { position: absolute; right: 14px; top: 50%; transform: translateY(-50%);
+      width: 22px; height: 22px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.16);
+      display: flex; align-items: center; justify-content: center; cursor: pointer;
+      font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #7C8494; }
+
+
+
+
+
+    /* type-ahead dropdown */
+
+    /* full results view — the /search page */
+
+    /* ---- tablet: the rail cannot pay its way below 1200, so it moves into the flow ---- */
+    @media (max-width: 1199px) {
+      .rail { display: none; }
+      .ad.ad-inline { display: flex; height: 250px; }
+      .mission { width: 330px; }
+      .page { padding: 38px 40px 118px 40px; }
+    }
+
+    /* ---- stacked: one column ---- */
+    @media (max-width: 899px) {
+      .top { flex-direction: column; gap: 30px; }
+      .mission { width: 100%; }
+      .center { width: 100%; }
+      .wide { margin-top: 46px; }
+      .band { flex-direction: column; gap: 28px; padding: 32px 28px; }
+      .band-form { width: 100%; }
+      .benefit-grid { grid-template-columns: 1fr 1fr; gap: 20px; }
+      .lede { font-size: 20px; }
+      .body { font-size: 16px; }
+      .band-title { font-size: 27px; }
+    }
+
+    /* ---- phone ---- */
+    @media (max-width: 639px) {
+      .page { padding: 30px 20px 104px 20px; }
+      .benefit-grid { grid-template-columns: 1fr; gap: 16px; }
+      .articles { height: 420px; }
+      .tcard { width: 200px; }
+      .lede { font-size: 19px; }
+      .body { font-size: 15.5px; }
+      .band-title { font-size: 24px; }
+      .band { padding: 26px 22px; }
+      .item-date { width: 48px; }
+      .item-title { font-size: 16.5px; }
+      .panel-head { padding: 13px 16px; }
+      .articles-scroll { padding: 2px 16px 30px 16px; }
+      .trend-row { padding: 14px 16px 18px 16px; }
+      .foot { flex-direction: column; align-items: flex-start; gap: 8px; }
+      .anchor { height: 54px; padding: 0 40px 0 12px; }
+      .ad-size { font-size: 9.5px; }
+      .fab { width: 54px; height: 54px; right: 20px; bottom: 72px; }
+      .bar { width: 20px; }
+      .pill { right: 20px; font-size: 13.5px; padding: 12px 22px; }
+      .pill-1 { bottom: 140px; }
+      .pill-2 { bottom: 192px; }
+      .pill-3 { bottom: 244px; }
+      .search { bottom: 80px; right: 20px; }
+      .root.menu-open .search { bottom: 84px; right: 84px; width: calc(100% - 104px); }
+      .root.searching .search { bottom: 64%; right: 50%; width: calc(100% - 32px); }
+      .search-hint { display: none; }
+    }
+
+    /* form elements need resetting once they are real inputs rather than mock divs */
+    .field { font: inherit; font-family: 'JetBrains Mono', monospace; font-size: 12.5px;
+      outline: none; -webkit-appearance: none; appearance: none; }
+    .field::placeholder { color: #6C7482; }
+    .field:focus { border-color: rgba(228,112,58,0.5); }
+    .field-btn { border: 0; cursor: pointer; font-family: 'Archivo', sans-serif; }
+    .field-btn:disabled { opacity: 0.55; cursor: default; }
+    .field-row { position: relative; }
+    a.pill { text-decoration: none; }
+
+
+
+</style>
+<link rel="stylesheet" href="/assets/nav.css">
+<script src="/assets/analytics.js" defer></script>
+<script src="/assets/nav.js" defer></script>
+</head>
+<body class="has-anchor">
+
+
+<div class="root">
+
+  <div class="glow"></div>
+
+  <div class="page">
+
+    <div class="top">
+
+      <div class="mission">
+        <a class="wordmark" href="/">Learnthespec</a>
+        <div style="display: flex; flex-direction: column; gap: 15px;">
+          <div class="kicker">Why this exists</div>
+          <div class="lede">Every week brings new models, new benchmarks, and forty opinions about which one to use.</div>
+          <div class="body">We read the releases, the benchmark results and the reviews, then write up what they actually add up to — with a link to every source, so you can check any claim yourself.</div>
+          <div class="body">Prices, context limits and spec sheets get compiled by hand from the vendors' own pages, because nobody else keeps them in one table.</div>
+          <div class="body">No press-release rewrites, no affiliate rankings. Just what changed this week and whether it matters.</div>
+        </div>
+      </div>
+
+      <div class="center">
+
+        <div class="panel">
+          <div class="panel-head">
+            <div class="panel-label">Start here</div>
+            <div class="panel-meta">20 ARTICLES</div>
+          </div>
+          <div class="trend-row">
+            <a class="tcard" href="/articles/best-ai-model-september-2026/">
+              <div class="tcard-rank">FLAGSHIPS</div>
+              <div class="tcard-title">Best AI Model, September 2026</div>
+              <div class="tcard-meta">13 SOURCES &middot; 04 SEP</div>
+            </a>
+            <a class="tcard" href="/articles/what-ai-chatbots-can-do-september-2026/">
+              <div class="tcard-rank">EXPLAINER</div>
+              <div class="tcard-title">What AI Chatbots Can Actually Do</div>
+              <div class="tcard-meta">10 SOURCES &middot; 04 SEP</div>
+            </a>
+            <a class="tcard" href="/articles/what-ai-can-do-when-coding-september-2026/">
+              <div class="tcard-rank">EXPLAINER</div>
+              <div class="tcard-title">What AI Can Actually Do When You Code</div>
+              <div class="tcard-meta">12 SOURCES &middot; 04 SEP</div>
+            </a>
+            <a class="tcard" href="/articles/what-open-weights-mean-september-2026/">
+              <div class="tcard-rank">EXPLAINER</div>
+              <div class="tcard-title">What Open Weights Actually Mean</div>
+              <div class="tcard-meta">10 SOURCES &middot; 04 SEP</div>
+            </a>
+            <a class="tcard" href="/articles/best-open-weight-model-september-2026/">
+              <div class="tcard-rank">OPEN WEIGHTS</div>
+              <div class="tcard-title">Best Open-Weight Model, September 2026</div>
+              <div class="tcard-meta">11 SOURCES &middot; 04 SEP</div>
+            </a>
+            <a class="tcard" href="/articles/best-free-ai-september-2026/">
+              <div class="tcard-rank">FREE</div>
+              <div class="tcard-title">Best Free AI, September 2026</div>
+              <div class="tcard-meta">10 SOURCES &middot; 04 SEP</div>
+            </a>
+            <a class="tcard" href="/articles/subscription-or-api-september-2026/">
+              <div class="tcard-rank">COST</div>
+              <div class="tcard-title">Subscription or API: Which Is Cheaper</div>
+              <div class="tcard-meta">10 SOURCES &middot; 04 SEP</div>
+            </a>
+            <a class="tcard" href="/articles/what-hardware-runs-which-local-model-september-2026/">
+              <div class="tcard-rank">HARDWARE</div>
+              <div class="tcard-title">What Hardware Runs Which Local Model</div>
+              <div class="tcard-meta">9 SOURCES &middot; 04 SEP</div>
+            </a>
+            <a class="tcard" href="/articles/best-ai-for-images-september-2026/">
+              <div class="tcard-rank">IMAGES</div>
+              <div class="tcard-title">Best AI for Images, September 2026</div>
+              <div class="tcard-meta">8 SOURCES &middot; 04 SEP</div>
+            </a>
+            <a class="tcard" href="/articles/best-ai-for-video-september-2026/">
+              <div class="tcard-rank">VIDEO</div>
+              <div class="tcard-title">Best AI for Video, September 2026</div>
+              <div class="tcard-meta">8 SOURCES &middot; 04 SEP</div>
+            </a>
+            <a class="tcard" href="/articles/context-windows-compared-september-2026/">
+              <div class="tcard-rank">SPECS</div>
+              <div class="tcard-title">Context Windows, Compared Honestly</div>
+              <div class="tcard-meta">9 SOURCES &middot; 04 SEP</div>
+            </a>
+            <a class="tcard" href="/articles/rate-limits-compared-september-2026/">
+              <div class="tcard-rank">SPECS</div>
+              <div class="tcard-title">Rate Limits and Usage Caps, Compared</div>
+              <div class="tcard-meta">8 SOURCES &middot; 04 SEP</div>
+            </a>
+            <a class="tcard" href="/articles/output-speed-compared-september-2026/">
+              <div class="tcard-rank">SPECS</div>
+              <div class="tcard-title">Output Speed, Compared</div>
+              <div class="tcard-meta">9 SOURCES &middot; 04 SEP</div>
+            </a>
+            <a class="tcard" href="/articles/token-efficiency-compared-september-2026/">
+              <div class="tcard-rank">SPECS</div>
+              <div class="tcard-title">Token Efficiency, Compared</div>
+              <div class="tcard-meta">11 SOURCES &middot; 04 SEP</div>
+            </a>
+            <a class="tcard" href="/articles/best-gpu-for-local-ai-september-2026/">
+              <div class="tcard-rank">HARDWARE</div>
+              <div class="tcard-title">Best GPU for Local AI</div>
+              <div class="tcard-meta">8 SOURCES &middot; 05 SEP</div>
+            </a>
+            <a class="tcard" href="/articles/which-ai-can-use-your-computer-september-2026/">
+              <div class="tcard-rank">AGENTS</div>
+              <div class="tcard-title">Which AI Can Use Your Computer</div>
+              <div class="tcard-meta">8 SOURCES &middot; 05 SEP</div>
+            </a>
+            <a class="tcard" href="/articles/every-ai-benchmark-explained-september-2026/">
+              <div class="tcard-rank">EXPLAINER</div>
+              <div class="tcard-title">Every AI Benchmark, Explained</div>
+              <div class="tcard-meta">8 SOURCES &middot; 05 SEP</div>
+            </a>
+            <a class="tcard" href="/articles/mcp-what-connects-to-what-september-2026/">
+              <div class="tcard-rank">AGENTS</div>
+              <div class="tcard-title">MCP: What Connects to What</div>
+              <div class="tcard-meta">7 SOURCES &middot; 05 SEP</div>
+            </a>
+            <a class="tcard" href="/articles/ai-jargon-defined-september-2026/">
+              <div class="tcard-rank">EXPLAINER</div>
+              <div class="tcard-title">AI Jargon, Defined</div>
+              <div class="tcard-meta">12 SOURCES &middot; 05 SEP</div>
+            </a>
+            <a class="tcard" href="/articles/best-ai-for-coding-september-2026/">
+              <div class="tcard-rank">CODING</div>
+              <div class="tcard-title">Best AI for Coding, September 2026</div>
+              <div class="tcard-meta">16 SOURCES &middot; 04 SEP</div>
+            </a>
+          </div>
+        </div>
+
+        <div class="panel articles">
+          <div class="panel-head">
+            <div class="panel-label">Most recent</div>
+            <div class="panel-meta">4 SEPT 2026</div>
+          </div>
+          <div class="articles-scroll">
+            <a class="item" href="/articles/best-ai-model-september-2026/"><div class="item-date">04 SEP</div><div class="item-body"><div class="item-title">Best AI Model, September 2026</div><div class="item-sub">Seven flagships on intelligence, price, cost per finished task, token efficiency, speed and context.</div><div class="item-chip">13 SOURCES</div></div></a>
+            <a class="item" href="/articles/best-ai-for-coding-september-2026/"><div class="item-date">04 SEP</div><div class="item-body"><div class="item-title">Best AI for Coding, September 2026</div><div class="item-sub">SWE-bench Verified and Terminal-Bench 4.0 against cost per task, and why the two disagree.</div><div class="item-chip">16 SOURCES</div></div></a>
+            <a class="item" href="/articles/what-ai-chatbots-can-do-september-2026/"><div class="item-date">04 SEP</div><div class="item-body"><div class="item-title">What AI Chatbots Can Actually Do, September 2026</div><div class="item-sub">Fourteen capabilities across the four big assistants, what each is for, and where the published limits sit.</div><div class="item-chip">10 SOURCES</div></div></a>
+            <a class="item" href="/articles/what-ai-can-do-when-coding-september-2026/"><div class="item-date">04 SEP</div><div class="item-body"><div class="item-title">What AI Can Actually Do When You Code, September 2026</div><div class="item-sub">Twelve capabilities across five coding tools, and what each one is allowed to touch on your machine.</div><div class="item-chip">12 SOURCES</div></div></a>
+            <a class="item" href="/articles/what-open-weights-mean-september-2026/"><div class="item-date">04 SEP</div><div class="item-body"><div class="item-title">What Open Weights Actually Mean, September 2026</div><div class="item-sub">Open weights is not open source. What each term requires, the licence per model, file sizes and what you give up.</div><div class="item-chip">10 SOURCES</div></div></a>
+            <a class="item" href="/articles/best-open-weight-model-september-2026/"><div class="item-date">04 SEP</div><div class="item-body"><div class="item-title">Best Open-Weight Model, September 2026</div><div class="item-sub">Seven downloadable models on intelligence, cost per task, speed, context and licence.</div><div class="item-chip">11 SOURCES</div></div></a>
+            <a class="item" href="/articles/best-free-ai-september-2026/"><div class="item-date">04 SEP</div><div class="item-body"><div class="item-title">Best Free AI, September 2026</div><div class="item-sub">Three routes to paying nothing: free assistant tiers, free developer APIs, and models you run yourself.</div><div class="item-chip">10 SOURCES</div></div></a>
+            <a class="item" href="/articles/subscription-or-api-september-2026/"><div class="item-date">04 SEP</div><div class="item-body"><div class="item-title">Subscription or API: Which Is Cheaper, September 2026</div><div class="item-sub">What &euro;20 buys on each side, in output pages and finished tasks, from published rates.</div><div class="item-chip">10 SOURCES</div></div></a>
+            <a class="item" href="/articles/what-hardware-runs-which-local-model-september-2026/"><div class="item-date">04 SEP</div><div class="item-body"><div class="item-title">What Hardware Runs Which Local Model, September 2026</div><div class="item-sub">Published download sizes at every compression level against the memory in real cards and Macs.</div><div class="item-chip">9 SOURCES</div></div></a>
+            <a class="item" href="/articles/best-ai-for-images-september-2026/"><div class="item-date">04 SEP</div><div class="item-body"><div class="item-title">Best AI for Images, September 2026</div><div class="item-sub">Fifteen models ranked by blind human preference, then priced. The open-weight gap is far wider than in text.</div><div class="item-chip">8 SOURCES</div></div></a>
+            <a class="item" href="/articles/best-ai-for-video-september-2026/"><div class="item-date">04 SEP</div><div class="item-body"><div class="item-title">Best AI for Video, September 2026</div><div class="item-sub">Blind-vote rankings against per-second rates. An open-weight model ranks fourth and Sora is not in the top fifteen.</div><div class="item-chip">8 SOURCES</div></div></a>
+            <a class="item" href="/articles/context-windows-compared-september-2026/"><div class="item-date">04 SEP</div><div class="item-body"><div class="item-title">Context Windows, Compared Honestly, September 2026</div><div class="item-sub">What is advertised, how much text a million tokens really holds, and how well models reason at 100K.</div><div class="item-chip">9 SOURCES</div></div></a>
+            <a class="item" href="/articles/rate-limits-compared-september-2026/"><div class="item-date">04 SEP</div><div class="item-body"><div class="item-title">Rate Limits and Usage Caps, Compared, September 2026</div><div class="item-sub">Exact per-minute API limits against consumer plans that publish no number at all, and what to do at the wall.</div><div class="item-chip">8 SOURCES</div></div></a>
+            <a class="item" href="/articles/output-speed-compared-september-2026/"><div class="item-date">04 SEP</div><div class="item-body"><div class="item-title">Output Speed, Compared, September 2026</div><div class="item-sub">Tokens per second against time to first token. At maximum effort the flagships wait minutes before writing a word.</div><div class="item-chip">9 SOURCES</div></div></a>
+            <a class="item" href="/articles/token-efficiency-compared-september-2026/"><div class="item-date">04 SEP</div><div class="item-body"><div class="item-title">Token Efficiency, Compared, September 2026</div><div class="item-sub">Output tokens spent on one identical benchmark suite, and the bill each model ran up doing it.</div><div class="item-chip">11 SOURCES</div></div></a>
+            <a class="item" href="/articles/best-gpu-for-local-ai-september-2026/"><div class="item-date">05 SEP</div><div class="item-body"><div class="item-title">Best GPU for Local AI, September 2026</div><div class="item-sub">Twelve cards priced per gigabyte of VRAM, and the driver fine print that decides whether the cheapest one works.</div><div class="item-chip">8 SOURCES</div></div></a>
+            <a class="item" href="/articles/which-ai-can-use-your-computer-september-2026/"><div class="item-date">05 SEP</div><div class="item-body"><div class="item-title">Which AI Can Use Your Computer, September 2026</div><div class="item-sub">What each vendor lets a model click, what it is allowed to agree to, and why the three published scores cannot be ranked.</div><div class="item-chip">8 SOURCES</div></div></a>
+            <a class="item" href="/articles/every-ai-benchmark-explained-september-2026/"><div class="item-date">05 SEP</div><div class="item-body"><div class="item-title">Every AI Benchmark, Explained, September 2026</div><div class="item-sub">What each test actually asks, what the Intelligence Index is made of, and the three ways a percentage misleads.</div><div class="item-chip">8 SOURCES</div></div></a>
+            <a class="item" href="/articles/mcp-what-connects-to-what-september-2026/"><div class="item-date">05 SEP</div><div class="item-body"><div class="item-title">MCP: What Actually Connects to What, September 2026</div><div class="item-sub">One standard, and a different subset of it in every client. Plus the size caps and the rules the spec makes mandatory.</div><div class="item-chip">7 SOURCES</div></div></a>
+            <a class="item" href="/articles/ai-jargon-defined-september-2026/" style="border-bottom: 0;"><div class="item-date">05 SEP</div><div class="item-body"><div class="item-title">AI Jargon, Defined, September 2026</div><div class="item-sub">Twenty-five terms with the number attached, from what a token is to why open weights is not open source.</div><div class="item-chip">12 SOURCES</div></div></a>
+          </div>
+          <div class="articles-fade"></div>
+        </div>
+
+        <div class="ad ad-inline">
+          <div class="ad-tag">Advertisement</div>
+          <div class="ad-size">300 × 250 — the rail unit, moved inline below 1200 px</div>
+        </div>
+
+      </div>
+
+      <div class="rail">
+        <div class="ad" style="height: 600px;">
+          <div class="ad-tag">Advertisement</div>
+          <div class="ad-size">300 × 600</div>
+          <div class="ad-note">Half-page. 300 px because that is what buyers bid on — a 120 px rail gets almost no fill.</div>
+        </div>
+        <div style="font-family: 'JetBrains Mono', monospace; font-size: 9.5px; line-height: 1.7; color: #4E5663; padding: 0 2px;">SCROLLS AWAY WITH THE PAGE — NOT STICKY, SO IT NEVER SITS UNDER THE MENU BUTTON</div>
+      </div>
+
+    </div>
+
+    <div class="wide">
+      <div class="band">
+        <div class="band-copy">
+          <div style="display: flex; flex-direction: column; gap: 10px;">
+            <div class="band-title">Get the week's AI news in your inbox</div>
+            <div style="font-size: 17px; line-height: 1.5; color: #9BA2AE;">Everything that actually changed, in one email, with every source linked.</div>
+          </div>
+          <div class="benefit-grid">
+            <div class="benefit"><div class="benefit-mark"></div><div class="benefit-text"><span style="color: #E9EBEF; font-weight: 500;">One email a week.</span> Nothing in between — if the week was quiet, we say so in a line.</div></div>
+            <div class="benefit"><div class="benefit-mark"></div><div class="benefit-text"><span style="color: #E9EBEF; font-weight: 500;">New releases within days.</span> What launched, what it costs, and whether the published numbers back the claim.</div></div>
+            <div class="benefit"><div class="benefit-mark"></div><div class="benefit-text"><span style="color: #E9EBEF; font-weight: 500;">Every source linked.</span> Read the original whenever you want to — we would rather you checked than took our word.</div></div>
+          </div>
+        </div>
+        <div class="band-form">
+          <form class="field-row" id="subscribe" novalidate>
+            <input class="field" type="email" name="email" required autocomplete="email"
+                   placeholder="you@example.com" aria-label="Email address">
+            <button class="field-btn" type="submit">SUBSCRIBE</button>
+            <span style="position:absolute;left:-9999px" aria-hidden="true">
+              <input type="text" name="company" tabindex="-1" autocomplete="off">
+            </span>
+          </form>
+          <div class="fineprint" id="sub-status" role="status" aria-live="polite">A confirmation link arrives first — click it to finish. One click to leave, any time.</div>
+        </div>
+      </div>
+
+      <div class="ad" style="height: 92px; margin-top: 30px;">
+        <div class="ad-tag">Advertisement</div>
+        <div class="ad-size">728 × 90 — below the subscribe box, never above it</div>
+      </div>
+
+      <div class="foot">
+        <div>LEARNTHESPEC.COM — AI NEWS AND COMPARISONS, MUNICH</div>
+        <div><a href="/impressum/" style="color:#5C6473">IMPRESSUM</a> · <a href="/privacy/" style="color:#5C6473">PRIVACY</a> · <a href="/contact/" style="color:#5C6473">CONTACT</a></div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="anchor">
+    <div class="ad-tag">Advertisement</div>
+    <div class="ad-size">970 × 50 anchor — dismissible</div>
+    <div class="anchor-close">✕</div>
+  </div>
+
+
+
+
+  </div>
+
+
+<script>
+(function () {
+  var form = document.getElementById('subscribe');
+  if (!form) return;
+  var status = document.getElementById('sub-status');
+  var btn = form.querySelector('button');
+  var idle = status.textContent;
+  form.addEventListener('submit', async function (e) {
+    e.preventDefault();
+    btn.disabled = true;
+    status.textContent = 'Sending...';
+    try {
+      var res = await fetch('/api/subscribe', { method: 'POST', body: new FormData(form) });
+      var data = await res.json();
+      status.textContent = data.message || (data.ok ? 'Done.' : 'Something went wrong.');
+      if (data.ok) form.reset();
+    } catch (err) {
+      status.textContent = 'Network problem - try again.';
+    } finally {
+      btn.disabled = false;
+      setTimeout(function () { status.textContent = idle; }, 9000);
+    }
+  });
+})();
+</script>
+
+</body>
+</html>
