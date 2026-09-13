@@ -1,0 +1,547 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Prompt Caching Prices, Compared, September 2026 — Learnthespec</title>
+<meta name="description" content="Seven API vendors bill repeated input at between a fiftieth and a quarter of full price. Cache hits, write and storage fees, when caching switches on, batch and off-peak rates. Checked 13 September 2026.">
+<link rel="stylesheet" href="/assets/fonts.css">
+<style>
+
+    html, body { height: 100%; margin: 0; background: #0A0C10; }
+    a { color: #E4703A; text-decoration: none; }
+    a:hover { color: #F5936A; }
+
+    .root { position: relative; width: 100%; height: 100vh; overflow: hidden;
+      background: linear-gradient(155deg, #1B1F28 0%, #101319 46%, #090B0F 100%);
+      font-family: 'Nunito Sans', system-ui, sans-serif; font-weight: 400;
+      color: #E9EBEF; box-sizing: border-box; -webkit-font-smoothing: antialiased; }
+    .glow { position: absolute; top: -180px; right: -140px; width: 660px; height: 660px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(228,112,58,0.10) 0%, rgba(228,112,58,0) 68%); pointer-events: none; }
+
+    .page { position: relative; height: 100%; overflow-y: auto; box-sizing: border-box;
+      padding: 46px 56px 118px 56px; transition: filter .4s ease;
+      scrollbar-width: thin; scrollbar-color: rgba(255,255,255,0.16) transparent; }
+    .page::-webkit-scrollbar { width: 7px; }
+    .page::-webkit-scrollbar-track { background: transparent; }
+    .page::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 4px; }
+    .root.searching .page { filter: blur(7px); }
+
+    .top { display: flex; gap: 44px; align-items: flex-start; }
+    .col { flex-grow: 1; min-width: 0; max-width: 760px; }
+    .rail { width: 300px; flex-shrink: 0; display: flex; flex-direction: column; gap: 20px; }
+    .rail-left { width: 160px; flex-shrink: 0; display: flex; flex-direction: column; gap: 20px; }
+
+    .wordmark { font-family: 'Archivo', sans-serif; font-weight: 700; font-size: 16px; letter-spacing: 0.15em;
+      text-transform: uppercase; color: #E9EBEF; display: inline-block; margin-bottom: 30px; }
+
+    .crumb { font-family: 'JetBrains Mono', monospace; font-size: 10.5px; letter-spacing: 0.16em;
+      text-transform: uppercase; color: #E4703A; margin-bottom: 16px; }
+
+    h1 { font-family: 'Archivo', sans-serif; font-weight: 700; font-size: 44px; line-height: 1.06;
+      letter-spacing: -0.03em; margin: 0 0 16px 0; max-width: 18ch; text-wrap: balance; }
+    .standfirst { font-size: 20px; font-weight: 500; line-height: 1.5; color: #C3C9D3;
+      margin-bottom: 26px; max-width: 34em; }
+
+    .byline { display: flex; flex-wrap: wrap; gap: 10px 18px; align-items: center;
+      padding: 14px 0 16px 0; border-top: 1px solid rgba(255,255,255,0.10);
+      border-bottom: 1px solid rgba(255,255,255,0.10); margin-bottom: 30px;
+      font-family: 'JetBrains Mono', monospace; font-size: 10.5px; letter-spacing: 0.08em; color: #6C7482; }
+    .byline .who { color: #E9EBEF; }
+    .badge { border: 1px solid rgba(111,184,148,0.40); color: #6FB894; border-radius: 999px;
+      padding: 4px 11px; font-size: 9.5px; letter-spacing: 0.12em; }
+
+    .prose p { font-size: 17px; font-weight: 500; line-height: 1.65; color: #C3C9D3;
+      margin: 0 0 16px 0; max-width: 32em; }
+    .prose strong { color: #E9EBEF; font-weight: 700; }
+    .prose h2 { font-family: 'Archivo', sans-serif; font-weight: 700; font-size: 18px;
+      letter-spacing: 0.13em; text-transform: uppercase; color: #E9EBEF;
+      margin: 38px 0 14px 0; }
+    .prose sup { font-family: 'JetBrains Mono', monospace; font-size: 9.5px; }
+    .prose sup a { color: #E4703A; padding: 0 1px; }
+    .mono { font-family: 'JetBrains Mono', monospace; font-size: 15px; color: #E9EBEF; }
+
+    .def { border-left: 2px solid rgba(155,162,174,0.35); padding: 2px 0 2px 18px;
+      margin: 0 0 16px 0; max-width: 32em; }
+    .def p { font-size: 16.5px; margin: 0; color: #9BA2AE; }
+    .def .term { color: #E9EBEF; font-weight: 700; }
+
+    .tablewrap { overflow-x: auto; overscroll-behavior-x: contain; margin: 0 0 8px 0;
+      border: 1px solid rgba(255,255,255,0.10); border-radius: 8px; background: rgba(255,255,255,0.035);
+      scrollbar-width: thin; scrollbar-color: rgba(255,255,255,0.18) transparent; }
+    .tablewrap::-webkit-scrollbar { height: 7px; }
+    .tablewrap::-webkit-scrollbar-track { background: transparent; }
+    .tablewrap::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.17); border-radius: 4px; }
+    table { border-collapse: collapse; width: 100%; min-width: 660px; }
+    caption { text-align: left; padding: 15px 20px 0 20px; font-family: 'JetBrains Mono', monospace;
+      font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: #6C7482; }
+    th { font-family: 'Archivo', sans-serif; font-weight: 600; font-size: 10.5px; letter-spacing: 0.11em;
+      text-transform: uppercase; color: #9BA2AE; text-align: left; padding: 15px 20px 10px 20px;
+      border-bottom: 1px solid rgba(255,255,255,0.13); white-space: nowrap; }
+    td { padding: 12px 20px; border-bottom: 1px solid rgba(255,255,255,0.07);
+      font-size: 15px; line-height: 1.42; color: #C3C9D3; vertical-align: top; }
+    tr:last-child td { border-bottom: 0; }
+    td.name { color: #E9EBEF; font-family: 'Archivo', sans-serif; font-weight: 600;
+      font-size: 14px; white-space: nowrap; }
+    td.num { font-family: 'JetBrains Mono', monospace; font-size: 13.5px; color: #E9EBEF;
+      white-space: nowrap; font-variant-numeric: tabular-nums; }
+    td.quiet { font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: #6C7482; }
+    td.best { color: #6FB894; }
+    td.no { color: #E08876; }
+    .bar { display: block; height: 3px; background: #E4703A; border-radius: 2px; margin-top: 5px; }
+    .bar.g { background: #6FB894; }
+    .tablenote { font-family: 'JetBrains Mono', monospace; font-size: 10.5px; line-height: 1.7;
+      color: #6C7482; margin: 0 0 30px 0; max-width: 62em; }
+
+    .ad { border: 1px dashed rgba(255,255,255,0.17); background: rgba(255,255,255,0.025); border-radius: 6px;
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px;
+      box-sizing: border-box; text-align: center; }
+    .ad-tag { font-family: 'JetBrains Mono', monospace; font-size: 9.5px; letter-spacing: 0.16em;
+      text-transform: uppercase; color: #6C7482; }
+    .ad-size { font-family: 'JetBrains Mono', monospace; font-size: 10.5px; color: #565E6C; padding: 0 16px; }
+    .ad-note { font-family: 'JetBrains Mono', monospace; font-size: 9.5px; color: #4E5663; line-height: 1.6; padding: 0 22px; }
+    .ad-incontent { height: 280px; margin: 0 0 34px 0; }
+    .ad.ad-inline { display: none; }
+
+    .sources { background: rgba(255,255,255,0.035); border: 1px solid rgba(255,255,255,0.10);
+      border-radius: 8px; padding: 24px 26px; margin: 40px 0 0 0; }
+    .sources h2 { font-family: 'Archivo', sans-serif; font-weight: 600; font-size: 12px;
+      letter-spacing: 0.15em; text-transform: uppercase; color: #E9EBEF; margin: 0 0 6px 0; }
+    .sources-note { font-family: 'JetBrains Mono', monospace; font-size: 10.5px; line-height: 1.7;
+      color: #6C7482; margin-bottom: 18px; }
+    .sources ol { margin: 0; padding-left: 22px; }
+    .sources li { font-size: 14.5px; line-height: 1.55; color: #9BA2AE; margin-bottom: 12px; }
+    .sources li:last-child { margin-bottom: 0; }
+    .sources .pub { font-family: 'JetBrains Mono', monospace; font-size: 10.5px;
+      letter-spacing: 0.06em; color: #6C7482; display: block; margin-top: 3px; }
+
+    .corrections { font-family: 'JetBrains Mono', monospace; font-size: 11px; line-height: 1.75;
+      color: #6C7482; border-top: 1px solid rgba(255,255,255,0.08); margin-top: 34px; padding-top: 18px; }
+
+    .signup { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.10);
+      border-radius: 8px; padding: 26px 30px; margin-top: 34px; }
+    .signup-title { font-family: 'Archivo', sans-serif; font-weight: 700; font-size: 21px;
+      letter-spacing: -0.02em; margin-bottom: 7px; }
+    .signup-sub { font-size: 16px; line-height: 1.5; color: #9BA2AE; margin-bottom: 18px; max-width: 34em; }
+    .field-row { display: flex; align-items: stretch; max-width: 420px; }
+    .field { flex-grow: 1; min-width: 0; background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.13); border-right: 0; border-radius: 999px 0 0 999px;
+      color: #E9EBEF; font-family: 'JetBrains Mono', monospace; font-size: 12.5px; padding: 14px 20px; outline: none; }
+    .field::placeholder { color: #6C7482; }
+    .field-btn { background: #E4703A; color: #14171D; font-family: 'Archivo', sans-serif; font-weight: 700;
+      font-size: 13px; letter-spacing: 0.04em; padding: 14px 26px; border: 0;
+      border-radius: 0 999px 999px 0; cursor: pointer; white-space: nowrap; }
+    .field-btn:disabled { opacity: .6; cursor: default; }
+    .fineprint { font-family: 'JetBrains Mono', monospace; font-size: 10.5px; line-height: 1.65;
+      color: #6C7482; margin-top: 10px; }
+
+    .readnext { margin-top: 40px; }
+    .readnext-label { font-family: 'Archivo', sans-serif; font-weight: 600; font-size: 12px;
+      letter-spacing: 0.15em; text-transform: uppercase; color: #E9EBEF; margin-bottom: 14px; }
+    .rn { display: flex; gap: 16px; padding: 13px 0; border-bottom: 1px solid rgba(255,255,255,0.07); align-items: baseline; }
+    .rn:last-of-type { border-bottom: 0; }
+    .rn-chip { font-family: 'JetBrains Mono', monospace; font-size: 9.5px; color: #6C7482;
+      width: 92px; flex-shrink: 0; letter-spacing: 0.1em; }
+    .rn-title { font-family: 'Archivo', sans-serif; font-weight: 600; font-size: 16px;
+      line-height: 1.26; letter-spacing: -0.012em; color: #9BA2AE; }
+    .rn-title a { color: #E9EBEF; }
+    .rn-sub { font-size: 14px; line-height: 1.45; color: #6C7482; margin-top: 3px; }
+
+    .foot { margin-top: 40px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.07);
+      display: flex; justify-content: space-between; align-items: center; gap: 14px; flex-wrap: wrap;
+      font-family: 'JetBrains Mono', monospace; font-size: 10.5px; color: #5C6473; letter-spacing: 0.06em; }
+
+    .anchor { position: absolute; left: 0; right: 0; bottom: 0; height: 62px; z-index: 35;
+      background: rgba(14,17,22,0.96); border-top: 1px solid rgba(255,255,255,0.10);
+      backdrop-filter: blur(10px); display: flex; align-items: center; justify-content: center;
+      gap: 18px; padding: 0 44px 0 16px; box-sizing: border-box; }
+    .anchor-close { position: absolute; right: 14px; top: 50%; transform: translateY(-50%);
+      width: 22px; height: 22px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.16);
+      display: flex; align-items: center; justify-content: center; cursor: pointer;
+      font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #7C8494; }
+    .anchor.gone { display: none; }
+
+    @media (max-width: 1200px) { .ad.ad-inline { display: flex; height: 250px; margin: 0 0 34px 0; } }
+    @media (max-width: 1440px) { .rail-left { display: none; } }
+    @media (max-width: 1180px) { .rail { display: none; } }
+    @media (max-width: 900px)  { .page { padding: 38px 30px 110px 30px; } h1 { font-size: 34px; } }
+    @media (max-width: 640px)  {
+      .page { padding: 30px 20px 104px 20px; }
+      h1 { font-size: 29px; }
+      .standfirst { font-size: 18px; }
+      .field-row { flex-direction: column; }
+      .field { border-right: 1px solid rgba(255,255,255,0.13); border-radius: 8px; }
+      .field-btn { border-radius: 8px; margin-top: 8px; }
+    }
+
+</style>
+<link rel="stylesheet" href="/assets/nav.css">
+<script src="/assets/analytics.js" defer></script>
+<script src="/assets/nav.js" defer></script>
+</head>
+<body class="has-anchor">
+
+<div class="root">
+  <div class="glow"></div>
+  <div class="page">
+    <div class="top">
+
+      <div class="rail-left">
+        <div class="ad" style="height: 600px;">
+          <div class="ad-tag">Advertisement</div>
+          <div class="ad-size">160 &times; 600</div>
+          <div class="ad-note">Wide skyscraper. Hidden below 1440 px, where it would squeeze the 32em measure.</div>
+        </div>
+      </div>
+
+      <div class="col">
+
+        <a class="wordmark" href="/">Learnthespec</a>
+
+        <div class="crumb">AI &middot; Comparisons</div>
+
+        <h1>Prompt Caching Prices, Compared, September 2026</h1>
+        <div class="standfirst">Seven AI vendors charge less for input they have already seen. What a cache hit costs, what writing one costs, when caching switches on, and the batch and off-peak rates beside it.</div>
+
+        <div class="byline">
+          <span class="who">Tsrnoob</span>
+          <span>13 SEPTEMBER 2026</span>
+          <span>COMPILED FROM 16 SOURCES</span>
+          <span class="badge">CHECKED 13 SEP 2026</span>
+        </div>
+
+        <div class="prose">
+
+          <h2>The seven vendors</h2>
+          <p>Each vendor below publishes a cached-input price on its own pages. These are the models compared, at full price.</p>
+        </div>
+
+        <div class="tablewrap">
+          <table>
+            <caption>API list price before any discount, USD per million tokens, 13 Sep 2026</caption>
+            <thead><tr><th>Vendor</th><th>Model</th><th>Input</th><th>Output</th><th>Src</th></tr></thead>
+            <tbody>
+              <tr><td class="name">Anthropic</td><td>Claude Fable 5.1</td><td class="num">$10.00</td><td class="num">$50.00</td><td class="quiet"><a href="#s1">[1]</a></td></tr>
+              <tr><td class="name">Anthropic</td><td>Claude Opus 5</td><td class="num">$5.00</td><td class="num">$25.00</td><td class="quiet"><a href="#s1">[1]</a></td></tr>
+              <tr><td class="name">Moonshot</td><td>Kimi K3</td><td class="num">$3.00</td><td class="num">$15.00</td><td class="quiet"><a href="#s9">[9]</a></td></tr>
+              <tr><td class="name">Anthropic</td><td>Claude Sonnet 5</td><td class="num">$2.00</td><td class="num">$10.00</td><td class="quiet"><a href="#s1">[1]</a></td></tr>
+              <tr><td class="name">Google</td><td>Gemini 3.1 Pro Preview</td><td class="num">$2.00</td><td class="num">$12.00</td><td class="quiet"><a href="#s3">[3]</a></td></tr>
+              <tr><td class="name">Alibaba</td><td>Qwen3.8-Max</td><td class="num">$2.00</td><td class="num">$6.00</td><td class="quiet"><a href="#s11">[11]</a></td></tr>
+              <tr><td class="name">xAI</td><td>Grok 4.6</td><td class="num">$2.00</td><td class="num">$6.00</td><td class="quiet"><a href="#s7">[7]</a></td></tr>
+              <tr><td class="name">Google</td><td>Gemini 3.8 Flash</td><td class="num">$0.75</td><td class="num">$3.75</td><td class="quiet"><a href="#s3">[3]</a></td></tr>
+              <tr><td class="name">Mistral</td><td>Mistral Large 3</td><td class="num">$0.50</td><td class="num">$1.50</td><td class="quiet"><a href="#s13">[13]</a></td></tr>
+              <tr><td class="name">DeepSeek</td><td>deepseek-flash (V4.1 Flash)</td><td class="num best">$0.15</td><td class="num best">$0.60</td><td class="quiet"><a href="#s5">[5]</a></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="tablenote">EACH ROW IS READ FROM THAT VENDOR'S OWN PRICING PAGE, ONE PAGE PER VENDOR. GEMINI 3.1 PRO AND GROK 4.6 ARE SHOWN BELOW 200K PROMPT TOKENS. DEEPSEEK IS SHOWN OFF-PEAK. QWEN3.8-MAX IS THE SINGAPORE (INTERNATIONAL) PRICE. <strong>OPENAI IS NOT IN THIS ARTICLE:</strong> EVERY OPENAI PRICE PAGE RETURNED HTTP 403 ON 13 SEP 2026, AND WE DO NOT PRINT A FIGURE WE HAVE NOT SEEN AT SOURCE.</p>
+
+        <div class="prose">
+
+          <h2>What a cache hit costs</h2>
+          <p>Most requests resend the same opening text: a system prompt, tool definitions, a long document. Every vendor here bills that repeat at a lower rate.</p>
+          <div class="def"><p><span class="term">Token</span> — the unit APIs bill by. Anthropic puts one token at about 4 characters, or 0.75 words, of English.<sup><a href="#s1">1</a></sup></p></div>
+          <div class="def"><p><span class="term">Prompt caching</span> — the vendor stores the processed opening of a prompt and reuses it when the next request starts the same way. A <span class="term">cache hit</span> is input served from that store. A <span class="term">cache miss</span> is input processed from scratch. Anthropic bills a hit at 0.1 times the normal input price.<sup><a href="#s2">2</a></sup></p></div>
+          <p>The discount is not uniform. DeepSeek bills a hit at a fiftieth of its full input price, and xAI at a quarter.<sup><a href="#s5">5</a></sup><sup><a href="#s7">7</a></sup></p>
+        </div>
+
+        <div class="tablewrap">
+          <table>
+            <caption>Cached input price, USD per million tokens, 13 Sep 2026</caption>
+            <thead><tr><th>Model</th><th>Full input</th><th>Cache hit</th><th>Hit as share of input</th><th>Src</th></tr></thead>
+            <tbody>
+              <tr><td class="name">deepseek-flash (off-peak)</td><td class="num">$0.15</td><td class="num best">$0.003</td><td class="num best">2%</td><td class="quiet"><a href="#s5">[5]</a></td></tr>
+              <tr><td class="name">Claude Fable 5.1</td><td class="num">$10.00</td><td class="num">$0.25</td><td class="num">2.5%</td><td class="quiet"><a href="#s1">[1]</a></td></tr>
+              <tr><td class="name">Claude Opus 5</td><td class="num">$5.00</td><td class="num">$0.50</td><td class="num">10%</td><td class="quiet"><a href="#s1">[1]</a></td></tr>
+              <tr><td class="name">Claude Sonnet 5</td><td class="num">$2.00</td><td class="num">$0.20</td><td class="num">10%</td><td class="quiet"><a href="#s1">[1]</a></td></tr>
+              <tr><td class="name">Gemini 3.1 Pro Preview</td><td class="num">$2.00</td><td class="num">$0.20</td><td class="num">10%</td><td class="quiet"><a href="#s3">[3]</a></td></tr>
+              <tr><td class="name">Gemini 3.8 Flash</td><td class="num">$0.75</td><td class="num">$0.075</td><td class="num">10%</td><td class="quiet"><a href="#s3">[3]</a></td></tr>
+              <tr><td class="name">Kimi K3</td><td class="num">$3.00</td><td class="num">$0.30</td><td class="num">10%</td><td class="quiet"><a href="#s9">[9]</a></td></tr>
+              <tr><td class="name">Mistral Large 3</td><td class="num">$0.50</td><td class="num">$0.05</td><td class="num">10%</td><td class="quiet"><a href="#s13">[13]</a><a href="#s14">[14]</a></td></tr>
+              <tr><td class="name">Qwen3.8-Max, explicit cache</td><td class="num">$2.00</td><td class="num">$0.20</td><td class="num">10%</td><td class="quiet"><a href="#s11">[11]</a><a href="#s12">[12]</a></td></tr>
+              <tr><td class="name">Qwen3.8-Max, implicit cache</td><td class="num">$2.00</td><td class="num">$0.40</td><td class="num">20%</td><td class="quiet"><a href="#s11">[11]</a><a href="#s12">[12]</a></td></tr>
+              <tr><td class="name">Grok 4.6</td><td class="num">$2.00</td><td class="num no">$0.50</td><td class="num no">25%</td><td class="quiet"><a href="#s7">[7]</a></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="tablenote">SHARES FOR DEEPSEEK, GOOGLE, KIMI AND XAI ARE OUR DIVISION OF TWO PRICES ON THE SAME VENDOR PAGE. ANTHROPIC, ALIBABA AND MISTRAL STATE THE PERCENTAGE THEMSELVES; THE MISTRAL AND QWEN DOLLAR FIGURES ARE THAT PERCENTAGE APPLIED TO THE LISTED INPUT PRICE. ALIBABA SAYS ITS IMPLICIT RATE IS "TYPICALLY" 20%. <strong>FABLE 5.1 IS THE ONLY CLAUDE MODEL BELOW 0.1X:</strong> ITS HITS BILL AT 0.025X.</p>
+
+        <div class="ad ad-incontent">
+          <div class="ad-tag">Advertisement</div>
+          <div class="ad-size">336 &times; 280 &mdash; in-content, below the tables</div>
+        </div>
+
+        <div class="ad ad-inline">
+          <div class="ad-tag">Advertisement</div>
+          <div class="ad-size">300 &times; 250 &mdash; rail unit, moved inline below 1200 px</div>
+        </div>
+
+        <div class="prose">
+
+          <h2>What writing to the cache costs</h2>
+          <p>A cheap hit can come with a charge for creating the cache, or for keeping it.</p>
+          <div class="def"><p><span class="term">Cache write</span> — the first request that stores a prompt's opening. Anthropic bills it at 1.25 times the input price for a 5-minute cache and 2 times for a 1-hour cache.<sup><a href="#s2">2</a></sup></p></div>
+          <p>Three of the seven charge to write or to store. The other four name no such fee on the pages read.</p>
+        </div>
+
+        <div class="tablewrap">
+          <table>
+            <caption>Charges for creating and keeping a cache, 13 Sep 2026</caption>
+            <thead><tr><th>Vendor</th><th>Write fee</th><th>Storage fee</th><th>Src</th></tr></thead>
+            <tbody>
+              <tr><td class="name">Anthropic</td><td class="no">1.25x input for 5 minutes, 2x input for 1 hour</td><td class="quiet">None listed</td><td class="quiet"><a href="#s1">[1]</a><a href="#s2">[2]</a></td></tr>
+              <tr><td class="name">Google</td><td class="quiet">Not stated on the pages read</td><td class="no">$4.50 per 1M tokens per hour on 3.1 Pro, $0.50 on 3.8 Flash</td><td class="quiet"><a href="#s3">[3]</a></td></tr>
+              <tr><td class="name">Alibaba</td><td>125% of input on an explicit cache. None on the implicit cache.</td><td class="quiet">None listed</td><td class="quiet"><a href="#s12">[12]</a></td></tr>
+              <tr><td class="name">DeepSeek</td><td class="best">None listed</td><td class="best">None listed</td><td class="quiet"><a href="#s5">[5]</a><a href="#s6">[6]</a></td></tr>
+              <tr><td class="name">Moonshot</td><td class="best">None listed</td><td class="best">None listed</td><td class="quiet"><a href="#s9">[9]</a><a href="#s10">[10]</a></td></tr>
+              <tr><td class="name">Mistral</td><td class="best">None listed</td><td class="best">None listed</td><td class="quiet"><a href="#s13">[13]</a><a href="#s14">[14]</a></td></tr>
+              <tr><td class="name">xAI</td><td class="best">None listed</td><td class="best">None listed</td><td class="quiet"><a href="#s7">[7]</a><a href="#s15">[15]</a></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="tablenote">NONE LISTED MEANS THE VENDOR'S PRICING AND CACHING PAGES NAME NO SUCH FEE. IT IS NOT A WRITTEN PROMISE THAT NONE EXISTS. GOOGLE'S STORAGE FEE RUNS FOR EVERY HOUR THE CACHE IS KEPT. <strong>ANTHROPIC SAYS A 5-MINUTE WRITE PAYS FOR ITSELF AFTER ONE READ, A 1-HOUR WRITE AFTER TWO.</strong></p>
+
+        <div class="prose">
+
+          <h2>Whether it switches on by itself</h2>
+          <p>Some vendors cache every request. Others cache only when the request asks for it.</p>
+          <p>Four switch on by themselves.<sup><a href="#s4">4</a></sup><sup><a href="#s6">6</a></sup><sup><a href="#s10">10</a></sup><sup><a href="#s15">15</a></sup> Anthropic and Mistral need a field in the request, and Alibaba offers both kinds.<sup><a href="#s2">2</a></sup><sup><a href="#s14">14</a></sup><sup><a href="#s12">12</a></sup></p>
+        </div>
+
+        <div class="tablewrap">
+          <table>
+            <caption>How caching turns on, the shortest prompt it caches, and how long a cache lives</caption>
+            <thead><tr><th>Vendor</th><th>Turns on</th><th>Minimum prompt</th><th>Cache lifetime</th><th>Src</th></tr></thead>
+            <tbody>
+              <tr><td class="name">Anthropic</td><td><span class="mono" style="font-size:13px">cache_control</span> field in the request</td><td class="num">512 tokens on Fable 5.1 and Opus 5, 1,024 on Sonnet 5</td><td class="best">5 minutes, or 1 hour at a higher write price</td><td class="quiet"><a href="#s2">[2]</a></td></tr>
+              <tr><td class="name">Google</td><td class="best">Automatic on Gemini 2.5 and newer</td><td class="num">4,096 tokens on 3.5 to 3.8 Flash</td><td class="quiet">Not stated</td><td class="quiet"><a href="#s4">[4]</a></td></tr>
+              <tr><td class="name">DeepSeek</td><td class="best">Automatic, on by default</td><td class="quiet">Not stated</td><td>Cleared a few hours to a few days after last use</td><td class="quiet"><a href="#s6">[6]</a></td></tr>
+              <tr><td class="name">Moonshot</td><td class="best">Automatic</td><td class="num">Previous prompt over 256 tokens</td><td class="quiet">Managed by the system, no figure</td><td class="quiet"><a href="#s10">[10]</a></td></tr>
+              <tr><td class="name">xAI</td><td class="best">Automatic</td><td class="quiet">Not stated</td><td>Can be evicted under memory pressure. Hits are not guaranteed.</td><td class="quiet"><a href="#s15">[15]</a><a href="#s16">[16]</a></td></tr>
+              <tr><td class="name">Alibaba</td><td>Implicit is automatic. Explicit is created on request.</td><td class="num">1,024 tokens</td><td>Explicit 5 minutes, reset on each hit. Implicit not fixed.</td><td class="quiet"><a href="#s12">[12]</a></td></tr>
+              <tr><td class="name">Mistral</td><td><span class="mono" style="font-size:13px">prompt_cache_key</span> field in the request</td><td class="num best">64 tokens</td><td class="quiet">Not stated</td><td class="quiet"><a href="#s14">[14]</a></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="tablenote">A HIT IS NEVER GUARANTEED ON THE AUTOMATIC SYSTEMS; ALIBABA AND XAI SAY SO OUTRIGHT. ON ANTHROPIC, A CACHE THAT EXPIRES BEFORE THE NEXT REQUEST MEANS THE WRITE PREMIUM BOUGHT NOTHING. MISTRAL CACHES IN 64-TOKEN BLOCKS.</p>
+
+        <div class="prose">
+
+          <h2>Prices with a clock or a date</h2>
+          <p>Two vendors change the price by time. DeepSeek halves its rates outside peak hours, and Google doubles Gemini 3.8 Flash from the start of 2027.<sup><a href="#s5">5</a></sup><sup><a href="#s3">3</a></sup></p>
+          <div class="def"><p><span class="term">Off-peak pricing</span> — a lower rate for requests sent outside set hours. DeepSeek's peak hours are 01:00 to 04:00 and 06:00 to 10:00 UTC, Monday to Friday. Every other hour bills at half.<sup><a href="#s5">5</a></sup></p></div>
+          <p>The cache rate moves with the base rate, so the share stays the same in every row.</p>
+        </div>
+
+        <div class="tablewrap">
+          <table>
+            <caption>Prices that depend on the hour or the date, USD per million tokens, 13 Sep 2026</caption>
+            <thead><tr><th>Model and period</th><th>Cache hit</th><th>Full input</th><th>Output</th><th>Src</th></tr></thead>
+            <tbody>
+              <tr><td class="name">deepseek-flash, off-peak</td><td class="num best">$0.003</td><td class="num best">$0.15</td><td class="num best">$0.60</td><td class="quiet"><a href="#s5">[5]</a></td></tr>
+              <tr><td class="name">deepseek-flash, peak</td><td class="num">$0.006</td><td class="num">$0.30</td><td class="num">$1.20</td><td class="quiet"><a href="#s5">[5]</a></td></tr>
+              <tr><td class="name">deepseek-v4-pro, off-peak</td><td class="num">$0.022</td><td class="num">$0.66</td><td class="num">$1.98</td><td class="quiet"><a href="#s5">[5]</a></td></tr>
+              <tr><td class="name">deepseek-v4-pro, peak</td><td class="num">$0.044</td><td class="num">$1.32</td><td class="num">$3.96</td><td class="quiet"><a href="#s5">[5]</a></td></tr>
+              <tr><td class="name">Gemini 3.8 Flash, to 31 Dec 2026</td><td class="num">$0.075</td><td class="num">$0.75</td><td class="num">$3.75</td><td class="quiet"><a href="#s3">[3]</a></td></tr>
+              <tr><td class="name">Gemini 3.8 Flash, from 1 Jan 2027</td><td class="num no">$0.15</td><td class="num no">$1.50</td><td class="num no">$7.50</td><td class="quiet"><a href="#s3">[3]</a></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="tablenote">TWO PAGES: THE DEEPSEEK ROWS COME FROM DEEPSEEK'S PRICING PAGE, THE GEMINI ROWS FROM GOOGLE'S. GEMINI 3.8 FLASH CACHE STORAGE ALSO DOUBLES ON 1 JAN 2027, TO $1.00 PER 1M TOKENS PER HOUR. DEEPSEEK STATES THAT V4 PRO KEEPS RUNNING PAST 14 SEP 2026 WITH BILLING UNCHANGED.</p>
+
+        <div class="prose">
+
+          <h2>Batch discounts</h2>
+          <p>A batch request trades speed for price. You submit the job and collect the answers later.</p>
+          <div class="def"><p><span class="term">Batch API</span> — an endpoint that queues requests and returns the results later, at a lower rate. Anthropic's takes 50% off both input and output tokens.<sup><a href="#s1">1</a></sup></p></div>
+          <p>Half price is the common rate. Grok 4.6 gets no batch discount, and DeepSeek lists none.<sup><a href="#s8">8</a></sup><sup><a href="#s5">5</a></sup></p>
+        </div>
+
+        <div class="tablewrap">
+          <table>
+            <caption>Batch discount on each vendor's pricing page, 13 Sep 2026</caption>
+            <thead><tr><th>Vendor</th><th>Batch discount</th><th>Combines with caching</th><th>Src</th></tr></thead>
+            <tbody>
+              <tr><td class="name">Anthropic</td><td class="best">50% on input and output</td><td class="best">Yes, stated</td><td class="quiet"><a href="#s1">[1]</a></td></tr>
+              <tr><td class="name">Google</td><td class="best">50% on 3.1 Pro and 3.8 Flash</td><td class="quiet">Not stated</td><td class="quiet"><a href="#s3">[3]</a></td></tr>
+              <tr><td class="name">Alibaba</td><td class="best">50% where the model supports it</td><td class="quiet">Not stated</td><td class="quiet"><a href="#s11">[11]</a></td></tr>
+              <tr><td class="name">Mistral</td><td class="best">50%</td><td class="quiet">Not stated</td><td class="quiet"><a href="#s13">[13]</a></td></tr>
+              <tr><td class="name">xAI</td><td class="no">None on Grok 4.6. 20% on grok-4.3 and some grok-4.20 variants.</td><td>Yes on eligible models, cached tokens included</td><td class="quiet"><a href="#s8">[8]</a></td></tr>
+              <tr><td class="name">DeepSeek</td><td class="no">None listed</td><td class="quiet">&mdash;</td><td class="quiet"><a href="#s5">[5]</a></td></tr>
+              <tr><td class="name">Moonshot</td><td class="quiet">Not stated on the pricing page</td><td class="quiet">Not stated</td><td class="quiet"><a href="#s9">[9]</a></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="tablenote">ANTHROPIC STATES THAT ITS CACHE MULTIPLIERS STACK WITH THE BATCH DISCOUNT. XAI STATES THAT ITS BATCH DISCOUNT COVERS CACHED TOKENS ON ELIGIBLE MODELS. THE OTHERS DO NOT SAY EITHER WAY.</p>
+
+        <div class="prose">
+
+          <h2>Long prompts cost more to cache</h2>
+          <p>Two vendors raise every rate once a prompt passes 200,000 tokens, the cached rate included.<sup><a href="#s3">3</a></sup><sup><a href="#s7">7</a></sup></p>
+          <p>Anthropic keeps one rate across the full window of its current models.<sup><a href="#s1">1</a></sup></p>
+        </div>
+
+        <div class="tablewrap">
+          <table>
+            <caption>Cached and full input below and above 200K prompt tokens, USD per million tokens</caption>
+            <thead><tr><th>Model</th><th>Cache hit, short prompt</th><th>Cache hit, over 200K</th><th>Full input, over 200K</th><th>Src</th></tr></thead>
+            <tbody>
+              <tr><td class="name">Grok 4.6</td><td class="num">$0.50</td><td class="num no">$1.00</td><td class="num">$4.00</td><td class="quiet"><a href="#s7">[7]</a></td></tr>
+              <tr><td class="name">Gemini 3.1 Pro Preview</td><td class="num">$0.20</td><td class="num no">$0.40</td><td class="num">$4.00</td><td class="quiet"><a href="#s3">[3]</a></td></tr>
+              <tr><td class="name">Claude Fable 5.1</td><td class="num">$0.25</td><td class="num best">$0.25</td><td class="num">$10.00</td><td class="quiet"><a href="#s1">[1]</a></td></tr>
+              <tr><td class="name">Claude Opus 5</td><td class="num">$0.50</td><td class="num best">$0.50</td><td class="num">$5.00</td><td class="quiet"><a href="#s1">[1]</a></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="tablenote">XAI BILLS THE WHOLE REQUEST AT THE HIGHER RATE ONCE IT REACHES 200K, NOT ONLY THE TOKENS ABOVE IT. GROK 4.6 HOLDS 500K TOKENS. ANTHROPIC BILLS THE FULL 1M WINDOW OF CLAUDE 4.6 AND LATER AT STANDARD RATES.</p>
+
+        <div class="prose">
+
+          <h2>Which one to pick</h2>
+          <p>There is no single cheapest cache. The right one depends on how often your prompt repeats and how long you can wait.</p>
+        </div>
+
+        <div class="tablewrap">
+          <table>
+            <caption>Recommendation by use case</caption>
+            <thead><tr><th>If you</th><th>Pick</th><th>Why</th></tr></thead>
+            <tbody>
+              <tr><td class="name">Resend a long prompt on every call</td><td class="best">DeepSeek deepseek-flash</td><td>Cache hits bill at 2% of input, $0.003 per million off-peak, with no write fee listed.</td></tr>
+              <tr><td class="name">Want the cheapest cache on a frontier model</td><td class="best">Claude Fable 5.1</td><td>Hits bill at 0.025x input, a quarter of the rate on other Claude models.</td></tr>
+              <tr><td class="name">Need a cache that lives a known time</td><td class="best">Anthropic, or Alibaba's explicit cache</td><td>Fixed lifetimes of 5 minutes or 1 hour, and a stated minimum prompt.</td></tr>
+              <tr><td class="name">Can wait for the answer</td><td class="best">Batch on Anthropic, Google, Alibaba or Mistral</td><td>Half price. On Anthropic the cache discount stacks on top.</td></tr>
+              <tr><td class="name">Run Grok 4.6 on long prompts</td><td class="no">Reconsider</td><td>The cached rate doubles past 200K tokens, and Grok 4.6 has no batch discount.</td></tr>
+              <tr><td class="name">Budget Gemini 3.8 Flash into 2027</td><td class="no">Plan for double</td><td>Input, output, cache and storage prices all double on 1 January 2027.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="tablenote">EVERY FIGURE HERE APPEARS WITH ITS SOURCE EARLIER IN THE ARTICLE.</p>
+
+        <div class="sources" id="sources">
+          <h2>Sources</h2>
+          <div class="sources-note">ALL PAGES READ ON 13 SEPTEMBER 2026. NOTHING HERE WAS TESTED BY US. EVERY PRICE IS THE VENDOR'S OWN LIST PRICE IN USD, READ FROM ITS OWN PAGE. OPENAI'S PRICE PAGES RETURNED HTTP 403 AND ARE NOT CITED.</div>
+          <ol>
+            <li id="s1"><a href="https://platform.claude.com/docs/en/about-claude/pricing" rel="nofollow noopener" target="_blank">Claude API, Pricing</a>: base input, 5-minute and 1-hour cache writes, cache hits and output for Fable 5.1, Opus 5 and Sonnet 5; the 0.025x hit rate on Fable 5.1; the 50% Batch API discount and that cache multipliers stack with it; standard pricing across the 1M window; about 4 characters per token.<span class="pub">ANTHROPIC &middot; VENDOR DOCUMENTATION</span></li>
+            <li id="s2"><a href="https://platform.claude.com/docs/en/build-with-claude/prompt-caching" rel="nofollow noopener" target="_blank">Claude API, Prompt caching</a>: 5-minute and 1-hour lifetimes, the 1.25x and 2x write multipliers, the 0.1x read multiplier, the cache_control field, and minimum cacheable prompts per model.<span class="pub">ANTHROPIC &middot; VENDOR DOCUMENTATION</span></li>
+            <li id="s3"><a href="https://ai.google.dev/gemini-api/docs/pricing" rel="nofollow noopener" target="_blank">Gemini API, Pricing</a>: input, output, context caching and storage prices for Gemini 3.1 Pro Preview and Gemini 3.8 Flash, the 200K step, batch rates, and the 3.8 Flash increase on 1 January 2027.<span class="pub">GOOGLE &middot; VENDOR DOCUMENTATION</span></li>
+            <li id="s4"><a href="https://ai.google.dev/gemini-api/docs/caching" rel="nofollow noopener" target="_blank">Gemini API, Context caching</a>: implicit caching on by default for Gemini 2.5 and newer, and the 4,096-token minimum on 3.5 to 3.8 Flash.<span class="pub">GOOGLE &middot; VENDOR DOCUMENTATION</span></li>
+            <li id="s5"><a href="https://api-docs.deepseek.com/quick_start/pricing" rel="nofollow noopener" target="_blank">DeepSeek API, Models and pricing</a>: cache-hit, cache-miss and output prices for deepseek-flash and deepseek-v4-pro at peak and off-peak, the peak hours, and the V4 Pro billing note.<span class="pub">DEEPSEEK &middot; VENDOR DOCUMENTATION</span></li>
+            <li id="s6"><a href="https://api-docs.deepseek.com/guides/kv_cache" rel="nofollow noopener" target="_blank">DeepSeek API, Context caching</a>: caching on disk enabled by default for all users, and unused caches cleared within a few hours to a few days.<span class="pub">DEEPSEEK &middot; VENDOR DOCUMENTATION</span></li>
+            <li id="s7"><a href="https://docs.x.ai/docs/models" rel="nofollow noopener" target="_blank">xAI, Models and pricing</a>: Grok 4.6 input, cached input and output below and above 200K prompt tokens, the whole-request rule, and the 500K context window.<span class="pub">XAI &middot; VENDOR DOCUMENTATION</span></li>
+            <li id="s8"><a href="https://docs.x.ai/developers/pricing" rel="nofollow noopener" target="_blank">xAI, API pricing</a>: Batch API discount of 20% on grok-4.3 and some grok-4.20 variants, none on Grok 4.6, and that the discount covers cached tokens.<span class="pub">XAI &middot; VENDOR DOCUMENTATION</span></li>
+            <li id="s9"><a href="https://platform.kimi.ai/docs/pricing/chat" rel="nofollow noopener" target="_blank">Kimi API, Chat model pricing</a>: Kimi K3 cache-hit input, cache-miss input and output prices, and the context window.<span class="pub">MOONSHOT AI &middot; VENDOR DOCUMENTATION</span></li>
+            <li id="s10"><a href="https://platform.kimi.ai/docs/guide/use-context-caching-feature-of-kimi-api" rel="nofollow noopener" target="_blank">Kimi API, Context caching</a>: fully automatic caching, a hit only after a previous prompt over 256 tokens, and a lifecycle managed by the system.<span class="pub">MOONSHOT AI &middot; VENDOR DOCUMENTATION</span></li>
+            <li id="s11"><a href="https://www.alibabacloud.com/help/en/model-studio/model-pricing" rel="nofollow noopener" target="_blank">Alibaba Cloud Model Studio, Model pricing</a>: Qwen3.8-Max input and output in the Singapore deployment, explicit cache creation at 125% and hits at 10%, and the 50% batch discount.<span class="pub">ALIBABA CLOUD &middot; VENDOR DOCUMENTATION</span></li>
+            <li id="s12"><a href="https://www.alibabacloud.com/help/en/model-studio/context-cache" rel="nofollow noopener" target="_blank">Alibaba Cloud Model Studio, Context cache</a>: implicit and explicit modes, hit rates of typically 20% and 10%, the 5-minute explicit lifetime that resets on a hit, the 1,024-token minimum, and Qwen3.8-Max support.<span class="pub">ALIBABA CLOUD &middot; VENDOR DOCUMENTATION</span></li>
+            <li id="s13"><a href="https://mistral.ai/pricing/api/" rel="nofollow noopener" target="_blank">Mistral AI, API pricing</a>: Mistral Large 3 input and output, batch at half price, and cached input tokens at 90% off.<span class="pub">MISTRAL AI &middot; PRICING PAGE</span></li>
+            <li id="s14"><a href="https://docs.mistral.ai/studio-api/conversations/advanced/prompt-caching" rel="nofollow noopener" target="_blank">Mistral Docs, Prompt caching</a>: cached tokens billed at 10% of input, the prompt_cache_key field, and 64-token cache blocks.<span class="pub">MISTRAL AI &middot; VENDOR DOCUMENTATION</span></li>
+            <li id="s15"><a href="https://docs.x.ai/developers/advanced-api-usage/prompt-caching" rel="nofollow noopener" target="_blank">xAI, Prompt caching</a>: the statement that the xAI API performs prompt caching automatically.<span class="pub">XAI &middot; VENDOR DOCUMENTATION</span></li>
+            <li id="s16"><a href="https://docs.x.ai/developers/advanced-api-usage/prompt-caching/how-it-works" rel="nofollow noopener" target="_blank">xAI, How prompt caching works</a>: caching is not guaranteed, and entries can be evicted under memory pressure.<span class="pub">XAI &middot; VENDOR DOCUMENTATION</span></li>
+          </ol>
+        </div>
+
+        <div class="corrections">
+          FOUND AN ERROR? CACHE PRICES CHANGE WITHOUT NOTICE, AND SOME CHANGE BY THE HOUR OR THE DATE. THE FIGURES HERE ARE THE LIST PRICES EACH VENDOR SHOWED ON 13 SEPTEMBER 2026.
+          MAIL <a href="mailto:contact@learnthespec.com">CONTACT@LEARNTHESPEC.COM</a> AND WE WILL CHECK IT AGAINST THE SOURCE.
+          CORRECTIONS ARE MADE IN PLACE AND NOTED HERE WITH THE DATE.
+        </div>
+
+        <div class="signup">
+          <div class="signup-title">Get the week's AI news in your inbox</div>
+          <div class="signup-sub">Everything that actually changed, in one email, every source linked.</div>
+          <form class="field-row" id="subscribe" novalidate>
+            <input class="field" type="email" name="email" required autocomplete="email"
+                   placeholder="you@example.com" aria-label="Email address">
+            <button class="field-btn" type="submit">SUBSCRIBE</button>
+            <span style="position:absolute;left:-9999px" aria-hidden="true">
+              <input type="text" name="company" tabindex="-1" autocomplete="off">
+            </span>
+          </form>
+          <div class="fineprint" id="sub-status" role="status" aria-live="polite">A confirmation link arrives first — click it to finish. One click to leave, any time.</div>
+        </div>
+
+        <div class="readnext">
+          <div class="readnext-label">Read next</div>
+          <div class="rn">
+            <div class="rn-chip">PUBLISHED</div>
+            <div>
+              <div class="rn-title"><a href="/articles/subscription-or-api-september-2026/">Subscription or API: Which Is Cheaper, September 2026</a></div>
+              <div class="rn-sub">What the same money buys on a plan against the list prices before any cache discount.</div>
+            </div>
+          </div>
+          <div class="rn">
+            <div class="rn-chip">PUBLISHED</div>
+            <div>
+              <div class="rn-title"><a href="/articles/rate-limits-compared-september-2026/">Rate Limits and Usage Caps, Compared, September 2026</a></div>
+              <div class="rn-sub">Cached input also stops counting toward some API limits. The per-minute caps, vendor by vendor.</div>
+            </div>
+          </div>
+          <div class="rn">
+            <div class="rn-chip">PUBLISHED</div>
+            <div>
+              <div class="rn-title"><a href="/articles/token-efficiency-compared-september-2026/">Token Efficiency, Compared, September 2026</a></div>
+              <div class="rn-sub">The output side of the bill: how many tokens each model spends to finish the same work.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="foot">
+          <div>LEARNTHESPEC.COM — AI NEWS AND COMPARISONS, MUNICH</div>
+          <div><a href="/impressum/" style="color:#5C6473">IMPRESSUM</a> &middot; <a href="/privacy/" style="color:#5C6473">PRIVACY</a> &middot; <a href="/contact/" style="color:#5C6473">CONTACT</a></div>
+        </div>
+
+      </div>
+
+      <div class="rail">
+        <div class="ad" style="height: 600px;">
+          <div class="ad-tag">Advertisement</div>
+          <div class="ad-size">300 &times; 600</div>
+          <div class="ad-note">Half-page. Scrolls with the page — not sticky, so it never sits under the menu button.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="anchor" id="anchor">
+    <div class="ad-tag">Advertisement</div>
+    <div class="ad-size">970 &times; 50 anchor — dismissible</div>
+    <div class="anchor-close" id="anchor-close">&#10005;</div>
+  </div>
+
+</div>
+
+<script>
+(function () {
+  var close = document.getElementById('anchor-close');
+  var anchor = document.getElementById('anchor');
+  if (close && anchor) {
+    close.addEventListener('click', function () { anchor.classList.add('gone'); });
+  }
+
+  var form = document.getElementById('subscribe');
+  if (!form) return;
+  var status = document.getElementById('sub-status');
+  var btn = form.querySelector('button');
+  var idle = status.textContent;
+  form.addEventListener('submit', async function (e) {
+    e.preventDefault();
+    btn.disabled = true;
+    status.textContent = 'Sending...';
+    try {
+      var res = await fetch('/api/subscribe', { method: 'POST', body: new FormData(form) });
+      var data = await res.json();
+      status.textContent = data.message || (data.ok ? 'Done.' : 'Something went wrong.');
+      if (data.ok) form.reset();
+    } catch (err) {
+      status.textContent = 'Network problem - try again.';
+    } finally {
+      btn.disabled = false;
+      setTimeout(function () { status.textContent = idle; }, 9000);
+    }
+  });
+})();
+</script>
+
+</body>
+</html>
