@@ -5,7 +5,7 @@
 
   var ARTICLES = [
     { d: "04 SEP", u: "/articles/best-ai-model-september-2026/", t: "Best AI Model, September 2026",
-      s: "Seven flagships on intelligence, price, cost per finished task, token efficiency, speed and context.", c: "13 SOURCES" },
+      s: "Seven flagships on intelligence, price, cost per finished task, token efficiency, speed and context.", c: "17 SOURCES" },
     { d: "04 SEP", u: "/articles/best-ai-for-coding-september-2026/", t: "Best AI for Coding, September 2026",
       s: "SWE-bench Verified and Terminal-Bench 4.0 against cost per task, and why the two disagree.", c: "16 SOURCES" },
     { d: "04 SEP", u: "/articles/what-ai-chatbots-can-do-september-2026/", t: "What AI Chatbots Can Actually Do, September 2026",
@@ -13,7 +13,7 @@
     { d: "04 SEP", u: "/articles/what-ai-can-do-when-coding-september-2026/", t: "What AI Can Actually Do When You Code, September 2026",
       s: "Multi-file edits, running tests, pull requests, parallel agents, cloud work, AGENTS.md, MCP, browser control and sandboxing across five coding tools.", c: "12 SOURCES" },
     { d: "04 SEP", u: "/articles/what-open-weights-mean-september-2026/", t: "What Open Weights Actually Mean, September 2026",
-      s: "Open weights versus open source, the OSI definition, licences per model, download sizes, quantisation and self-hosting.", c: "10 SOURCES" },
+      s: "Open weights versus open source, the OSI definition, licences per model, download sizes, quantisation and self-hosting.", c: "11 SOURCES" },
     { d: "04 SEP", u: "/articles/best-open-weight-model-september-2026/", t: "Best Open-Weight Model, September 2026",
       s: "Kimi K3, GLM-5.3, Qwen3.8, DeepSeek V4 Pro, MiniMax-M3 and gpt-oss ranked on Intelligence Index v4.2, cost per task, speed and licence.", c: "11 SOURCES" },
     { d: "04 SEP", u: "/articles/best-free-ai-september-2026/", t: "Best Free AI, September 2026",
@@ -21,7 +21,7 @@
     { d: "04 SEP", u: "/articles/subscription-or-api-september-2026/", t: "Subscription or API: Which Is Cheaper, September 2026",
       s: "What twenty euros buys on a plan against what it buys in tokens: output pages, finished tasks, and why no exact break-even exists.", c: "10 SOURCES" },
     { d: "04 SEP", u: "/articles/what-hardware-runs-which-local-model-september-2026/", t: "What Hardware Runs Which Local Model, September 2026",
-      s: "Quantisation sizes for Qwen3 and gpt-oss against RTX 50 series VRAM and Apple unified memory. Which model fits which machine.", c: "9 SOURCES" },
+      s: "Quantisation sizes for Qwen3 and gpt-oss against RTX 50 series VRAM and Apple unified memory. Which model fits which machine.", c: "10 SOURCES" },
     { d: "04 SEP", u: "/articles/best-ai-for-images-september-2026/", t: "Best AI for Images, September 2026",
       s: "GPT Image 2, Nano Banana, MAI-Image, FLUX and Ideogram ranked by blind vote Elo, with published per-image prices.", c: "8 SOURCES" },
     { d: "04 SEP", u: "/articles/best-ai-for-video-september-2026/", t: "Best AI for Video, September 2026",
