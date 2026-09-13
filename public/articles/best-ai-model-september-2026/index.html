@@ -263,8 +263,8 @@
 
           <h2>Price per million tokens</h2>
           <p>Every vendor bills the same way. You pay per token, and input and output are priced separately.</p>
-          <div class="def"><p><span class="term">Token</span> — the unit of text a model reads and writes. One token runs about three to four English characters.<sup><a href="#s14">14</a></sup> <span class="term">Input tokens</span> are what you send. <span class="term">Output tokens</span> are what the model returns. Output always costs more, between two and five times more across this table.</p></div>
-          <p>The spread is wide. GPT-6 Astra output costs twenty times what DeepSeek charges.</p>
+          <div class="def"><p><span class="term">Token</span> — the unit of text a model reads and writes. One token runs about three to four English characters.<sup><a href="#s14">14</a></sup> <span class="term">Input tokens</span> are what you send. <span class="term">Output tokens</span> are what the model returns. Output always costs more, between three and six times more across this table.</p></div>
+          <p>The spread is wide. GPT-6 Astra output costs over twelve times DeepSeek's peak rate, and over twenty-five times its off-peak rate.</p>
         </div>
 
         <div class="tablewrap">
@@ -326,11 +326,11 @@
             <caption>Output tokens generated to complete the Intelligence Index</caption>
             <thead><tr><th>Model</th><th>Output tokens</th><th></th><th>Verdict</th><th>Src</th></tr></thead>
             <tbody>
-              <tr><td class="name">GPT-6 Astra (max)</td><td class="num best">49M</td><td><span class="bar g" style="width:30%"></span></td><td>Fairly concise</td><td class="quiet"><a href="#s4">[4]</a></td></tr>
-              <tr><td class="name">Grok 4.6 (high)</td><td class="num">79M</td><td><span class="bar" style="width:51%"></span></td><td>Somewhat verbose</td><td class="quiet"><a href="#s5">[5]</a></td></tr>
-              <tr><td class="name">Claude Opus 5 (max)</td><td class="num">120M</td><td><span class="bar" style="width:71%"></span></td><td>Above average</td><td class="quiet"><a href="#s8">[8]</a></td></tr>
-              <tr><td class="name">DeepSeek V4 Pro (max)</td><td class="num">130M</td><td><span class="bar" style="width:93%"></span></td><td>Somewhat verbose</td><td class="quiet"><a href="#s7">[7]</a></td></tr>
-              <tr><td class="name">Kimi K3 (max)</td><td class="num">130M</td><td><span class="bar" style="width:93%"></span></td><td>Somewhat verbose</td><td class="quiet"><a href="#s6">[6]</a></td></tr>
+              <tr><td class="name">GPT-6 Astra (max)</td><td class="num best">49M</td><td><span class="bar g" style="width:31%"></span></td><td>Fairly concise</td><td class="quiet"><a href="#s4">[4]</a></td></tr>
+              <tr><td class="name">Grok 4.6 (high)</td><td class="num">79M</td><td><span class="bar" style="width:49%"></span></td><td>Somewhat verbose</td><td class="quiet"><a href="#s5">[5]</a></td></tr>
+              <tr><td class="name">Claude Opus 5 (max)</td><td class="num">120M</td><td><span class="bar" style="width:75%"></span></td><td>Above average</td><td class="quiet"><a href="#s8">[8]</a></td></tr>
+              <tr><td class="name">DeepSeek V4 Pro (max)</td><td class="num">130M</td><td><span class="bar" style="width:81%"></span></td><td>Somewhat verbose</td><td class="quiet"><a href="#s7">[7]</a></td></tr>
+              <tr><td class="name">Kimi K3 (max)</td><td class="num">130M</td><td><span class="bar" style="width:81%"></span></td><td>Somewhat verbose</td><td class="quiet"><a href="#s6">[6]</a></td></tr>
               <tr><td class="name">Claude Fable 5.1 (max)</td><td class="num">160M</td><td><span class="bar" style="width:100%"></span></td><td>Very verbose</td><td class="quiet"><a href="#s3">[3]</a></td></tr>
             </tbody>
           </table>
@@ -389,7 +389,7 @@
           <h2>Open weights</h2>
           <p>Two of the seven let you download the model and run it yourself. That changes the cost structure and removes the vendor from the loop entirely.</p>
           <div class="def"><p><span class="term">Open weights</span> — the trained model file is published, so you can run it on your own hardware. No API fee, no rate limit, no data leaving your network. You pay for the machine instead.</p></div>
-          <p>Kimi K3 and DeepSeek V4 Pro both publish weights on Hugging Face, DeepSeek under the MIT licence.<sup><a href="#s6">6</a></sup><sup><a href="#s7">7</a></sup> Kimi K3 scores 60, five points off the overall leader. That is the highest score available to anyone willing to host it themselves.</p>
+          <p>Kimi K3 and DeepSeek V4 Pro both publish weights on Hugging Face, DeepSeek under the MIT licence.<sup><a href="#s6">6</a></sup><sup><a href="#s7">7</a></sup> Kimi K3 scores seven points below the overall leader. That is still the highest score available to anyone willing to host it themselves.</p>
 
           <h2>Which one to pick</h2>
           <p>There is no single winner. The right model depends on what you are optimising for.</p>
@@ -417,12 +417,12 @@
           <ol>
             <li id="s1"><a href="https://artificialanalysis.ai/evaluations/artificial-analysis-intelligence-index" rel="nofollow noopener" target="_blank">Artificial Analysis Intelligence Index v4.2</a>: the ten component benchmarks and how they are weighted.<span class="pub">ARTIFICIAL ANALYSIS · INDEPENDENT BENCHMARKER · METHODOLOGY</span></li>
             <li id="s2"><a href="https://artificialanalysis.ai/leaderboards/models" rel="nofollow noopener" target="_blank">Artificial Analysis model leaderboard</a>: index scores and cost per task for all models.<span class="pub">ARTIFICIAL ANALYSIS · LEADERBOARD</span></li>
-            <li id="s3"><a href="https://artificialanalysis.ai/models/claude-fable-5-1" rel="nofollow noopener" target="_blank">Claude Fable 5.1 model page</a>: index 66, $8,523.16 to run, 140M output tokens, 66.4 t/s, 1M context.<span class="pub">ARTIFICIAL ANALYSIS · MODEL PAGE</span></li>
-            <li id="s4"><a href="https://artificialanalysis.ai/models/gpt-6-astra" rel="nofollow noopener" target="_blank">GPT-6 Astra model page</a>: index 61, $3,020.82 to run, 42M output tokens, 1M context.<span class="pub">ARTIFICIAL ANALYSIS · MODEL PAGE</span></li>
-            <li id="s5"><a href="https://artificialanalysis.ai/models/grok-4-6" rel="nofollow noopener" target="_blank">Grok 4.6 model page</a>: index 61, $1,157.64 to run, 72M output tokens, 64.9 t/s, 500K context.<span class="pub">ARTIFICIAL ANALYSIS · MODEL PAGE</span></li>
-            <li id="s6"><a href="https://artificialanalysis.ai/models/kimi-k3" rel="nofollow noopener" target="_blank">Kimi K3 model page</a>: index 60, $2,425.11 to run, 130M output tokens, 39.2 t/s, 1M context, open weights.<span class="pub">ARTIFICIAL ANALYSIS · MODEL PAGE</span></li>
-            <li id="s7"><a href="https://artificialanalysis.ai/models/deepseek-v4-pro" rel="nofollow noopener" target="_blank">DeepSeek V4 Pro model page</a>: index 53, $616.95 to run, 130M output tokens, 60.2 t/s, MIT licence.<span class="pub">ARTIFICIAL ANALYSIS · MODEL PAGE</span></li>
-            <li id="s8"><a href="https://artificialanalysis.ai/models/claude-opus-5" rel="nofollow noopener" target="_blank">Claude Opus 5 model page</a>: index 63, $3,836.05 to run, 100M output tokens, 57.1 t/s.<span class="pub">ARTIFICIAL ANALYSIS · MODEL PAGE</span></li>
+            <li id="s3"><a href="https://artificialanalysis.ai/models/claude-fable-5-1" rel="nofollow noopener" target="_blank">Claude Fable 5.1 model page</a>: index 57 (v4.2), $8,523.16 to run, 160M output tokens, output speed, 1M context.<span class="pub">ARTIFICIAL ANALYSIS · MODEL PAGE</span></li>
+            <li id="s4"><a href="https://artificialanalysis.ai/models/gpt-6-astra" rel="nofollow noopener" target="_blank">GPT-6 Astra model page</a>: index 55 (v4.2), $3,020.82 to run, 49M output tokens, output speed, 1M context.<span class="pub">ARTIFICIAL ANALYSIS · MODEL PAGE</span></li>
+            <li id="s5"><a href="https://artificialanalysis.ai/models/grok-4-6" rel="nofollow noopener" target="_blank">Grok 4.6 model page</a>: index 51 (v4.2), $1,157.64 to run, 79M output tokens, output speed, 500K context.<span class="pub">ARTIFICIAL ANALYSIS · MODEL PAGE</span></li>
+            <li id="s6"><a href="https://artificialanalysis.ai/models/kimi-k3" rel="nofollow noopener" target="_blank">Kimi K3 model page</a>: index 50 (v4.2), $3,069.54 to run, 130M output tokens, output speed, 1M context, open weights.<span class="pub">ARTIFICIAL ANALYSIS · MODEL PAGE</span></li>
+            <li id="s7"><a href="https://artificialanalysis.ai/models/deepseek-v4-pro" rel="nofollow noopener" target="_blank">DeepSeek V4 Pro model page</a>: index 42 (v4.2), $616.95 to run, 130M output tokens, output speed, MIT licence.<span class="pub">ARTIFICIAL ANALYSIS · MODEL PAGE</span></li>
+            <li id="s8"><a href="https://artificialanalysis.ai/models/claude-opus-5" rel="nofollow noopener" target="_blank">Claude Opus 5 model page</a>: index 54 (v4.2), $3,836.05 to run, 120M output tokens, output speed.<span class="pub">ARTIFICIAL ANALYSIS · MODEL PAGE</span></li>
             <li id="s9"><a href="https://claude.com/pricing" rel="nofollow noopener" target="_blank">Claude — Pricing</a>: API rates per million tokens.<span class="pub">ANTHROPIC · VENDOR PRICING PAGE</span></li>
             <li id="s10"><a href="https://developers.openai.com/api/docs/pricing" rel="nofollow noopener" target="_blank">OpenAI API — Pricing</a>: per-million-token rates and long-context tiers.<span class="pub">OPENAI · VENDOR DOCUMENTATION</span></li>
             <li id="s11"><a href="https://ai.google.dev/gemini-api/docs/pricing" rel="nofollow noopener" target="_blank">Gemini API — Pricing</a>: Gemini 3.1 Pro standard, batch and priority rates.<span class="pub">GOOGLE · VENDOR DOCUMENTATION</span></li>
@@ -440,6 +440,7 @@
           MAIL <a href="mailto:contact@learnthespec.com">CONTACT@LEARNTHESPEC.COM</a> AND WE WILL CHECK IT AGAINST THE SOURCE.
           CORRECTIONS ARE MADE IN PLACE AND NOTED HERE WITH THE DATE.
           <br><br><strong style="color:#E08876">CORRECTION, 4 SEPTEMBER 2026:</strong> ARTIFICIAL ANALYSIS MOVED THE INTELLIGENCE INDEX FROM v4.1.1 TO v4.2, ADDING A TENTH EVALUATION. EVERY INDEX SCORE AND COST-PER-TASK FIGURE ON THIS PAGE WAS UPDATED TO v4.2 ON THE DAY OF PUBLICATION. SCORES ARE NOT COMPARABLE ACROSS INDEX VERSIONS. THE RANKING OF GPT-6 ASTRA AND CLAUDE OPUS 5 SWAPPED AS A RESULT, AND GLM-5.3 ENTERED THE TABLE.
+          <br><br><strong style="color:#E08876">CORRECTION, 13 SEPTEMBER 2026:</strong> THE 4 SEPTEMBER UPDATE MISSED FIGURES OUTSIDE THE TABLES. THE OPEN WEIGHTS SECTION STILL GAVE KIMI K3 ITS v4.1.1 SCORE AND GAP TO THE LEADER. SOURCES 3 TO 8 STILL LISTED v4.1.1 INDEX SCORES AND OUTPUT-TOKEN COUNTS, AND SOURCE 6 AN OLDER KIMI K3 RUN COST. THE TOKEN-EFFICIENCY BARS WERE STILL SCALED TO THE OLD MAXIMUM. ALL NOW MATCH THE v4.2 TABLES ON THIS PAGE. THE PRICE SECTION ALSO MISSTATED TWO RATIOS FROM ITS OWN TABLE: OUTPUT COSTS THREE TO SIX TIMES INPUT, NOT TWO TO FIVE, AND GPT-6 ASTRA OUTPUT COSTS OVER TWELVE TIMES DEEPSEEK'S PEAK RATE AND OVER TWENTY-FIVE TIMES ITS OFF-PEAK RATE, NOT TWENTY TIMES. NO RANKING OR RECOMMENDATION CHANGED.
         </div>
 
         <div class="signup">
