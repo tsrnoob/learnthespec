@@ -45,7 +45,9 @@
     { d: "05 SEP", u: "/articles/ai-jargon-defined-september-2026/", t: "AI Jargon, Defined, September 2026",
       s: "Token, context window, reasoning tokens, Intelligence Index, arena Elo, quantisation, agent, MCP and prompt injection, each defined with the figure its own publisher states.", c: "12 SOURCES" },
     { d: "13 SEP", u: "/articles/prompt-caching-prices-compared-september-2026/", t: "Prompt Caching Prices, Compared, September 2026",
-      s: "Cached input, cache hit and cache write prices for Claude, Gemini, DeepSeek, Grok, Kimi, Qwen and Mistral, with minimum prompts, cache lifetimes, batch discounts and off-peak rates.", c: "16 SOURCES" }
+      s: "Cached input, cache hit and cache write prices for Claude, Gemini, DeepSeek, Grok, Kimi, Qwen and Mistral, with minimum prompts, cache lifetimes, batch discounts and off-peak rates.", c: "16 SOURCES" },
+    { d: "20 SEP", u: "/articles/voice-ai-prices-compared-september-2026/", t: "Voice AI Prices, Compared, September 2026",
+      s: "Voice AI API prices compared: speech to speech, text to speech and transcription rates from OpenAI gpt-live-1 and gpt-realtime, Google Gemini 3.8 Live, ElevenLabs, Deepgram, AssemblyAI and Cartesia, billed per minute of call, per million audio tokens, per hour of audio and per million characters.", c: "8 SOURCES" }
   ];
 
 
