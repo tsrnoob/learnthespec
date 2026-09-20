@@ -38,6 +38,12 @@
   // It looks like G-ABC1234XYZ.
   var MEASUREMENT_ID = 'G-XXXXXXXXXX';
 
+  // AdSense: the publisher ID from the snippet AdSense hands you, ca-pub-<16 digits>.
+  // The snippet itself is NOT pasted into the pages: adsbygoogle.js reads and writes
+  // device storage, so § 25 (1) TDDDG applies to it exactly as it does to GA4, and it
+  // is loaded here only once consent for advertising has actually been given.
+  var ADSENSE_CLIENT = 'ca-pub-6413233215513891';
+
   // Google's vendor ID in the IAB TCF vendor list. Checked so that consent is to
   // Google specifically, not merely to the purpose in general.
   var GOOGLE_VENDOR_ID = 755;
@@ -49,8 +55,14 @@
   var ucReady = UC_SETTINGS_ID.indexOf('PASTE') !== 0 && /^[A-Za-z0-9_-]{6,}$/.test(UC_SETTINGS_ID);
   var cfReady = /^[0-9a-f]{32}$/.test(CF_BEACON_TOKEN);
   var gaReady = !/^G-X+$/.test(MEASUREMENT_ID);
+  var adsReady = /^ca-pub-\d{10,}$/.test(ADSENSE_CLIENT);
+
+  // CLAUDE.md § 6: no ads on the legal pages. Keeping the rule here means a new page
+  // cannot forget it.
+  var adsAllowed = adsReady && !/^\/(impressum|privacy|contact)\//.test(location.pathname);
 
   var loaded = false;
+  var adsLoaded = false;
 
   window.dataLayer = window.dataLayer || [];
   function gtag() { window.dataLayer.push(arguments); }
@@ -73,7 +85,10 @@
   // ---- Usercentrics CMP -----------------------------------------------------
   // Google-certified and IAB TCF v2.3 capable. EU-based, so unlike Cloudflare and
   // Buttondown there is no third-country transfer to disclose.
-  if (ucReady) {
+  // Since the AdSense tag exists, the loader is a literal <head> tag on every page,
+  // ahead of this file (see the ordering note above). The injection below stays as the
+  // fallback for any page that has not got the tag yet.
+  if (ucReady && !document.getElementById('usercentrics-cmp')) {
     var cmp = document.createElement('script');
     cmp.id = 'usercentrics-cmp';
     cmp.src = 'https://web.cmp.usercentrics.eu/ui/loader.js';
@@ -112,6 +127,30 @@
     load();
   }
 
+  // ---- Google AdSense, consent-gated ----------------------------------------
+  // AdSense gives publishers one <script> tag to paste into every page's <head>. That
+  // tag would load Google's code, and with it device storage, on the first paint —
+  // before the banner is answered. § 25 (1) TDDDG requires the opposite order, so the
+  // tag lives here and fires on the same consent signal GA4 waits for, with the ads
+  // keys rather than the analytics one.
+  function loadAds() {
+    if (adsLoaded || !adsAllowed) return;
+    adsLoaded = true;
+    var s = document.createElement('script');
+    s.async = true;
+    s.crossOrigin = 'anonymous';
+    s.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=' +
+            encodeURIComponent(ADSENSE_CLIENT);
+    document.head.appendChild(s);
+  }
+
+  function grantAds() {
+    gtag('consent', 'update', {
+      ad_storage: 'granted', ad_user_data: 'granted', ad_personalization: 'granted'
+    });
+    loadAds();
+  }
+
   function deny() {
     gtag('consent', 'update', { analytics_storage: 'denied' });
   }
@@ -136,9 +175,11 @@
         for (var i = 0; i < arguments.length; i++) {
           var a = arguments[i];
           // Consent Mode calls arrive as ('consent', 'update', {...}).
-          if (a && a[0] === 'consent' && a[1] === 'update' && a[2] &&
-              a[2].analytics_storage === 'granted') {
-            load();
+          if (a && a[0] === 'consent' && a[1] === 'update' && a[2]) {
+            if (a[2].analytics_storage === 'granted') load();
+            // The CMP has already pushed the update, so load the tag without pushing
+            // a second one.
+            if (a[2].ad_storage === 'granted') loadAds();
           }
         }
       } catch (e) { /* never let bookkeeping break a dataLayer push */ }
@@ -158,6 +199,9 @@
     var granted = d['Google Analytics'] === true ||
                   (d.event === 'consent_status' && d['Google Analytics'] === true);
     if (granted) grant();
+    // Usercentrics names AdSense as its own service, so it is consented separately
+    // from Analytics. Either one may be granted without the other.
+    if (d['Google AdSense'] === true || d['Google Ads'] === true) grantAds();
   });
 
   // ---- bridge 3: IAB TCF ----------------------------------------------------
@@ -173,8 +217,13 @@
       // That is deliberate: one code path, and never wrong for a German operator.
       var p = data.purpose && data.purpose.consents;
       var v = data.vendor && data.vendor.consents;
-      if (p && p[STORAGE_PURPOSE] && v && v[GOOGLE_VENDOR_ID]) grant();
-      else deny();
+      if (p && p[STORAGE_PURPOSE] && v && v[GOOGLE_VENDOR_ID]) {
+        grant();
+        // TCF purposes 3 and 4 are the advertising ones: a personalised-ads profile,
+        // and selecting personalised ads. Storage (purpose 1) plus either of them is
+        // what an ad request needs, and Google must be consented as a vendor.
+        if (p[3] || p[4]) grantAds();
+      } else deny();
     });
     return true;
   }
@@ -257,7 +306,10 @@
         cmp: ucReady ? 'usercentrics loaded' : 'awaiting settings id',
         cmpApi: cmpPresent() ? 'present' : 'not present',
         cloudflare: cfReady ? 'loaded' : 'awaiting token',
-        ga4: gaReady ? (loaded ? 'loaded' : 'awaiting consent') : 'awaiting measurement id'
+        ga4: gaReady ? (loaded ? 'loaded' : 'awaiting consent') : 'awaiting measurement id',
+        adsense: !adsReady ? 'awaiting client id'
+               : !adsAllowed ? 'off on this page (legal page)'
+               : adsLoaded ? 'loaded' : 'awaiting consent'
       };
     }
   };
