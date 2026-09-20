@@ -1,8 +1,11 @@
-/* Consent and measurement. Three tools, deliberately treated differently.
+/* Consent, measurement and ads. Four tools, deliberately treated differently.
  *
- *   Usercentrics CMP          asks for consent. Loads on every page.
+ *   Google's CMP              asks for consent (IAB TCF v2.3). Loads on every page.
+ *                             Replaced Usercentrics on 20 Sep 2026: see the CMP block.
  *   Cloudflare Web Analytics  loads on every page, no consent asked.
  *   Google Analytics 4        loads only after consent is actually given.
+ *   Google AdSense            loads only after consent is actually given, and never on
+ *                             the legal pages.
  *
  * The dividing line is § 25 (1) TDDDG, which turns on storing or reading anything on
  * the visitor's device. Cloudflare Web Analytics does neither: Cloudflare states it
@@ -82,20 +85,37 @@
   gtag('set', 'ads_data_redaction', true);
   gtag('set', 'url_passthrough', false);
 
-  // ---- Usercentrics CMP -----------------------------------------------------
-  // Google-certified and IAB TCF v2.3 capable. EU-based, so unlike Cloudflare and
-  // Buttondown there is no third-country transfer to disclose.
-  // Since the AdSense tag exists, the loader is a literal <head> tag on every page,
-  // ahead of this file (see the ordering note above). The injection below stays as the
-  // fallback for any page that has not got the tag yet.
-  if (ucReady && !document.getElementById('usercentrics-cmp')) {
+  // ---- the consent manager: Google's own CMP ----------------------------------
+  // Changed 20 Sep 2026. Usercentrics was the CMP until the AdSense account existed;
+  // its free plan has no IAB TCF, and Google serves no ads to EEA/UK visitors without a
+  // TCF string from a certified CMP. Google's CMP (AdSense > Privacy & messaging) is
+  // free, certified, and tracks TCF versions by itself. It was always the first choice
+  // (CLAUDE.md § 7); it simply could not exist before the account did.
+  //
+  // It is a literal <head> tag on every page, the standalone "message" tag rather than
+  // the ad code, so the banner can be shown WITHOUT loading adsbygoogle.js. The
+  // injection below is only the fallback for a page that lacks the tag. The message
+  // itself is built and published in AdSense; until that is done this loads nothing
+  // visible, no consent can be given, and every gated tool stays dark.
+  var cmpReady = adsReady;
+  if (cmpReady && !document.getElementById('google-cmp')) {
     var cmp = document.createElement('script');
-    cmp.id = 'usercentrics-cmp';
-    cmp.src = 'https://web.cmp.usercentrics.eu/ui/loader.js';
-    cmp.setAttribute('data-settings-id', UC_SETTINGS_ID);
+    cmp.id = 'google-cmp';
     cmp.async = true;
+    cmp.src = 'https://fundingchoicesmessages.google.com/i/' +
+              ADSENSE_CLIENT.replace('ca-', '') + '?ers=1';
     document.head.appendChild(cmp);
   }
+  // Google's documented companion to that tag: an empty, hidden iframe whose name tells
+  // Google's scripts a CMP is on the page. It loads nothing.
+  (function signalGooglefcPresent() {
+    if (!cmpReady || window.frames['googlefcPresent']) return;
+    if (!document.body) { setTimeout(signalGooglefcPresent, 0); return; }
+    var f = document.createElement('iframe');
+    f.style.cssText = 'display:none;width:0;height:0;border:none;z-index:-1000;left:-1000px;top:-1000px;';
+    f.name = 'googlefcPresent';
+    document.body.appendChild(f);
+  })();
 
   // ---- Cloudflare Web Analytics ---------------------------------------------
   // Stores nothing on the device, so it needs no consent. Cloudflare documents the
@@ -133,6 +153,67 @@
   // before the banner is answered. § 25 (1) TDDDG requires the opposite order, so the
   // tag lives here and fires on the same consent signal GA4 waits for, with the ads
   // keys rather than the analytics one.
+  // The ad units. Each is created once in AdSense > Ads > By ad unit > Display ads, as a
+  // FIXED size, and its data-ad-slot number pasted into `id` below. Nothing else in the
+  // site needs touching: the pages keep their reserved boxes (CLAUDE.md § 6: every slot's
+  // height is reserved so nothing reflows), and the boxes are filled here after consent.
+  // A slot with no id stays empty. Auto ads stay OFF in AdSense: they would place units
+  // without asking, the legal pages included.
+  var AD_SLOTS = [
+    { name: 'left rail',   sel: '.rail-left .ad',      w: 160, h: 600, id: '' },
+    { name: 'right rail',  sel: '.rail .ad',           w: 300, h: 600, id: '' },
+    { name: 'in-content',  sel: '.ad.ad-incontent',    w: 336, h: 280, id: '' },
+    { name: 'inline',      sel: '.ad.ad-inline',       w: 300, h: 250, id: '' },
+    { name: 'anchor',      sel: '#anchor',             w: 970, h: 50,  id: '' },
+    { name: 'home footer', sel: '.ad[style*="92px"]',  w: 728, h: 90,  id: '' }
+  ];
+
+  // Until a box is filled it is an empty frame with a build note in it, which is no use
+  // to a reader or to an AdSense reviewer. Rails keep their space (they are their own
+  // columns, so hiding the content moves nothing); boxes inside the text flow and the
+  // anchor bar are taken out entirely until there is an ad to show.
+  function hideEmptySlots() {
+    AD_SLOTS.forEach(function (slot) {
+      var els = document.querySelectorAll(slot.sel);
+      for (var i = 0; i < els.length; i++) {
+        if (els[i].getAttribute('data-filled')) continue;
+        var rail = els[i].parentNode && /(^| )rail(-left)?( |$)/.test(els[i].parentNode.className);
+        if (rail) els[i].style.visibility = 'hidden';
+        else els[i].style.display = 'none';
+      }
+    });
+  }
+
+  function fillSlots() {
+    if (!adsLoaded) return;
+    AD_SLOTS.forEach(function (slot) {
+      if (!/^\d{6,}$/.test(slot.id)) return;
+      var els = document.querySelectorAll(slot.sel);
+      for (var i = 0; i < els.length; i++) {
+        var el = els[i];
+        if (el.getAttribute('data-filled')) continue;
+        // Un-hide to measure. A box its breakpoint has removed (a rail below 1180 px)
+        // has no width, and AdSense throws on a zero-width slot, so it is left for the
+        // resize handler to fill if the window ever grows.
+        el.style.display = '';
+        el.style.visibility = '';
+        if (!el.offsetParent || el.offsetWidth < slot.w) { hideEmptySlots(); continue; }
+        var notes = el.querySelectorAll('.ad-size, .ad-note');
+        for (var n = 0; n < notes.length; n++) notes[n].parentNode.removeChild(notes[n]);
+        el.style.border = '0';
+        el.style.background = 'transparent';
+        var ins = document.createElement('ins');
+        ins.className = 'adsbygoogle';
+        ins.style.cssText = 'display:inline-block;width:' + slot.w + 'px;height:' + slot.h + 'px';
+        ins.setAttribute('data-ad-client', ADSENSE_CLIENT);
+        ins.setAttribute('data-ad-slot', slot.id);
+        el.appendChild(ins);
+        el.setAttribute('data-filled', '1');
+        (window.adsbygoogle = window.adsbygoogle || []).push({});
+      }
+    });
+  }
+
   function loadAds() {
     if (adsLoaded || !adsAllowed) return;
     adsLoaded = true;
@@ -142,7 +223,13 @@
     s.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=' +
             encodeURIComponent(ADSENSE_CLIENT);
     document.head.appendChild(s);
+    fillSlots();
+    var t;
+    window.addEventListener('resize', function () { clearTimeout(t); t = setTimeout(fillSlots, 300); });
   }
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', hideEmptySlots);
+  else hideEmptySlots();
 
   function grantAds() {
     gtag('consent', 'update', {
@@ -303,7 +390,9 @@
     reopen: reopen,
     state: function () {
       return {
-        cmp: ucReady ? 'usercentrics loaded' : 'awaiting settings id',
+        cmp: cmpReady ? 'google cmp tag loaded' : 'awaiting adsense client id',
+        tcf: typeof window.__tcfapi === 'function' ? 'present' : 'not present (no message published yet?)',
+        adSlots: AD_SLOTS.map(function (s) { return s.name + ': ' + (s.id ? 'id set' : 'no id'); }),
         cmpApi: cmpPresent() ? 'present' : 'not present',
         cloudflare: cfReady ? 'loaded' : 'awaiting token',
         ga4: gaReady ? (loaded ? 'loaded' : 'awaiting consent') : 'awaiting measurement id',
