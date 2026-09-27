@@ -6,7 +6,7 @@
 <meta name="google-adsense-account" content="ca-pub-6413233215513891">
 <script id="google-cmp" async src="https://fundingchoicesmessages.google.com/i/pub-6413233215513891?ers=1"></script>
 <title>Every AI Benchmark, Explained, September 2026 — Learnthespec</title>
-<meta name="description" content="What each benchmark actually tests, how big it is, and what a score on it means. Plus the three ways a benchmark number misleads: versions, scoring rules, and an Elo scale anchored to an arbitrary model. Checked 5 September 2026.">
+<meta name="description" content="What each benchmark actually tests, how big it is, and what a score on it means. Plus the three ways a benchmark number misleads: versions, scoring rules, and an Elo scale anchored to an arbitrary model. Checked 27 September 2026.">
 <link rel="stylesheet" href="/assets/fonts.css">
 <style>
 
@@ -209,7 +209,7 @@
           <span class="who">Tsrnoob</span>
           <span>5 SEPTEMBER 2026</span>
           <span>COMPILED FROM 8 SOURCES</span>
-          <span class="badge">CHECKED 5 SEP 2026</span>
+          <span class="badge">CHECKED 27 SEP 2026</span>
         </div>
 
         <div class="prose">
@@ -225,7 +225,7 @@
             <caption>The benchmarks this site cites, and what each one asks</caption>
             <thead><tr><th>Benchmark</th><th>What it tests</th><th>Size or detail</th><th>Src</th></tr></thead>
             <tbody>
-              <tr><td class="name">AA Intelligence Index v4.2</td><td>A composite: ten evaluations weighted across agents, coding, scientific reasoning and general ability.</td><td class="quiet">10 evals, 4 categories</td><td class="quiet"><a href="#s1">[1]</a></td></tr>
+              <tr><td class="name">AA Intelligence Index v4.3.2</td><td>A composite: ten evaluations weighted across agents, coding, scientific reasoning and general ability.</td><td class="quiet">10 evals, 4 categories</td><td class="quiet"><a href="#s1">[1]</a></td></tr>
               <tr><td class="name">SWE-bench Verified</td><td>Resolving real GitHub issues by writing a patch that makes the tests pass.</td><td class="quiet">500 engineer-confirmed solvable problems</td><td class="quiet"><a href="#s4">[4]</a></td></tr>
               <tr><td class="name">Terminal-Bench 4.0</td><td>Agent work at a terminal, reported with cost and tokens alongside the score.</td><td class="quiet">Hosted by Stanford, Harbor and the Laude Institute</td><td class="quiet"><a href="#s5">[5]</a></td></tr>
               <tr><td class="name">OSWorld</td><td>Real tasks in real desktop applications, marked by scripts that check the task actually got done.</td><td class="quiet">369 tasks; Ubuntu, Windows, macOS; humans 72.36%</td><td class="quiet"><a href="#s7">[7]</a></td></tr>
@@ -246,22 +246,22 @@
 
           <h2>The Intelligence Index is ten benchmarks in a coat</h2>
           <p>Most "intelligence" comparisons on this site and elsewhere quote one number. It is an average of ten.</p>
-          <div class="def"><p><span class="term">Intelligence Index</span> — Artificial Analysis's composite score, a weighted average across four categories: agents 30%, general 30%, coding 20%, scientific reasoning 20%. Currently at version 4.2, made of ten separate evaluations.<sup><a href="#s1">1</a></sup></p></div>
+          <div class="def"><p><span class="term">Intelligence Index</span> — Artificial Analysis's composite score, a weighted average across four categories: agents 30%, general 30%, coding 20%, scientific reasoning 20%. Currently at version 4.3.2, made of ten separate evaluations.<sup><a href="#s1">1</a></sup></p></div>
         </div>
 
         <div class="tablewrap">
           <table>
-            <caption>What the Intelligence Index v4.2 is made of</caption>
+            <caption>What the Intelligence Index v4.3.2 is made of</caption>
             <thead><tr><th>Category</th><th>Weight</th><th>Evaluations inside it</th><th>Src</th></tr></thead>
             <tbody>
-              <tr><td class="name">Agents</td><td class="num best">30%</td><td>AA-Briefcase 15%, GDPval-AA v2 10%, &#120591;&sup3;-Banking 5%</td><td class="quiet"><a href="#s1">[1]</a></td></tr>
+              <tr><td class="name">Agents</td><td class="num best">30%</td><td>AA-Briefcase v1.1 15%, GDPval-AA v2.1 10%, AutomationBench-AA 5%</td><td class="quiet"><a href="#s1">[1]</a></td></tr>
               <tr><td class="name">General</td><td class="num best">30%</td><td>AA-Omniscience 15%, GDP.pdf 10%, AA-LCR v1.1 5%</td><td class="quiet"><a href="#s1">[1]</a></td></tr>
-              <tr><td class="name">Coding</td><td class="num">20%</td><td>Terminal-Bench v2.1 10%, SciCode 10%</td><td class="quiet"><a href="#s1">[1]</a></td></tr>
+              <tr><td class="name">Coding</td><td class="num">20%</td><td>Terminal-Bench 4.0 10%, SciCode 10%</td><td class="quiet"><a href="#s1">[1]</a></td></tr>
               <tr><td class="name">Scientific reasoning</td><td class="num">20%</td><td>Humanity's Last Exam 10%, CritPt 10%</td><td class="quiet"><a href="#s1">[1]</a></td></tr>
             </tbody>
           </table>
         </div>
-        <p class="tablenote">TWO THIRDS OF THE SCORE IS AGENTS AND GENERAL ABILITY. <strong>CODING IS A FIFTH OF IT</strong>, WHICH IS WHY A MODEL CAN TOP THIS INDEX AND NOT TOP A CODING LEADERBOARD. NOTE ALSO THAT THE INDEX USES <strong>TERMINAL-BENCH v2.1</strong> WHILE THE STANDALONE LEADERBOARD IS AT 4.0.</p>
+        <p class="tablenote">TWO THIRDS OF THE SCORE IS AGENTS AND GENERAL ABILITY. <strong>CODING IS A FIFTH OF IT</strong>, WHICH IS WHY A MODEL CAN TOP THIS INDEX AND NOT TOP A CODING LEADERBOARD. v4.3.2 REPLACED &#120591;&sup3;-BANKING WITH <strong>AUTOMATIONBENCH-AA</strong> AND MOVED THE CODING SLOT FROM TERMINAL-BENCH v2.1 TO <strong>4.0</strong>, SO v4.2 SCORES AND v4.3.2 SCORES ARE NOT THE SAME MEASUREMENT.</p>
 
         <div class="ad ad-incontent">
           <div class="ad-tag">Advertisement</div>
@@ -289,7 +289,7 @@
             <caption>Four ways a familiar name hides a different test</caption>
             <thead><tr><th>What you see</th><th>What it actually is</th><th>Consequence</th><th>Src</th></tr></thead>
             <tbody>
-              <tr><td class="name">"Intelligence Index"</td><td>Versioned. Currently v4.2, ten evaluations across four weighted categories.</td><td class="no">Scores from different versions are not comparable.</td><td class="quiet"><a href="#s1">[1]</a></td></tr>
+              <tr><td class="name">"Intelligence Index"</td><td>Versioned. Currently v4.3.2, ten evaluations across four weighted categories.</td><td class="no">Scores from different versions are not comparable.</td><td class="quiet"><a href="#s1">[1]</a></td></tr>
               <tr><td class="name">"Terminal-Bench"</td><td>v2.1 inside the Index; 4.0 on the standalone leaderboard.</td><td class="no">A Terminal-Bench figure is meaningless without its version.</td><td class="quiet"><a href="#s1">[1]</a><a href="#s5">[5]</a></td></tr>
               <tr><td class="name">"OSWorld"</td><td>At least three: the original release, OSWorld 2.0, and OSWorld-Verified.</td><td class="no">Different vendors quote different ones under one word.</td><td class="quiet"><a href="#s7">[7]</a><a href="#s8">[8]</a></td></tr>
               <tr><td class="name">"OSWorld 2.0"</td><td>The task files changed with the authors' August 2026 release.</td><td class="no">Anthropic states its own numbers are not comparable to earlier OSWorld 2.0 results.</td><td class="quiet"><a href="#s8">[8]</a></td></tr>
@@ -333,7 +333,7 @@
             <caption>What to check before believing a percentage</caption>
             <thead><tr><th>Ask</th><th>Because</th></tr></thead>
             <tbody>
-              <tr><td class="name">Which version?</td><td>Names persist across rewrites. The Index is on v4.2; Terminal-Bench appears as both v2.1 and 4.0.</td></tr>
+              <tr><td class="name">Which version?</td><td>Names persist across rewrites. The Index is on v4.3.2, which moved its own coding slot from Terminal-Bench v2.1 to 4.0.</td></tr>
               <tr><td class="name">Marked how?</td><td>Partial against strict moved one model 36 points on identical runs.</td></tr>
               <tr><td class="name">Who ran it?</td><td>Almost every headline figure is self-reported by the vendor selling the model.</td></tr>
               <tr><td class="name">Is it a composite?</td><td>An Index score is a weighted average. Coding is only a fifth of this one.</td></tr>
@@ -346,9 +346,9 @@
 
         <div class="sources" id="sources">
           <h2>Sources</h2>
-          <div class="sources-note">ALL PAGES READ ON 5 SEPTEMBER 2026. NOTHING HERE WAS TESTED BY US. EACH BENCHMARK IS DESCRIBED FROM THE PAGE ITS OWN AUTHORS OR OPERATORS PUBLISH, NOT FROM A SECOND-HAND SUMMARY.</div>
+          <div class="sources-note">SOURCE [1] RE-READ ON 27 SEPTEMBER 2026; ALL OTHER PAGES READ ON 5 SEPTEMBER 2026. NOTHING HERE WAS TESTED BY US. EACH BENCHMARK IS DESCRIBED FROM THE PAGE ITS OWN AUTHORS OR OPERATORS PUBLISH, NOT FROM A SECOND-HAND SUMMARY.</div>
           <ol>
-            <li id="s1"><a href="https://artificialanalysis.ai/methodology/intelligence-benchmarking" rel="nofollow noopener" target="_blank">Artificial Analysis, intelligence benchmarking methodology</a>: Intelligence Index v4.2 as a weighted average of ten evaluations across agents 30%, general 30%, coding 20% and scientific reasoning 20%, with the per-evaluation weights and what each one tests.<span class="pub">ARTIFICIAL ANALYSIS &middot; METHODOLOGY</span></li>
+            <li id="s1"><a href="https://artificialanalysis.ai/methodology/intelligence-benchmarking" rel="nofollow noopener" target="_blank">Artificial Analysis, intelligence benchmarking methodology</a>: Intelligence Index v4.3.2 as a weighted average of ten evaluations across agents 30%, general 30%, coding 20% and scientific reasoning 20%, with the per-evaluation weights and what each one tests.<span class="pub">ARTIFICIAL ANALYSIS &middot; METHODOLOGY</span></li>
             <li id="s2"><a href="https://artificialanalysis.ai/methodology" rel="nofollow noopener" target="_blank">Artificial Analysis, methodology index</a>: time to first token as the seconds between request and first token, and output speed as average tokens per second after the first token.<span class="pub">ARTIFICIAL ANALYSIS &middot; METHODOLOGY</span></li>
             <li id="s3"><a href="https://artificialanalysis.ai/text-to-image/methodology" rel="nofollow noopener" target="_blank">Artificial Analysis, text-to-image methodology</a>: blind pairwise comparison with randomised position and identities revealed only after the vote; Bradley-Terry maximum likelihood rescaled to an Elo-like range and anchored at FLUX.2 [dev] = 1000.<span class="pub">ARTIFICIAL ANALYSIS &middot; METHODOLOGY</span></li>
             <li id="s4"><a href="https://www.swebench.com/SWE-bench/" rel="nofollow noopener" target="_blank">SWE-bench documentation</a>: real GitHub issues resolved by generating a patch, run through a Docker-based evaluation harness; SWE-bench Verified is 500 engineer-confirmed solvable problems, released 13 August 2024.<span class="pub">SWE-BENCH &middot; PROJECT DOCUMENTATION</span></li>
@@ -363,6 +363,7 @@
           FOUND AN ERROR? BENCHMARKS ARE VERSIONED, RE-WEIGHTED AND RE-MARKED, AND MOST HEADLINE FIGURES ARE SELF-REPORTED BY THE VENDOR SELLING THE MODEL. EVERYTHING HERE IS DESCRIBED AS ITS OWN AUTHORS PUBLISH IT ON THE DATE ABOVE.
           MAIL <a href="mailto:contact@learnthespec.com">CONTACT@LEARNTHESPEC.COM</a> AND WE WILL CHECK IT AGAINST THE SOURCE.
           CORRECTIONS ARE MADE IN PLACE AND NOTED HERE WITH THE DATE.
+          <br><br><strong style="color:#E08876">UPDATED 27 SEPTEMBER 2026:</strong> THE ARTIFICIAL ANALYSIS INTELLIGENCE INDEX IS ON v4.3.2, NOT v4.2. THE COMPOSITION TABLE, THE DEFINITION, THE VERSION COLUMN AND SOURCE [1] WERE RE-READ AT THE METHODOLOGY PAGE AND CORRECTED. v4.3.2 REPLACED &#120591;&sup3;-BANKING WITH AUTOMATIONBENCH-AA AT THE SAME 5% WEIGHT, AND MOVED THE CODING SLOT FROM TERMINAL-BENCH v2.1 TO 4.0. THE FOUR CATEGORY WEIGHTS DID NOT CHANGE. THE BYLINE KEEPS THE ORIGINAL PUBLICATION DATE; THE CHECKED BADGE IS TODAY'S.
         </div>
 
         <div class="signup">
