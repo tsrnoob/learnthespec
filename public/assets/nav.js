@@ -5,7 +5,7 @@
 
   var ARTICLES = [
     { d: "04 SEP", u: "/articles/best-ai-model-september-2026/", t: "Best AI Model, September 2026",
-      s: "Seven flagships on intelligence, price, cost per finished task, token efficiency, speed and context.", c: "17 SOURCES" },
+      s: "Nine flagships on intelligence, price, cost per finished task, token efficiency, speed and context.", c: "24 SOURCES" },
     { d: "04 SEP", u: "/articles/best-ai-for-coding-september-2026/", t: "Best AI for Coding, September 2026",
       s: "SWE-bench Verified and Terminal-Bench 4.0 against cost per task, and why the two disagree.", c: "16 SOURCES" },
     { d: "04 SEP", u: "/articles/what-ai-chatbots-can-do-september-2026/", t: "What AI Chatbots Can Actually Do, September 2026",
