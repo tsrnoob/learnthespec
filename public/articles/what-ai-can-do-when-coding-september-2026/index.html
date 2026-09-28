@@ -6,7 +6,7 @@
 <meta name="google-adsense-account" content="ca-pub-6413233215513891">
 <script id="google-cmp" async src="https://fundingchoicesmessages.google.com/i/pub-6413233215513891?ers=1"></script>
 <title>What AI Can Actually Do When You Code, September 2026 — Learnthespec</title>
-<meta name="description" content="Every capability the five big AI coding tools ship: multi-file edits, running commands, pull requests, parallel agents, cloud work, instruction files, MCP, browser control and what each is allowed to touch. Compiled from vendor documentation, checked 4 September 2026.">
+<meta name="description" content="Every capability the five big AI coding tools ship: multi-file edits, running commands, pull requests, parallel agents, cloud work, instruction files, MCP, browser control and what each is allowed to touch. Compiled from vendor documentation, checked 28 September 2026.">
 <link rel="stylesheet" href="/assets/fonts.css">
 <style>
 
@@ -206,8 +206,8 @@
         <div class="byline">
           <span class="who">Tsrnoob</span>
           <span>4 SEPTEMBER 2026</span>
-          <span>COMPILED FROM 12 SOURCES</span>
-          <span class="badge">CHECKED 4 SEP 2026</span>
+          <span>COMPILED FROM 13 SOURCES</span>
+          <span class="badge">CHECKED 28 SEP 2026</span>
         </div>
 
         <div class="prose">
@@ -335,10 +335,11 @@
         <div class="prose">
 
           <h2>What still does not work</h2>
-          <p>Three limits, all published rather than observed.</p>
+          <p>Four limits, all published rather than observed.</p>
           <p><strong>It is not finishing most tasks.</strong> The best model and agent pairing resolves 58.2% of Terminal-Bench 4.0's 66 real terminal tasks.<sup><a href="#s11">11</a></sup> Two in five still fail.</p>
           <p><strong>The agent is only half the result.</strong> Terminal-Bench scores model and harness together, which is why the same model places differently in different tools.<sup><a href="#s11">11</a></sup> Switching tools changes your outcome even on the same model.</p>
           <p><strong>Autonomy costs oversight.</strong> Codex's own documentation is explicit that the sandbox exists so the agent can &ldquo;act autonomously without giving it unrestricted access to your machine&rdquo;.<sup><a href="#s3">3</a></sup> Full access is available and named <span class="mono">danger-full-access</span>. The name is the warning.</p>
+          <p><strong>The model can constrain the tool.</strong> Claude Opus 5.5 returns a 400 for two things an Opus 5 integration may send: thinking turned off, and a forced tool choice.<sup><a href="#s13">13</a></sup></p>
 
           <h2>Which one to pick</h2>
           <p>The capability sets overlap heavily. The differences that remain are about access and surface.</p>
@@ -362,7 +363,7 @@
 
         <div class="sources" id="sources">
           <h2>Sources</h2>
-          <div class="sources-note">ALL PAGES READ ON 4 SEPTEMBER 2026. NOTHING HERE WAS TESTED BY US — EVERY CAPABILITY IS AS THE VENDOR'S OWN DOCUMENTATION DESCRIBES IT.</div>
+          <div class="sources-note">SOURCE [13] READ ON 28 SEPTEMBER 2026; SOURCES [1] TO [12] READ ON 4 SEPTEMBER 2026. NOTHING HERE WAS TESTED BY US — EVERY CAPABILITY IS AS THE VENDOR'S OWN DOCUMENTATION DESCRIBES IT.</div>
           <ol>
             <li id="s1"><a href="https://code.claude.com/docs/en/overview" rel="nofollow noopener" target="_blank">Claude Code — Overview</a>: codebase reading, file edits, commands, git and pull requests, MCP, CLAUDE.md, subagents, routines, Chrome debugging, surfaces.<span class="pub">ANTHROPIC · VENDOR DOCUMENTATION</span></li>
             <li id="s2"><a href="https://learn.chatgpt.com/docs/codex/cli" rel="nofollow noopener" target="_blank">Codex CLI</a>: inspecting code, making changes, running commands, permissions and writable roots.<span class="pub">OPENAI · VENDOR DOCUMENTATION</span></li>
@@ -376,10 +377,12 @@
             <li id="s10"><a href="https://agents.md/" rel="nofollow noopener" target="_blank">AGENTS.md</a>: the format, its purpose, the 60,000-project figure and the tools that read it.<span class="pub">AGENTIC AI FOUNDATION · STANDARD</span></li>
             <li id="s11"><a href="https://snorkel.ai/leaderboard/terminal-bench-4-0/" rel="nofollow noopener" target="_blank">Terminal-Bench 4.0 leaderboard</a>: resolution rates for model and agent pairings across 66 tasks.<span class="pub">SNORKEL AI · LEADERBOARD HOST</span></li>
             <li id="s12"><a href="https://www.swebench.com/verified.html" rel="nofollow noopener" target="_blank">SWE-bench Verified</a>: the 500-issue benchmark referenced for how well these tools perform.<span class="pub">SWE-BENCH · BENCHMARK MAINTAINER</span></li>
+            <li id="s13"><a href="https://platform.claude.com/docs/en/models/opus-5-5/whats-new-opus-5-5" rel="nofollow noopener" target="_blank">Anthropic, what's new in Claude Opus 5.5</a>: thinking cannot be disabled and a manual thinking budget returns a 400; <span class="mono">tool_choice</span> types <span class="mono">any</span> and <span class="mono">tool</span> return a 400; thinking blocks record the model that produced them, and an unreadable block is dropped without failing the request.<span class="pub">ANTHROPIC · PLATFORM DOCUMENTATION</span></li>
           </ol>
         </div>
 
         <div class="corrections">
+          UPDATED 28 SEP 2026: A FOURTH PUBLISHED LIMIT WAS ADDED. CLAUDE OPUS 5.5 REFUSES THINKING TURNED OFF AND A FORCED TOOL CHOICE, AND BINDS THINKING BLOCKS TO THE MODEL THAT PRODUCED THEM. A THIRTEENTH SOURCE CARRIES IT.
           FOUND AN ERROR? CODING TOOLS SHIP FEATURES WEEKLY AND MOVE THEM BETWEEN PLANS.
           MAIL <a href="mailto:contact@learnthespec.com">CONTACT@LEARNTHESPEC.COM</a> AND WE WILL CHECK IT AGAINST THE SOURCE.
           CORRECTIONS ARE MADE IN PLACE AND NOTED HERE WITH THE DATE.

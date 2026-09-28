@@ -6,7 +6,7 @@
 <meta name="google-adsense-account" content="ca-pub-6413233215513891">
 <script id="google-cmp" async src="https://fundingchoicesmessages.google.com/i/pub-6413233215513891?ers=1"></script>
 <title>Which AI Can Use Your Computer, September 2026 — Learnthespec</title>
-<meta name="description" content="Three vendors let a model drive a screen, and all three publish scores that cannot be put in one column. What each one can click, what it is allowed to touch, and why the benchmark numbers do not compare. Checked 5 September 2026.">
+<meta name="description" content="Three vendors let a model drive a screen, and all three publish scores that cannot go in one column. What each can click, what it may touch, and why the numbers do not compare. Checked 28 September 2026.">
 <link rel="stylesheet" href="/assets/fonts.css">
 <style>
 
@@ -208,8 +208,8 @@
         <div class="byline">
           <span class="who">Tsrnoob</span>
           <span>5 SEPTEMBER 2026</span>
-          <span>COMPILED FROM 8 SOURCES</span>
-          <span class="badge">CHECKED 5 SEP 2026</span>
+          <span>COMPILED FROM 9 SOURCES</span>
+          <span class="badge">CHECKED 28 SEP 2026</span>
         </div>
 
         <div class="prose">
@@ -225,13 +225,13 @@
             <caption>What each vendor's computer-use tool exposes</caption>
             <thead><tr><th>Vendor</th><th>Actions</th><th>Reaches</th><th>Notable</th><th>Src</th></tr></thead>
             <tbody>
-              <tr><td class="name">Anthropic</td><td class="num best">17</td><td>Desktop</td><td>Five click types, drag, separate mouse-down and mouse-up, hold-key, and a zoom action for reading small text.</td><td class="quiet"><a href="#s2">[2]</a></td></tr>
+              <tr><td class="name">Anthropic</td><td class="num best">17</td><td>Desktop</td><td>Five click types, drag, separate mouse-down and mouse-up, hold-key, and a zoom action for reading small text. Claude Opus 5.5 takes them only as the <code>computer_toolset_20260801</code> toolset on the Claude API and Google Cloud.</td><td class="quiet"><a href="#s2">[2]</a><a href="#s9">[9]</a></td></tr>
               <tr><td class="name">Google</td><td class="quiet">Per environment</td><td class="best">Browser, mobile, desktop</td><td>The only one with a mobile environment: opening and listing apps, long-press, Android variants.</td><td class="quiet"><a href="#s6">[6]</a></td></tr>
               <tr><td class="name">OpenAI</td><td class="num">9</td><td>Browser and desktop</td><td>The smaller set: click, double-click, drag, move, scroll, keypress, type, wait, screenshot.</td><td class="quiet"><a href="#s4">[4]</a></td></tr>
             </tbody>
           </table>
         </div>
-        <p class="tablenote">ACTION COUNTS ARE WHAT EACH VENDOR'S OWN DOCUMENTATION LISTS. GOOGLE DOES NOT PUBLISH A SINGLE COUNT BECAUSE ITS ACTION SET CHANGES WITH THE ENVIRONMENT. <strong>MORE ACTIONS IS NOT AUTOMATICALLY BETTER</strong> — IT MEANS FINER CONTROL AND MORE FOR THE MODEL TO GET WRONG.</p>
+        <p class="tablenote">ACTION COUNTS ARE WHAT EACH VENDOR'S OWN DOCUMENTATION LISTS. GOOGLE DOES NOT PUBLISH A SINGLE COUNT BECAUSE ITS ACTION SET CHANGES WITH THE ENVIRONMENT. <strong>MORE ACTIONS IS NOT AUTOMATICALLY BETTER</strong> — IT MEANS FINER CONTROL AND MORE FOR THE MODEL TO GET WRONG. ON THE CLAUDE API AND GOOGLE CLOUD, CLAUDE OPUS 5.5 REJECTS THE EARLIER <code>computer_20251124</code> TOOL WITH A 400 AND ACCEPTS ONLY THE TOOLSET. THE EARLIER TOOL STILL WORKS ON AMAZON BEDROCK.<a href="#s9"> [9]</a></p>
 
         <div class="prose">
 
@@ -336,7 +336,7 @@
 
         <div class="sources" id="sources">
           <h2>Sources</h2>
-          <div class="sources-note">ALL PAGES READ ON 5 SEPTEMBER 2026. NOTHING HERE WAS TESTED BY US. EVERY BENCHMARK FIGURE IS SELF-REPORTED BY THE VENDOR THAT PUBLISHED IT, AND EACH IS QUOTED UNDER THE BENCHMARK NAME AND TASK RELEASE THAT VENDOR USED.</div>
+          <div class="sources-note">SOURCE [9] READ ON 28 SEPTEMBER 2026; SOURCES [1] TO [8] READ ON 5 SEPTEMBER 2026. NOTHING HERE WAS TESTED BY US. EVERY BENCHMARK FIGURE IS SELF-REPORTED BY THE VENDOR THAT PUBLISHED IT, AND EACH IS QUOTED UNDER THE BENCHMARK NAME AND TASK RELEASE THAT VENDOR USED.</div>
           <ol>
             <li id="s1"><a href="http://osworld-v1.xlang.ai/" rel="nofollow noopener" target="_blank">OSWorld, benchmark site</a>: 369 computer tasks across Ubuntu, Windows and macOS, scored by execution-based scripts; humans complete over 72.36%, and the best model in the original release reached 12.24%.<span class="pub">XLANG LAB &middot; BENCHMARK SITE</span></li>
             <li id="s2"><a href="https://platform.claude.com/docs/en/agents-and-tools/tool-use/computer-use-tool" rel="nofollow noopener" target="_blank">Anthropic, computer use tool</a>: the 17 actions, the supported model list, the prompt-injection classifiers enabled by default, and the four precautions including a dedicated VM and a domain allowlist.<span class="pub">ANTHROPIC &middot; PLATFORM DOCUMENTATION</span></li>
@@ -346,10 +346,12 @@
             <li id="s6"><a href="https://ai.google.dev/gemini-api/docs/computer-use" rel="nofollow noopener" target="_blank">Google, Gemini computer use</a>: browser, mobile and desktop environments; the mobile actions; the safety_decision parameter; and the instruction forbidding the model from accepting terms of service, privacy policies or CAPTCHAs without explicit permission.<span class="pub">GOOGLE &middot; GEMINI API DOCUMENTATION</span></li>
             <li id="s7"><a href="https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-3-6-flash-3-5-flash-lite-3-5-flash-cyber/" rel="nofollow noopener" target="_blank">Google, Gemini 3.6 Flash announcement</a>: OSWorld-Verified at 83.0% against 78.4% for Gemini 3.5 Flash, and 74.0% against 65.1% lower down the range; computer use as a built-in tool via the Gemini API.<span class="pub">GOOGLE &middot; ANNOUNCEMENT</span></li>
             <li id="s8"><a href="https://blog.google/innovation-and-ai/models-and-research/google-deepmind/gemini-computer-use-model/" rel="nofollow noopener" target="_blank">Google DeepMind, Gemini 2.5 Computer Use</a>: evaluated on Online-Mind2Web, WebVoyager and AndroidWorld; optimised for browsers and not yet for desktop OS-level control; end-user confirmation required for actions such as making a purchase.<span class="pub">GOOGLE DEEPMIND &middot; ANNOUNCEMENT</span></li>
+            <li id="s9"><a href="https://platform.claude.com/docs/en/models/opus-5-5/whats-new-opus-5-5" rel="nofollow noopener" target="_blank">Anthropic, what's new in Claude Opus 5.5</a>: on the Claude API and Google Cloud the <code>computer_20251124</code> tool returns a 400 and only <code>computer_toolset_20260801</code> is accepted; on Amazon Bedrock the earlier tool continues to work.<span class="pub">ANTHROPIC &middot; PLATFORM DOCUMENTATION</span></li>
           </ol>
         </div>
 
         <div class="corrections">
+          UPDATED 28 SEP 2026: CLAUDE OPUS 5.5 ACCEPTS COMPUTER USE ONLY AS THE computer_toolset_20260801 TOOLSET ON THE CLAUDE API AND GOOGLE CLOUD. THE ANTHROPIC ROW AND ITS TABLE NOTE SAY SO, WITH A NINTH SOURCE.
           FOUND AN ERROR? COMPUTER-USE BENCHMARKS ARE SELF-REPORTED, VERSIONED, AND SCORED UNDER RULES THAT DIFFER BETWEEN VENDORS. THE FIGURES HERE ARE QUOTED WITH THE BENCHMARK NAME AND TASK RELEASE EACH VENDOR STATED, AND ARE NOT RANKED AGAINST EACH OTHER FOR THAT REASON.
           MAIL <a href="mailto:contact@learnthespec.com">CONTACT@LEARNTHESPEC.COM</a> AND WE WILL CHECK IT AGAINST THE SOURCE.
           CORRECTIONS ARE MADE IN PLACE AND NOTED HERE WITH THE DATE.
