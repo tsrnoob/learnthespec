@@ -15,7 +15,7 @@
     { d: "04 SEP", u: "/articles/what-open-weights-mean-september-2026/", t: "What Open Weights Actually Mean, September 2026",
       s: "Open weights versus open source, the OSI definition, licences per model, download sizes, quantisation and self-hosting.", c: "11 SOURCES" },
     { d: "04 SEP", u: "/articles/best-open-weight-model-september-2026/", t: "Best Open-Weight Model, September 2026",
-      s: "Kimi K3, GLM-5.3, Qwen3.8, DeepSeek V4 Pro, MiniMax-M3 and gpt-oss ranked on Intelligence Index v4.2, cost per task, speed and licence.", c: "11 SOURCES" },
+      s: "MiMo-V2.6-Pro, GLM-5.3, Kimi K3, Qwen3.8, DeepSeek V4.1 Flash, MiniMax-M3 and gpt-oss ranked on Intelligence Index v4.3.2, cost per task, rate per million tokens, speed and licence.", c: "19 SOURCES" },
     { d: "04 SEP", u: "/articles/best-free-ai-september-2026/", t: "Best Free AI, September 2026",
       s: "Free tiers of ChatGPT, Claude, Gemini and Grok, plus free developer APIs and local models. What each includes and what free costs you.", c: "10 SOURCES" },
     { d: "04 SEP", u: "/articles/subscription-or-api-september-2026/", t: "Subscription or API: Which Is Cheaper, September 2026",
