@@ -47,7 +47,9 @@
     { d: "13 SEP", u: "/articles/prompt-caching-prices-compared-september-2026/", t: "Prompt Caching Prices, Compared, September 2026",
       s: "Cached input, cache hit and cache write prices for Claude, Gemini, DeepSeek, Grok, Kimi, Qwen and Mistral, with minimum prompts, cache lifetimes, batch discounts and off-peak rates.", c: "16 SOURCES" },
     { d: "20 SEP", u: "/articles/voice-ai-prices-compared-september-2026/", t: "Voice AI Prices, Compared, September 2026",
-      s: "Voice AI API prices compared: speech to speech, text to speech and transcription rates from OpenAI gpt-live-1 and gpt-realtime, Google Gemini 3.8 Live, ElevenLabs, Deepgram, AssemblyAI and Cartesia, billed per minute of call, per million audio tokens, per hour of audio and per million characters.", c: "8 SOURCES" }
+      s: "Voice AI API prices compared: speech to speech, text to speech and transcription rates from OpenAI gpt-live-1 and gpt-realtime, Google Gemini 3.8 Live, ElevenLabs, Deepgram, AssemblyAI and Cartesia, billed per minute of call, per million audio tokens, per hour of audio and per million characters.", c: "8 SOURCES" },
+    { d: "04 OCT", u: "/articles/subscription-or-api-october-2026/", t: "Subscription or API: Which Is Cheaper, October 2026",
+      s: "Subscription or API, which is cheaper in October 2026: ChatGPT Go, Plus and Pro, Claude Pro and Max, Google AI Plus, Pro and Ultra monthly plan prices against API list prices per million tokens for GPT-6 Astra, GPT-6.1 Sol, GPT-6 Luna, Claude Opus 5.5, Sonnet 5.5, Fable 5.1, Gemini 4 Argon, Grok 4.7 and DeepSeek Flash, plus cost per finished task on Intelligence Index v4.3.2, what reasoning effort level does to the bill, and why no break-even can be computed.", c: "13 SOURCES" }
   ];
 
 
