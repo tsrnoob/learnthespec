@@ -164,7 +164,9 @@
     { name: 'right rail',  sel: '.rail .ad',           w: 300, h: 600, id: '' },
     { name: 'in-content',  sel: '.ad.ad-incontent',    w: 336, h: 280, id: '' },
     { name: 'inline',      sel: '.ad.ad-inline',       w: 300, h: 250, id: '' },
-    { name: 'anchor',      sel: '#anchor',             w: 970, h: 50,  id: '' },
+    // Articles give the bar id="anchor"; the home page only the class. Match the class,
+    // or the home page keeps showing an empty bar (seen 21 Oct 2026).
+    { name: 'anchor',      sel: '.anchor',             w: 970, h: 50,  id: '' },
     { name: 'home footer', sel: '.ad[style*="92px"]',  w: 728, h: 90,  id: '' }
   ];
 
