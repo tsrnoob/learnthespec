@@ -9,7 +9,7 @@
     { d: "04 SEP", u: "/articles/best-ai-for-coding-september-2026/", t: "Best AI for Coding, September 2026",
       s: "SWE-bench Verified and Terminal-Bench 4.0 against cost per task, and why the two disagree.", c: "16 SOURCES" },
     { d: "04 SEP", u: "/articles/what-ai-chatbots-can-do-september-2026/", t: "What AI Chatbots Can Actually Do, September 2026",
-      s: "Fourteen capabilities across the four big assistants: uploads, vision, images, search, deep research, code, memory, connectors.", c: "10 SOURCES" },
+      s: "Fourteen capabilities across the four big assistants: uploads, vision, images, search, deep research, code, memory, connectors.", c: "11 SOURCES" },
     { d: "04 SEP", u: "/articles/what-ai-can-do-when-coding-september-2026/", t: "What AI Can Actually Do When You Code, September 2026",
       s: "Multi-file edits, running tests, pull requests, parallel agents, cloud work, AGENTS.md, MCP, browser control and sandboxing across five coding tools.", c: "13 SOURCES" },
     { d: "04 SEP", u: "/articles/what-open-weights-mean-september-2026/", t: "What Open Weights Actually Mean, September 2026",
