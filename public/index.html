@@ -2,356 +2,715 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="google-adsense-account" content="ca-pub-6413233215513891">
 <script id="google-cmp" async src="https://fundingchoicesmessages.google.com/i/pub-6413233215513891?ers=1"></script>
 <title>Learnthespec — AI news and comparisons</title>
 <meta name="description" content="AI and gadget comparisons compiled from public specs, pricing and benchmarks, with every source linked. One email a week.">
+<meta name="theme-color" content="#0A0E18">
 <link rel="stylesheet" href="/assets/fonts.css">
-<style>
+<style>  /* Layout: articles first. Slim header, bento of the newest work, a filterable index, the spec map, then the newsletter. */
+  :root {
+    color-scheme: dark;
+    --bg: #0A0E18; --bg-deep: #05070D; --surface: rgba(17,21,31,0.66); --surface-2: rgba(30,35,48,0.85);
+    --line: rgba(255,255,255,0.07); --line-2: rgba(255,255,255,0.13);
+    --ink: #EEF1F5; --ink-2: #9CA4B1; --ink-3: #626B79;
+    --accent: #FF7A3D; --accent-soft: rgba(255,122,61,0.12);
+    --t-rank: #FF7A3D; --t-cost: #45C8E0; --t-local: #A9D85C; --t-expl: #9E8EFF; --ok: #4FD69C;
+    --head: 'Archivo', 'Helvetica Neue', Arial, sans-serif;
+    --text: 'Nunito Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+    --mono: 'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace;
+    --r: 18px;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { margin: 0; background: radial-gradient(1200px 700px at 50% -10%, #17203A 0%, var(--bg) 55%, var(--bg-deep) 100%) fixed, var(--bg-deep); color: var(--ink); font-family: var(--text); font-size: 16px; line-height: 1.55; overflow-x: hidden;
+    -webkit-font-smoothing: antialiased; }
+  a { color: inherit; text-decoration: none; }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 6px; }
+  .wrap { position: relative; max-width: 1240px; margin: 0 auto;
+    padding-left: max(28px, env(safe-area-inset-left, 0px)); padding-right: max(28px, env(safe-area-inset-right, 0px)); }
+  .meta { font-family: var(--mono); font-size: 11px; letter-spacing: 0.04em; color: var(--ink-3); font-variant-numeric: tabular-nums; }
 
-    html, body { height: 100%; margin: 0; background: #0A0C10; }
-    x-dc { display: block; height: 100%; }
-    a { color: #E4703A; text-decoration: none; }
-    a:hover { color: #F5936A; }
+  /* depth backdrop: a fixed 3D scene behind everything (perspective floor, horizon glow, drifting particles) */
+  .depth { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
+  .depth canvas { width: 100%; height: 100%; display: block; }
+  .vignette { position: fixed; inset: 0; z-index: 0; pointer-events: none;
+    background: radial-gradient(ellipse at 50% 40%, transparent 45%, rgba(3,4,8,0.55) 100%); }
+  .hdr { z-index: 50; } main, footer { position: relative; z-index: 1; }
 
-    .root { position: relative; width: 100%; height: 100vh; overflow: hidden;
-      background: linear-gradient(155deg, #1B1F28 0%, #101319 46%, #090B0F 100%);
-      font-family: 'Nunito Sans', system-ui, sans-serif; font-weight: 400; color: #E9EBEF; box-sizing: border-box; }
-    .glow { position: absolute; top: -180px; right: -140px; width: 660px; height: 660px; border-radius: 50%;
-      background: radial-gradient(circle, rgba(228,112,58,0.10) 0%, rgba(228,112,58,0) 68%); pointer-events: none; }
+  /* header */
+  body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 60; background: var(--bg); }
+  .hdr { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 50; background: rgba(9,12,20,0.6);
+    backdrop-filter: saturate(160%) blur(16px); -webkit-backdrop-filter: saturate(160%) blur(16px); border-bottom: 1px solid var(--line); }
+  .hdr .wrap { display: flex; align-items: center; gap: 28px; height: 60px; }
+  .logo { display: flex; align-items: center; gap: 10px; font-family: var(--head); font-weight: 700; font-size: 15px; letter-spacing: 0.16em; text-transform: uppercase; }
+  .mark { width: 22px; height: 22px; border-radius: 6px; background: linear-gradient(135deg, #FF9A64, #FF5F1F);
+    box-shadow: 0 0 18px rgba(255,122,61,0.45); position: relative; }
+  .mark::after { content: ""; position: absolute; inset: 6px; border-radius: 2px; border: 1.5px solid rgba(10,10,12,0.85); }
+  .nav { display: flex; gap: 4px; }
+  .nav a { padding: 7px 12px; border-radius: 8px; font-family: var(--head); font-weight: 500; font-size: 14px; color: var(--ink-2); transition: color .2s, background .2s; }
+  .nav a:hover { color: var(--ink); background: rgba(255,255,255,0.05); }
+  .hdr-right { margin-left: auto; display: flex; align-items: center; gap: 10px; }
+  .search { display: flex; align-items: center; gap: 10px; height: 36px; width: 240px; padding: 0 8px 0 12px; border-radius: 10px;
+    border: 1px solid var(--line-2); background: rgba(255,255,255,0.03); color: var(--ink-3); font-size: 14px; cursor: text; }
+  .kbd { margin-left: auto; font-family: var(--mono); font-size: 10.5px; padding: 1px 6px; border-radius: 5px; border: 1px solid var(--line-2); }
+  .ghost { height: 36px; padding: 0 14px; border-radius: 10px; border: 1px solid var(--line-2); background: none; color: var(--ink);
+    font-family: var(--head); font-weight: 600; font-size: 13.5px; cursor: pointer; display: inline-flex; align-items: center; }
+  .ghost:hover { border-color: rgba(255,255,255,0.28); }
+  .icon { display: none; width: 36px; height: 36px; padding: 0; justify-content: center; }
 
-    .page { position: relative; height: 100%; overflow-y: auto; box-sizing: border-box;
-      padding: 46px 56px 118px 56px; transition: filter .4s ease;
-      scrollbar-width: thin; scrollbar-color: rgba(255,255,255,0.16) transparent; }
-    .page::-webkit-scrollbar { width: 7px; }
-    .page::-webkit-scrollbar-track { background: transparent; }
-    .page::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 4px; }
-    .root.searching .page { filter: blur(7px); }
+  /* intro line: one sentence, then straight into articles */
+  .intro { position: relative; padding: 44px 0 26px; display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; flex-wrap: wrap; }
+  .intro h1 { margin: 0; font-family: var(--head); font-weight: 700; font-size: clamp(30px, 4vw, 44px); line-height: 1.05; letter-spacing: -0.03em; text-wrap: balance; max-width: 18em; }
+  .intro h1 span { background: linear-gradient(90deg, #FFB088, #FF6A2B); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .status { display: flex; align-items: center; gap: 8px; }
+  .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--ok); box-shadow: 0 0 0 4px rgba(79,214,156,0.14); }
 
+  /* spotlight cards: a soft light follows the cursor */
+  .card { position: relative; display: flex; flex-direction: column; border-radius: var(--r); background: var(--surface);
+    backdrop-filter: blur(14px) saturate(140%); -webkit-backdrop-filter: blur(14px) saturate(140%);
+    box-shadow: 0 1px 0 rgba(255,255,255,0.05) inset, 0 20px 50px -20px rgba(0,0,0,0.6);
+    border: 1px solid var(--line); overflow: hidden; isolation: isolate; transition: border-color .25s, transform .25s; }
+  .card::before { content: ""; position: absolute; inset: 0; z-index: -1; opacity: 0; transition: opacity .3s;
+    background: radial-gradient(420px circle at var(--mx, 50%) var(--my, 50%), rgba(255,255,255,0.06), transparent 45%); }
+  .card:hover { border-color: var(--line-2); transform: translateY(-2px); }
+  .card:hover::before { opacity: 1; }
+  .topic { display: inline-flex; align-items: center; gap: 7px; font-family: var(--mono); font-size: 11px; letter-spacing: 0.04em; color: var(--ink-2); }
+  .topic i { width: 7px; height: 7px; border-radius: 2px; background: var(--c); }
+  .badge { font-family: var(--mono); font-size: 10.5px; padding: 2px 8px; border-radius: 999px; background: var(--accent-soft); color: var(--accent); }
 
-    .top { display: flex; gap: 44px; align-items: flex-start; }
-    .mission { width: 400px; flex-shrink: 0; display: flex; flex-direction: column; gap: 26px; }
-    .center { flex-grow: 1; min-width: 0; display: flex; flex-direction: column; gap: 24px; }
-    .rail { width: 300px; flex-shrink: 0; display: flex; flex-direction: column; gap: 20px; }
+  /* bento */
+  .bento { display: grid; grid-template-columns: 1.35fr 1fr 1fr; grid-template-rows: auto auto; gap: 16px; }
+  .feature { grid-row: span 2; padding: 26px 26px 0; }
+  .feature h2 { margin: 16px 0 8px; font-family: var(--head); font-weight: 700; font-size: 28px; line-height: 1.12; letter-spacing: -0.022em; text-wrap: balance; }
+  .feature p { margin: 0; color: var(--ink-2); max-width: 34em; }
+  .chart { margin: 24px -26px 0; padding: 20px 26px 22px; border-top: 1px solid var(--line); background: linear-gradient(to bottom, rgba(255,255,255,0.015), transparent); }
+  .chart-cap { display: flex; justify-content: space-between; margin-bottom: 14px; }
+  .bar-row { display: grid; grid-template-columns: 150px 1fr 50px; gap: 12px; align-items: center; padding: 6px 0; font-size: 14px; }
+  .bar-row .n { color: var(--ink-2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .bar { height: 8px; border-radius: 99px; background: rgba(255,255,255,0.05); overflow: hidden; }
+  .bar i { display: block; height: 100%; width: 0; border-radius: 99px; background: rgba(255,255,255,0.22); transition: width 1.1s cubic-bezier(.2,.7,.2,1); }
+  .bar-row.lead .bar i { background: linear-gradient(90deg, #FF5F1F, #FFA06E); box-shadow: 0 0 14px rgba(255,122,61,0.5); }
+  .bar-row.lead .n { color: var(--ink); }
+  .bar-row .v { font-family: var(--mono); font-size: 12px; text-align: right; font-variant-numeric: tabular-nums; }
+  .card-foot { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 16px 26px; margin: auto -26px 0; border-top: 1px solid var(--line); }
+  .checked { display: inline-flex; align-items: center; gap: 7px; color: var(--ok); }
+  .checked::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--ok); }
+  .go { font-family: var(--head); font-weight: 600; font-size: 14px; color: var(--accent); }
+  .go::after { content: " →"; display: inline-block; transition: transform .2s; }
+  .card:hover .go::after { transform: translateX(3px); }
 
-    .wordmark { font-family: 'Archivo', sans-serif; font-weight: 700; font-size: 16px; letter-spacing: 0.15em; text-transform: uppercase; color: #E9EBEF; }
-    .kicker { font-family: 'JetBrains Mono', monospace; font-size: 10.5px; letter-spacing: 0.16em; text-transform: uppercase; color: #E4703A; }
-    .lede { font-size: 22px; line-height: 1.46; color: #E9EBEF; }
-    .body { font-size: 17px; line-height: 1.62; color: #9BA2AE; }
+  .small { padding: 22px 22px 0; gap: 10px; }
+  .small h3 { margin: 4px 0 0; font-family: var(--head); font-weight: 600; font-size: 18.5px; line-height: 1.25; letter-spacing: -0.012em; text-wrap: balance; }
+  .small p { margin: 0; color: var(--ink-2); font-size: 14.5px; line-height: 1.5; }
+  .small .card-foot { margin: auto -22px 0; padding: 14px 22px; }
 
-    .panel { background: rgba(255,255,255,0.035); border: 1px solid rgba(255,255,255,0.10); border-radius: 8px; overflow: hidden; }
-    .panel-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px;
-      padding: 15px 22px; border-bottom: 1px solid rgba(255,255,255,0.10); }
-    .panel-label { font-family: 'Archivo', sans-serif; font-weight: 600; font-size: 12px; letter-spacing: 0.15em; text-transform: uppercase; color: #E9EBEF; }
-    .panel-meta { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: #6C7482; letter-spacing: 0.08em; white-space: nowrap; }
+  /* index */
+  section { padding-top: 72px; }
+  .sec-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 20px; flex-wrap: wrap; margin-bottom: 20px; }
+  .sec-head h2 { margin: 0; font-family: var(--head); font-weight: 700; font-size: 28px; letter-spacing: -0.022em; }
+  .sec-head p { margin: 4px 0 0; color: var(--ink-2); font-size: 15px; }
+  .tabs { display: inline-flex; padding: 4px; border-radius: 12px; background: var(--surface); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid var(--line); gap: 2px; position: relative; flex-wrap: wrap; }
+  .tabs button { position: relative; z-index: 1; height: 32px; padding: 0 14px; border-radius: 8px; border: 0; background: none; cursor: pointer;
+    font-family: var(--head); font-weight: 500; font-size: 13.5px; color: var(--ink-2); display: inline-flex; align-items: center; gap: 7px; transition: color .2s, background .2s; }
+  .tabs button i { width: 7px; height: 7px; border-radius: 2px; background: var(--c); }
+  .tabs button:hover { color: var(--ink); }
+  .tabs button.on { background: var(--surface-2); color: var(--ink); box-shadow: 0 0 0 1px var(--line-2) inset; }
+  .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  .row { padding: 18px 20px; gap: 8px; min-height: 148px; }
+  .row-top { display: flex; justify-content: space-between; align-items: center; }
+  .row h3 { margin: 2px 0 0; font-family: var(--head); font-weight: 600; font-size: 16.5px; line-height: 1.28; letter-spacing: -0.01em; }
+  .row p { margin: 0; color: var(--ink-2); font-size: 14px; line-height: 1.45; flex: 1; }
+  .row .meta-row { display: flex; justify-content: space-between; }
+  .src-meter { display: flex; gap: 2px; align-items: center; }
+  .src-meter b { width: 3px; height: 9px; border-radius: 1px; background: rgba(255,255,255,0.1); }
+  .src-meter b.on { background: var(--c); }
+  .card.hide { display: none; }
+  .older { grid-column: span 2; padding: 18px 20px 8px; background: transparent; border-style: dashed; }
+  .older:hover { transform: none; }
+  .older ul { list-style: none; margin: 10px 0 0; padding: 0; display: grid; grid-template-columns: repeat(2, 1fr); gap: 0 28px; }
+  .older li a { display: flex; justify-content: space-between; gap: 12px; padding: 9px 0; border-top: 1px solid var(--line); font-size: 14.5px; color: var(--ink-2); }
+  .older li a:hover { color: var(--ink); }
 
-    .trend-row { display: flex; gap: 16px; overflow-x: auto; overscroll-behavior-x: contain; padding: 16px 22px 20px 22px;
-      scrollbar-width: thin; scrollbar-color: rgba(255,255,255,0.18) transparent; }
-    .trend-row::-webkit-scrollbar { height: 6px; }
-    .trend-row::-webkit-scrollbar-track { background: transparent; }
-    .trend-row::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.17); border-radius: 3px; }
-    .tcard { color: inherit; text-decoration: none; width: 230px; flex-shrink: 0; display: flex; flex-direction: column; gap: 7px;
-      background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 6px; padding: 15px 16px; cursor: pointer; transition: border-color .2s ease, background .2s ease; }
-    .tcard:hover { border-color: rgba(228,112,58,0.42); background: rgba(228,112,58,0.07); }
-    .tcard-rank { font-family: 'JetBrains Mono', monospace; font-size: 9.5px; letter-spacing: 0.14em; color: #E4703A; }
-    .tcard-title { font-family: 'Archivo', sans-serif; font-weight: 600; font-size: 15.5px; line-height: 1.26; letter-spacing: -0.012em; }
-    .tcard-meta { font-family: 'JetBrains Mono', monospace; font-size: 9.5px; color: #6C7482; }
+  /* spec map */
+  .map { padding: 0; }
+  .map-head { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; padding: 16px 20px; border-bottom: 1px solid var(--line); }
+  .stage { position: relative; height: 460px; cursor: grab; touch-action: pan-y; }
+  .stage:active { cursor: grabbing; }
+  canvas { display: block; width: 100%; height: 100%; }
+  .readout { position: absolute; top: 18px; right: 18px; width: 270px; padding: 16px 18px; border-radius: 14px;
+    background: rgba(14,16,21,0.82); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid var(--line-2); }
+  .readout h4 { margin: 8px 0 10px; font-family: var(--head); font-weight: 600; font-size: 17px; line-height: 1.25; }
+  .readout dl { margin: 0 0 12px; display: grid; grid-template-columns: auto 1fr; gap: 4px 12px; font-family: var(--mono); font-size: 11.5px; }
+  .readout dt { color: var(--ink-3); } .readout dd { margin: 0; text-align: right; font-variant-numeric: tabular-nums; }
+  .map-hint { position: absolute; left: 20px; bottom: 16px; pointer-events: none; }
 
-    .articles { position: relative; height: 500px; display: flex; flex-direction: column; }
-    .articles-scroll { flex-grow: 1; overflow-y: auto; padding: 2px 22px 34px 22px;
-      scrollbar-width: thin; scrollbar-color: rgba(255,255,255,0.18) transparent; }
-    .articles-scroll::-webkit-scrollbar { width: 6px; }
-    .articles-scroll::-webkit-scrollbar-track { background: transparent; }
-    .articles-scroll::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.17); border-radius: 3px; }
-    .articles-fade { position: absolute; left: 1px; right: 8px; bottom: 1px; height: 58px; border-radius: 0 0 8px 8px;
-      background: linear-gradient(to bottom, rgba(17,20,27,0) 0%, rgba(15,18,24,0.94) 74%); pointer-events: none; }
+  /* newsletter, now at the bottom */
+  .news { margin-top: 72px; padding: 40px; border-radius: 24px; border: 1px solid var(--line-2); position: relative; overflow: hidden;
+    display: grid; grid-template-columns: 1.1fr 1fr; gap: 40px; align-items: center;
+    background: radial-gradient(500px 240px at 0% 0%, rgba(255,122,61,0.14), transparent 70%), var(--surface); }
+  .news h2 { margin: 0 0 8px; font-family: var(--head); font-weight: 700; font-size: 28px; letter-spacing: -0.022em; line-height: 1.15; }
+  .news p { margin: 0; color: var(--ink-2); }
+  .form { display: flex; gap: 8px; }
+  .form input { flex: 1; min-width: 0; height: 46px; padding: 0 16px; border-radius: 12px; border: 1px solid var(--line-2); background: rgba(0,0,0,0.25);
+    color: var(--ink); font: inherit; font-size: 15px; outline: none; transition: border-color .2s, box-shadow .2s; }
+  .form input:focus { border-color: rgba(255,122,61,0.6); box-shadow: 0 0 0 4px rgba(255,122,61,0.12); }
+  .btn { height: 46px; padding: 0 20px; border-radius: 12px; border: 0; cursor: pointer; color: #120A05;
+    font-family: var(--head); font-weight: 700; font-size: 14.5px; background: linear-gradient(180deg, #FF9058, #FF6A2B);
+    box-shadow: 0 8px 24px rgba(255,106,43,0.28), inset 0 1px 0 rgba(255,255,255,0.3); }
+  .btn:hover { filter: brightness(1.06); }
+  .fine { margin-top: 10px; font-size: 13px; color: var(--ink-3); }
+  .form-msg { margin-top: 10px; font-size: 13.5px; color: var(--ok); }
 
-    .item { color: inherit; text-decoration: none; display: flex; gap: 16px; padding: 15px 0; border-bottom: 1px solid rgba(255,255,255,0.07); align-items: baseline; }
-    .item-date { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: #6C7482; width: 56px; flex-shrink: 0; padding-top: 5px; }
-    .item-body { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
-    .item-title { font-family: 'Archivo', sans-serif; font-weight: 600; font-size: 17.5px; line-height: 1.24; letter-spacing: -0.014em; transition: color .2s ease; }
-    .item:hover .item-title { color: #E4703A; }
-    .item-sub { font-size: 14.5px; line-height: 1.45; color: #9BA2AE; }
-    .item-chip { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: #E4703A; }
-    .item-meta { display: flex; gap: 14px; flex-wrap: wrap; }
-    .item-checked { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: #6C7482; }
+  .ad { margin-top: 56px; height: 90px; border-radius: 14px; border: 1px dashed var(--line-2); display: grid; place-items: center; }
 
-    .ad { border: 1px dashed rgba(255,255,255,0.17); background: rgba(255,255,255,0.025); border-radius: 6px;
-      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; box-sizing: border-box; text-align: center; }
-    .ad-tag { font-family: 'JetBrains Mono', monospace; font-size: 9.5px; letter-spacing: 0.16em; text-transform: uppercase; color: #6C7482; }
-    .ad-size { font-family: 'JetBrains Mono', monospace; font-size: 10.5px; color: #565E6C; padding: 0 16px; }
-    .ad-note { font-family: 'JetBrains Mono', monospace; font-size: 9.5px; color: #4E5663; line-height: 1.6; padding: 0 22px; }
+  footer { margin-top: 80px; border-top: 1px solid var(--line); background: rgba(5,7,13,0.6); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); padding-block: 40px 52px; }
+  .foot { display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 32px; }
+  .foot h5 { margin: 0 0 12px; font-family: var(--mono); font-weight: 400; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); }
+  .foot a:not(.logo) { display: block; padding: 3px 0; font-size: 14.5px; color: var(--ink-2); }
+  .foot a:not(.logo):hover { color: var(--ink); }
+  .foot p { margin: 14px 0 0; font-size: 14.5px; color: var(--ink-2); max-width: 28em; }
+  .foot-base { margin-top: 36px; padding-top: 18px; border-top: 1px solid var(--line); display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
 
-    .ad.ad-inline { display: none; }
+  /* entrance: content is visible at rest; JS only adds a gentle rise once */
+  .rise { animation: rise .7s cubic-bezier(.2,.7,.2,1) both; }
+  @keyframes rise { from { opacity: 0; transform: translateY(12px); } }
 
-    .wide { margin-top: 82px; width: 100%; }
-    .band { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.10); border-radius: 8px;
-      padding: 40px 44px; display: flex; gap: 56px; align-items: flex-start; }
-    .band-copy { flex-grow: 1; min-width: 0; display: flex; flex-direction: column; gap: 22px; }
-    .band-title { font-family: 'Archivo', sans-serif; font-weight: 700; font-size: 31px; letter-spacing: -0.024em; line-height: 1.1; }
-    .benefit-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 26px; }
-    .benefit { display: flex; gap: 13px; align-items: baseline; }
-    .benefit-mark { width: 5px; height: 5px; border-radius: 50%; background: #E4703A; flex-shrink: 0; transform: translateY(-3px); }
-    .benefit-text { font-size: 15.5px; line-height: 1.52; color: #C3C9D3; }
-    .band-form { width: 320px; flex-shrink: 0; display: flex; flex-direction: column; gap: 10px; }
-    .field-row { display: flex; gap: 0; align-items: stretch; }
-    .field { flex-grow: 1; min-width: 0; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.13); border-right: 0;
-      border-radius: 999px 0 0 999px; color: #6C7482; font-family: 'JetBrains Mono', monospace; font-size: 12.5px;
-      padding: 15px 20px; display: flex; align-items: center; }
-    .field-btn { background: #E4703A; color: #14171D; font-family: 'Archivo', sans-serif; font-weight: 700; font-size: 13px;
-      letter-spacing: 0.04em; padding: 15px 26px; border-radius: 0 999px 999px 0; display: flex; align-items: center; white-space: nowrap; }
-    .fineprint { font-family: 'JetBrains Mono', monospace; font-size: 10.5px; line-height: 1.65; color: #6C7482; }
-    .foot { margin-top: 30px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.07);
-      display: flex; justify-content: space-between; align-items: center; gap: 14px; flex-wrap: wrap;
-      font-family: 'JetBrains Mono', monospace; font-size: 10.5px; color: #5C6473; letter-spacing: 0.06em; }
+  @media (max-width: 1100px) {
+    .nav { display: none; }
+    .bento { grid-template-columns: 1fr 1fr; }
+    .feature { grid-column: 1 / -1; grid-row: auto; }
+    .grid { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 720px) {
+    .wrap { padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+    .hdr .wrap { height: 56px; gap: 10px; }
+    .logo { font-size: 13.5px; }
+    .search { display: none; }
+    .icon { display: inline-flex; }
+    .intro { padding: 26px 0 18px; }
+    .bento, .grid { grid-template-columns: 1fr; }
+    .feature { padding: 20px 18px 0; }
+    .feature h2 { font-size: 23px; }
+    .chart { margin: 20px -18px 0; padding: 16px 18px; }
+    .card-foot { margin: auto -18px 0; padding: 14px 18px; }
+    .bar-row { grid-template-columns: 104px 1fr 44px; font-size: 13px; }
+    .tabs { width: 100%; }
+    .tabs button { flex: 1 0 auto; justify-content: center; }
+    .older { grid-column: auto; }
+    .older ul { grid-template-columns: 1fr; }
+    .stage { height: 380px; }
+    .readout { left: 12px; right: 12px; top: auto; bottom: 12px; width: auto; padding: 12px 14px; }
+    .readout dl { display: none; }
+    .map-hint { display: none; }
+    .news { grid-template-columns: 1fr; padding: 26px 20px; gap: 20px; }
+    .form { flex-direction: column; }
+    .foot { grid-template-columns: 1fr 1fr; }
+    .foot > div:first-child { grid-column: 1 / -1; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .rise { animation: none; }
+    .card, .bar i { transition: none; }
+  }
 
-    .anchor { position: absolute; left: 0; right: 0; bottom: 0; height: 62px; z-index: 35;
-      background: rgba(14,17,22,0.96); border-top: 1px solid rgba(255,255,255,0.10);
-      backdrop-filter: blur(10px); display: flex; align-items: center; justify-content: center; gap: 18px; padding: 0 44px 0 16px; box-sizing: border-box; }
-    .anchor-close { position: absolute; right: 14px; top: 50%; transform: translateY(-50%);
-      width: 22px; height: 22px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.16);
-      display: flex; align-items: center; justify-content: center; cursor: pointer;
-      font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #7C8494; }
+  /* ---- production additions ---- */
+  /* .overlay and .no-match set display, which would beat the browser's own [hidden] rule */
+  [hidden] { display: none !important; }
+  .hdr { position: sticky; }
+  .search input { flex: 1; min-width: 0; background: none; border: 0; outline: none; color: var(--ink); font: inherit; font-size: 14px; }
+  .search input::placeholder { color: var(--ink-3); }
+  .search:focus-within { border-color: rgba(255,122,61,0.55); }
+  .count { display: inline; }
 
+  /* the article list is plain links in the HTML (crawlable, and the weekly routine edits it); script adds topics and filtering */
+  .articles-scroll { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  .articles-fade { display: none; }
+  .item { position: relative; display: flex; flex-direction: column; gap: 8px; padding: 18px 20px; min-height: 150px; border-radius: var(--r);
+    background: var(--surface); border: 1px solid var(--line) !important; overflow: hidden; isolation: isolate;
+    backdrop-filter: blur(14px) saturate(140%); -webkit-backdrop-filter: blur(14px) saturate(140%);
+    box-shadow: 0 1px 0 rgba(255,255,255,0.05) inset, 0 20px 50px -20px rgba(0,0,0,0.6); transition: border-color .25s, transform .25s; }
+  .item::before { content: ""; position: absolute; inset: 0; z-index: -1; opacity: 0; transition: opacity .3s;
+    background: radial-gradient(420px circle at var(--mx, 50%) var(--my, 50%), rgba(255,255,255,0.06), transparent 45%); }
+  .item:hover { border-color: var(--line-2) !important; transform: translateY(-2px); }
+  .item:hover::before { opacity: 1; }
+  .item-date { order: 4; display: none; }
+  .item-top { display: flex; justify-content: space-between; align-items: center; }
+  .item-body { display: flex; flex-direction: column; gap: 8px; flex: 1; }
+  .item-title { font-family: var(--head); font-weight: 600; font-size: 16.5px; line-height: 1.28; letter-spacing: -0.01em; }
+  .item-sub { color: var(--ink-2); font-size: 14px; line-height: 1.45; flex: 1; }
+  .item-meta { display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; font-family: var(--mono); font-size: 11px; color: var(--ink-3); letter-spacing: 0.03em; }
+  .item-chip { color: var(--ink-3); }
+  .item-checked { color: var(--ok); }
+  .item.hide, .older.hide { display: none; }
+  .older-list { list-style: none; margin: 10px 0 0; padding: 0; display: grid; grid-template-columns: repeat(2, 1fr); gap: 0 28px; }
+  .older-list a { display: flex; justify-content: space-between; gap: 12px; padding: 9px 0; border-top: 1px solid var(--line); font-size: 14.5px; color: var(--ink-2); }
+  .older-list a:hover { color: var(--ink); }
+  .no-match { grid-column: 1 / -1; padding: 28px; text-align: center; color: var(--ink-2); border: 1px dashed var(--line-2); border-radius: var(--r); }
+  .stat-tiles { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+  .stat-tiles div { padding: 14px 16px; border-radius: 12px; background: rgba(255,255,255,0.03); border: 1px solid var(--line); }
+  .stat-tiles b { display: block; font-family: var(--mono); font-weight: 500; font-size: 22px; color: var(--ink); }
+  .bento:empty { display: none; }
+  .field-btn:disabled { opacity: .55; cursor: default; }
 
+  /* mobile menu */
+  .overlay { position: fixed; inset: 0; z-index: 80; background: rgba(7,9,15,0.96); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+    display: flex; flex-direction: column; gap: 24px; padding: calc(16px + env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) calc(28px + env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px)); }
+  .overlay-top { display: flex; justify-content: space-between; align-items: center; }
+  .overlay .search { display: flex; width: 100%; height: 46px; }
+  .overlay nav { display: flex; flex-direction: column; }
+  .overlay nav a { padding: 14px 0; border-bottom: 1px solid var(--line); font-family: var(--head); font-weight: 700; font-size: 28px; letter-spacing: -0.02em; }
+  .overlay .legal { margin-top: auto; display: flex; gap: 20px; }
 
-
-
-    /* type-ahead dropdown */
-
-    /* full results view — the /search page */
-
-    /* ---- tablet: the rail cannot pay its way below 1200, so it moves into the flow ---- */
-    @media (max-width: 1199px) {
-      .rail { display: none; }
-      .ad.ad-inline { display: flex; height: 250px; }
-      .mission { width: 330px; }
-      .page { padding: 38px 40px 118px 40px; }
-    }
-
-    /* ---- stacked: one column ---- */
-    @media (max-width: 899px) {
-      .top { flex-direction: column; gap: 30px; }
-      .mission { width: 100%; }
-      .center { width: 100%; }
-      .wide { margin-top: 46px; }
-      .band { flex-direction: column; gap: 28px; padding: 32px 28px; }
-      .band-form { width: 100%; }
-      .benefit-grid { grid-template-columns: 1fr 1fr; gap: 20px; }
-      .lede { font-size: 20px; }
-      .body { font-size: 16px; }
-      .band-title { font-size: 27px; }
-    }
-
-    /* ---- phone ---- */
-    @media (max-width: 639px) {
-      .page { padding: 30px 20px 104px 20px; }
-      .benefit-grid { grid-template-columns: 1fr; gap: 16px; }
-      .articles { height: 420px; }
-      .tcard { width: 200px; }
-      .lede { font-size: 19px; }
-      .body { font-size: 15.5px; }
-      .band-title { font-size: 24px; }
-      .band { padding: 26px 22px; }
-      .item-date { width: 48px; }
-      .item-title { font-size: 16.5px; }
-      .panel-head { padding: 13px 16px; }
-      .articles-scroll { padding: 2px 16px 30px 16px; }
-      .trend-row { padding: 14px 16px 18px 16px; }
-      .foot { flex-direction: column; align-items: flex-start; gap: 8px; }
-      .anchor { height: 54px; padding: 0 40px 0 12px; }
-      .ad-size { font-size: 9.5px; }
-      .fab { width: 54px; height: 54px; right: 20px; bottom: 72px; }
-      .bar { width: 20px; }
-      .pill { right: 20px; font-size: 13.5px; padding: 12px 22px; }
-      .pill-1 { bottom: 140px; }
-      .pill-2 { bottom: 192px; }
-      .pill-3 { bottom: 244px; }
-      .search { bottom: 80px; right: 20px; }
-      .root.menu-open .search { bottom: 84px; right: 84px; width: calc(100% - 104px); }
-      .root.searching .search { bottom: 64%; right: 50%; width: calc(100% - 32px); }
-      .search-hint { display: none; }
-    }
-
-    /* form elements need resetting once they are real inputs rather than mock divs */
-    .field { font: inherit; font-family: 'JetBrains Mono', monospace; font-size: 12.5px;
-      outline: none; -webkit-appearance: none; appearance: none; }
-    .field::placeholder { color: #6C7482; }
-    .field:focus { border-color: rgba(228,112,58,0.5); }
-    .field-btn { border: 0; cursor: pointer; font-family: 'Archivo', sans-serif; }
-    .field-btn:disabled { opacity: 0.55; cursor: default; }
-    .field-row { position: relative; }
-    a.pill { text-decoration: none; }
-
-
-
+  @media (max-width: 1100px) { .articles-scroll { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 720px) {
+    .articles-scroll { grid-template-columns: 1fr; }
+    .older { grid-column: auto; }
+    .older-list { grid-template-columns: 1fr; }
+    .hdr .search { display: none; }
+  }
 </style>
-<link rel="stylesheet" href="/assets/nav.css">
 <script src="/assets/analytics.js" defer></script>
-<script src="/assets/nav.js" defer></script>
 </head>
-<body class="has-anchor">
+<body>
 
+<div class="depth" aria-hidden="true"><canvas id="depth"></canvas></div>
+<div class="vignette" aria-hidden="true"></div>
 
-<div class="root">
+<header class="hdr">
+  <div class="wrap">
+    <a class="logo" href="/"><span class="mark"></span>Learnthespec</a>
+    <nav class="nav" aria-label="Topics">
+      <a href="#index" data-jump="rank">Rankings</a>
+      <a href="#index" data-jump="cost">Costs &amp; limits</a>
+      <a href="#index" data-jump="local">Run it locally</a>
+      <a href="#index" data-jump="expl">Explainers</a>
+    </nav>
+    <div class="hdr-right">
+      <label class="search">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        <input type="search" id="q" placeholder="Search comparisons" aria-label="Search comparisons" autocomplete="off"><span class="kbd" aria-hidden="true">/</span>
+      </label>
+      <button class="ghost icon" type="button" id="menu-open" aria-label="Menu and search">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 8h16M4 16h16"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
 
-  <div class="glow"></div>
+<div class="overlay" id="overlay" hidden>
+  <div class="overlay-top"><a class="logo" href="/"><span class="mark"></span>Learnthespec</a><button class="ghost" type="button" id="menu-close">Close</button></div>
+  <label class="search">
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+    <input type="search" id="q2" placeholder="Search comparisons" aria-label="Search comparisons" autocomplete="off">
+  </label>
+  <nav aria-label="Topics">
+    <a href="#index" data-jump="rank">Rankings</a>
+    <a href="#index" data-jump="cost">Costs &amp; limits</a>
+    <a href="#index" data-jump="local">Run it locally</a>
+    <a href="#index" data-jump="expl">Explainers</a>
+    <a href="#newsletter">Newsletter</a>
+  </nav>
+  <div class="legal meta"><a href="/impressum/">Impressum</a><a href="/privacy/">Privacy</a><a href="/contact/">Contact</a></div>
+</div>
 
-  <div class="page">
+<main class="wrap" id="top">
 
-    <div class="top">
+  <div class="intro">
+    <h1>AI models, prices and hardware, <span>compared from the source.</span></h1>
+    <div class="status meta"><span class="dot"></span><div class="count">27 ARTICLES</div><span id="last-checked"></span></div>
+  </div>
 
-      <div class="mission">
-        <a class="wordmark" href="/">Learnthespec</a>
-        <div style="display: flex; flex-direction: column; gap: 15px;">
-          <div class="kicker">Why this exists</div>
-          <div class="lede">Every week brings new models, new benchmarks, and forty opinions about which one to use.</div>
-          <div class="body">We read the releases, the benchmark results and the reviews, then write up what they actually add up to — with a link to every source, so you can check any claim yourself.</div>
-          <div class="body">Prices, context limits and spec sheets get compiled by hand from the vendors' own pages, because nobody else keeps them in one table.</div>
-          <div class="body">No press-release rewrites, no affiliate rankings. Just what changed this week and whether it matters.</div>
-          <div class="kicker" style="margin-top: 12px;">Thanks</div>
-          <div class="body">This project owes a great deal to <strong style="color: #E9EBEF; font-weight: 600;">Lanzi Wang</strong>. Thank you.</div>
-        </div>
+  <div class="bento" id="bento"></div>
+
+  <section id="index">
+    <div class="sec-head">
+      <div><h2>Every comparison</h2><p>The newest edition of each, grouped by what you want to know.</p></div>
+      <div class="tabs" role="tablist" id="tabs">
+        <button class="on" data-t="all" role="tab" type="button">All</button>
+        <button data-t="rank" role="tab" type="button" style="--c:var(--t-rank)"><i></i>Rankings</button>
+        <button data-t="cost" role="tab" type="button" style="--c:var(--t-cost)"><i></i>Costs &amp; limits</button>
+        <button data-t="local" role="tab" type="button" style="--c:var(--t-local)"><i></i>Run it locally</button>
+        <button data-t="expl" role="tab" type="button" style="--c:var(--t-expl)"><i></i>Explainers</button>
       </div>
+    </div>
 
-      <div class="center">
-
-        <div class="panel">
-          <div class="panel-head">
-            <div class="panel-label">Start here</div>
-            <div class="panel-meta">27 ARTICLES</div>
-          </div>
-          <div class="trend-row">
-            <a class="tcard" href="/articles/best-ai-model-september-2026/">
-              <div class="tcard-rank">FLAGSHIPS</div>
-              <div class="tcard-title">Best AI Model, September 2026</div>
-              <div class="tcard-meta">24 SOURCES &middot; 04 SEP</div>
-            </a>
-            <a class="tcard" href="/articles/best-ai-for-coding-october-2026/">
-              <div class="tcard-rank">CODING</div>
-              <div class="tcard-title">Best AI for Coding, October 2026</div>
-              <div class="tcard-meta">18 SOURCES &middot; 18 OCT</div>
-            </a>
-            <a class="tcard" href="/articles/best-free-ai-october-2026/">
-              <div class="tcard-rank">FREE</div>
-              <div class="tcard-title">Best Free AI, October 2026</div>
-              <div class="tcard-meta">19 SOURCES &middot; 11 OCT</div>
-            </a>
-            <a class="tcard" href="/articles/best-gpu-for-local-ai-september-2026/">
-              <div class="tcard-rank">HARDWARE</div>
-              <div class="tcard-title">Best GPU for Local AI</div>
-              <div class="tcard-meta">8 SOURCES &middot; 04 SEP</div>
-            </a>
-          </div>
-        </div>
-
-        <div class="panel articles">
-          <div class="panel-head">
-            <div class="panel-label">Most recent</div>
-            <div class="panel-meta">25 OCT 2026</div>
-          </div>
-          <div class="articles-scroll">
-            <a class="item" href="/articles/best-ai-for-images-october-2026/"><div class="item-date">25 OCT</div><div class="item-body"><div class="item-title">Best AI for Images, October 2026</div><div class="item-sub">A hundred and six image models by blind preference vote, with the price of a thousand images beside each. The board now carries a version string.</div><div class="item-meta"><div class="item-chip">16 SOURCES</div><div class="item-checked">CHECKED 25 OCT 2026</div></div></div></a>
-            <a class="item" href="/articles/best-ai-for-coding-october-2026/"><div class="item-date">18 OCT</div><div class="item-body"><div class="item-title">Best AI for Coding, October 2026</div><div class="item-sub">The one current public board, the vendors&rsquo; own benchmark tables, list price and cost per task. One leaderboard has not scored a new model since February.</div><div class="item-meta"><div class="item-chip">18 SOURCES</div><div class="item-checked">CHECKED 18 OCT 2026</div></div></div></a>
-            <a class="item" href="/articles/best-free-ai-october-2026/"><div class="item-date">11 OCT</div><div class="item-body"><div class="item-title">Best Free AI, October 2026</div><div class="item-sub">Five free assistants, four developer APIs and four downloadable models: the models you reach, the limits, and what your content pays for.</div><div class="item-meta"><div class="item-chip">19 SOURCES</div><div class="item-checked">CHECKED 11 OCT 2026</div></div></div></a>
-            <a class="item" href="/articles/token-efficiency-compared-october-2026/"><div class="item-date">05 OCT</div><div class="item-body"><div class="item-title">Token Efficiency, Compared, October 2026</div><div class="item-sub">Thirteen models, one benchmark suite: the output tokens each spent, the peer median beside it, and what one task cost.</div><div class="item-meta"><div class="item-chip">16 SOURCES</div><div class="item-checked">CHECKED 5 OCT 2026</div></div></div></a>
-            <a class="item" href="/articles/subscription-or-api-october-2026/"><div class="item-date">04 OCT</div><div class="item-body"><div class="item-title">Subscription or API: Which Is Cheaper, October 2026</div><div class="item-sub">Plan prices against token rates, cost per finished task, and the effort level that changes every figure.</div><div class="item-meta"><div class="item-chip">13 SOURCES</div><div class="item-checked">CHECKED 4 OCT 2026</div></div></div></a>
-            <a class="item" href="/articles/voice-ai-prices-compared-september-2026/"><div class="item-date">20 SEP</div><div class="item-body"><div class="item-title">Voice AI Prices, Compared, September 2026</div><div class="item-sub">Six vendors bill one conversation in four different units. Per minute, per audio token, per hour and per character, on one page.</div><div class="item-meta"><div class="item-chip">8 SOURCES</div><div class="item-checked">CHECKED 20 SEP 2026</div></div></div></a>
-            <a class="item" href="/articles/prompt-caching-prices-compared-september-2026/"><div class="item-date">13 SEP</div><div class="item-body"><div class="item-title">Prompt Caching Prices, Compared, September 2026</div><div class="item-sub">What a cache hit costs at seven API vendors, plus write fees, lifetimes, batch discounts and off-peak rates.</div><div class="item-meta"><div class="item-chip">16 SOURCES</div><div class="item-checked">CHECKED 13 SEP 2026</div></div></div></a>
-            <a class="item" href="/articles/ai-jargon-defined-september-2026/"><div class="item-date">05 SEP</div><div class="item-body"><div class="item-title">AI Jargon, Defined, September 2026</div><div class="item-sub">Twenty-five terms with the number attached, from what a token is to why open weights is not open source.</div><div class="item-meta"><div class="item-chip">12 SOURCES</div><div class="item-checked">CHECKED 27 SEP 2026</div></div></div></a>
-            <a class="item" href="/articles/mcp-what-connects-to-what-september-2026/"><div class="item-date">05 SEP</div><div class="item-body"><div class="item-title">MCP: What Actually Connects to What, September 2026</div><div class="item-sub">One standard, and a different subset of it in every client. Plus the size caps and the rules the spec makes mandatory.</div><div class="item-meta"><div class="item-chip">7 SOURCES</div><div class="item-checked">CHECKED 5 SEP 2026</div></div></div></a>
-            <a class="item" href="/articles/every-ai-benchmark-explained-september-2026/"><div class="item-date">05 SEP</div><div class="item-body"><div class="item-title">Every AI Benchmark, Explained, September 2026</div><div class="item-sub">What each test actually asks, what the Intelligence Index is made of, and the three ways a percentage misleads.</div><div class="item-meta"><div class="item-chip">8 SOURCES</div><div class="item-checked">CHECKED 27 SEP 2026</div></div></div></a>
-            <a class="item" href="/articles/which-ai-can-use-your-computer-september-2026/"><div class="item-date">05 SEP</div><div class="item-body"><div class="item-title">Which AI Can Use Your Computer, September 2026</div><div class="item-sub">What each vendor lets a model click, what it is allowed to agree to, and why the three published scores cannot be ranked.</div><div class="item-meta"><div class="item-chip">9 SOURCES</div><div class="item-checked">CHECKED 28 SEP 2026</div></div></div></a>
-            <a class="item" href="/articles/best-gpu-for-local-ai-september-2026/"><div class="item-date">05 SEP</div><div class="item-body"><div class="item-title">Best GPU for Local AI, September 2026</div><div class="item-sub">Twelve cards priced per gigabyte of VRAM, and the driver fine print that decides whether the cheapest one works.</div><div class="item-meta"><div class="item-chip">8 SOURCES</div><div class="item-checked">CHECKED 5 SEP 2026</div></div></div></a>
-            <a class="item" href="/articles/token-efficiency-compared-september-2026/"><div class="item-date">04 SEP</div><div class="item-body"><div class="item-title">Token Efficiency, Compared, September 2026</div><div class="item-sub">Output tokens spent on one identical benchmark suite, and the bill each model ran up doing it.</div><div class="item-meta"><div class="item-chip">11 SOURCES</div><div class="item-checked">CHECKED 4 SEP 2026</div></div></div></a>
-            <a class="item" href="/articles/output-speed-compared-september-2026/"><div class="item-date">04 SEP</div><div class="item-body"><div class="item-title">Output Speed, Compared, September 2026</div><div class="item-sub">Tokens per second against time to first token. At maximum effort the flagships wait minutes before writing a word.</div><div class="item-meta"><div class="item-chip">9 SOURCES</div><div class="item-checked">CHECKED 4 SEP 2026</div></div></div></a>
-            <a class="item" href="/articles/rate-limits-compared-september-2026/"><div class="item-date">04 SEP</div><div class="item-body"><div class="item-title">Rate Limits and Usage Caps, Compared, September 2026</div><div class="item-sub">Exact per-minute API limits against consumer plans that publish no number at all, and what to do at the wall.</div><div class="item-meta"><div class="item-chip">8 SOURCES</div><div class="item-checked">CHECKED 4 SEP 2026</div></div></div></a>
-            <a class="item" href="/articles/context-windows-compared-september-2026/"><div class="item-date">04 SEP</div><div class="item-body"><div class="item-title">Context Windows, Compared Honestly, September 2026</div><div class="item-sub">What is advertised, how much text a million tokens really holds, and how well models reason at 100K.</div><div class="item-meta"><div class="item-chip">9 SOURCES</div><div class="item-checked">CHECKED 4 SEP 2026</div></div></div></a>
-            <a class="item" href="/articles/best-ai-for-video-september-2026/"><div class="item-date">04 SEP</div><div class="item-body"><div class="item-title">Best AI for Video, September 2026</div><div class="item-sub">Blind-vote rankings against per-second rates. An open-weight model ranks fourth and Sora is not in the top fifteen.</div><div class="item-meta"><div class="item-chip">8 SOURCES</div><div class="item-checked">CHECKED 4 SEP 2026</div></div></div></a>
-            <a class="item" href="/articles/best-ai-for-images-september-2026/"><div class="item-date">04 SEP</div><div class="item-body"><div class="item-title">Best AI for Images, September 2026</div><div class="item-sub">Fifteen models ranked by blind human preference, then priced. The open-weight gap is far wider than in text.</div><div class="item-meta"><div class="item-chip">8 SOURCES</div><div class="item-checked">CHECKED 4 SEP 2026</div></div></div></a>
-            <a class="item" href="/articles/what-hardware-runs-which-local-model-september-2026/"><div class="item-date">04 SEP</div><div class="item-body"><div class="item-title">What Hardware Runs Which Local Model, September 2026</div><div class="item-sub">Published download sizes at every compression level against the memory in real cards and Macs.</div><div class="item-meta"><div class="item-chip">10 SOURCES</div><div class="item-checked">CHECKED 4 SEP 2026</div></div></div></a>
-            <a class="item" href="/articles/subscription-or-api-september-2026/"><div class="item-date">04 SEP</div><div class="item-body"><div class="item-title">Subscription or API: Which Is Cheaper, September 2026</div><div class="item-sub">What &euro;20 buys on each side, in output pages and finished tasks, from published rates.</div><div class="item-meta"><div class="item-chip">10 SOURCES</div><div class="item-checked">CHECKED 4 SEP 2026</div></div></div></a>
-            <a class="item" href="/articles/best-free-ai-september-2026/"><div class="item-date">04 SEP</div><div class="item-body"><div class="item-title">Best Free AI, September 2026</div><div class="item-sub">Three routes to paying nothing: free assistant tiers, free developer APIs, and models you run yourself.</div><div class="item-meta"><div class="item-chip">10 SOURCES</div><div class="item-checked">CHECKED 4 SEP 2026</div></div></div></a>
-            <a class="item" href="/articles/best-open-weight-model-september-2026/"><div class="item-date">04 SEP</div><div class="item-body"><div class="item-title">Best Open-Weight Model, September 2026</div><div class="item-sub">Nine downloadable models on intelligence, cost per task, rate per million tokens, speed, context and licence.</div><div class="item-meta"><div class="item-chip">19 SOURCES</div><div class="item-checked">CHECKED 28 SEP 2026</div></div></div></a>
-            <a class="item" href="/articles/what-open-weights-mean-september-2026/"><div class="item-date">04 SEP</div><div class="item-body"><div class="item-title">What Open Weights Actually Mean, September 2026</div><div class="item-sub">Open weights is not open source. What each term requires, the licence per model, file sizes and what you give up.</div><div class="item-meta"><div class="item-chip">11 SOURCES</div><div class="item-checked">CHECKED 4 SEP 2026</div></div></div></a>
-            <a class="item" href="/articles/what-ai-can-do-when-coding-september-2026/"><div class="item-date">04 SEP</div><div class="item-body"><div class="item-title">What AI Can Actually Do When You Code, September 2026</div><div class="item-sub">Twelve capabilities across five coding tools, and what each one is allowed to touch on your machine.</div><div class="item-meta"><div class="item-chip">13 SOURCES</div><div class="item-checked">CHECKED 28 SEP 2026</div></div></div></a>
-            <a class="item" href="/articles/what-ai-chatbots-can-do-september-2026/"><div class="item-date">04 SEP</div><div class="item-body"><div class="item-title">What AI Chatbots Can Actually Do, September 2026</div><div class="item-sub">Fourteen capabilities across the four big assistants, what each is for, and where the published limits sit.</div><div class="item-meta"><div class="item-chip">11 SOURCES</div><div class="item-checked">CHECKED 25 OCT 2026</div></div></div></a>
-            <a class="item" href="/articles/best-ai-for-coding-september-2026/"><div class="item-date">04 SEP</div><div class="item-body"><div class="item-title">Best AI for Coding, September 2026</div><div class="item-sub">SWE-bench Verified and Terminal-Bench 4.0 against cost per task, and why the two disagree.</div><div class="item-meta"><div class="item-chip">16 SOURCES</div><div class="item-checked">CHECKED 4 SEP 2026</div></div></div></a>
-            <a class="item" href="/articles/best-ai-model-september-2026/" style="border-bottom: 0;"><div class="item-date">04 SEP</div><div class="item-body"><div class="item-title">Best AI Model, September 2026</div><div class="item-sub">Nine flagships on intelligence, price, cost per finished task, token efficiency, speed and context.</div><div class="item-meta"><div class="item-chip">24 SOURCES</div><div class="item-checked">CHECKED 27 SEP 2026</div></div></div></a>
-          </div>
+    <!-- Every article, newest first. The weekly routine adds a row at the top of this list:
+         keep the row markup, keep style="border-bottom: 0;" on the last row only. Topic, bento
+         and earlier-editions grouping are worked out by the script from the slug. -->
+    <div class="articles-scroll">
+      <a class="item" href="/articles/best-ai-for-images-october-2026/"><div class="item-date">25 OCT</div><div class="item-body"><div class="item-title">Best AI for Images, October 2026</div><div class="item-sub">A hundred and six image models by blind preference vote, with the price of a thousand images beside each. The board now carries a version string.</div><div class="item-meta"><div class="item-chip">16 SOURCES</div><div class="item-checked">CHECKED 25 OCT 2026</div></div></div></a>
+      <a class="item" href="/articles/best-ai-for-coding-october-2026/"><div class="item-date">18 OCT</div><div class="item-body"><div class="item-title">Best AI for Coding, October 2026</div><div class="item-sub">The one current public board, the vendors&rsquo; own benchmark tables, list price and cost per task. One leaderboard has not scored a new model since February.</div><div class="item-meta"><div class="item-chip">18 SOURCES</div><div class="item-checked">CHECKED 18 OCT 2026</div></div></div></a>
+      <a class="item" href="/articles/best-free-ai-october-2026/"><div class="item-date">11 OCT</div><div class="item-body"><div class="item-title">Best Free AI, October 2026</div><div class="item-sub">Five free assistants, four developer APIs and four downloadable models: the models you reach, the limits, and what your content pays for.</div><div class="item-meta"><div class="item-chip">19 SOURCES</div><div class="item-checked">CHECKED 11 OCT 2026</div></div></div></a>
+      <a class="item" href="/articles/token-efficiency-compared-october-2026/"><div class="item-date">05 OCT</div><div class="item-body"><div class="item-title">Token Efficiency, Compared, October 2026</div><div class="item-sub">Thirteen models, one benchmark suite: the output tokens each spent, the peer median beside it, and what one task cost.</div><div class="item-meta"><div class="item-chip">16 SOURCES</div><div class="item-checked">CHECKED 5 OCT 2026</div></div></div></a>
+      <a class="item" href="/articles/subscription-or-api-october-2026/"><div class="item-date">04 OCT</div><div class="item-body"><div class="item-title">Subscription or API: Which Is Cheaper, October 2026</div><div class="item-sub">Plan prices against token rates, cost per finished task, and the effort level that changes every figure.</div><div class="item-meta"><div class="item-chip">13 SOURCES</div><div class="item-checked">CHECKED 4 OCT 2026</div></div></div></a>
+      <a class="item" href="/articles/voice-ai-prices-compared-september-2026/"><div class="item-date">20 SEP</div><div class="item-body"><div class="item-title">Voice AI Prices, Compared, September 2026</div><div class="item-sub">Six vendors bill one conversation in four different units. Per minute, per audio token, per hour and per character, on one page.</div><div class="item-meta"><div class="item-chip">8 SOURCES</div><div class="item-checked">CHECKED 20 SEP 2026</div></div></div></a>
+      <a class="item" href="/articles/prompt-caching-prices-compared-september-2026/"><div class="item-date">13 SEP</div><div class="item-body"><div class="item-title">Prompt Caching Prices, Compared, September 2026</div><div class="item-sub">What a cache hit costs at seven API vendors, plus write fees, lifetimes, batch discounts and off-peak rates.</div><div class="item-meta"><div class="item-chip">16 SOURCES</div><div class="item-checked">CHECKED 13 SEP 2026</div></div></div></a>
+      <a class="item" href="/articles/ai-jargon-defined-september-2026/"><div class="item-date">05 SEP</div><div class="item-body"><div class="item-title">AI Jargon, Defined, September 2026</div><div class="item-sub">Twenty-five terms with the number attached, from what a token is to why open weights is not open source.</div><div class="item-meta"><div class="item-chip">12 SOURCES</div><div class="item-checked">CHECKED 27 SEP 2026</div></div></div></a>
+      <a class="item" href="/articles/mcp-what-connects-to-what-september-2026/"><div class="item-date">05 SEP</div><div class="item-body"><div class="item-title">MCP: What Actually Connects to What, September 2026</div><div class="item-sub">One standard, and a different subset of it in every client. Plus the size caps and the rules the spec makes mandatory.</div><div class="item-meta"><div class="item-chip">7 SOURCES</div><div class="item-checked">CHECKED 5 SEP 2026</div></div></div></a>
+      <a class="item" href="/articles/every-ai-benchmark-explained-september-2026/"><div class="item-date">05 SEP</div><div class="item-body"><div class="item-title">Every AI Benchmark, Explained, September 2026</div><div class="item-sub">What each test actually asks, what the Intelligence Index is made of, and the three ways a percentage misleads.</div><div class="item-meta"><div class="item-chip">8 SOURCES</div><div class="item-checked">CHECKED 27 SEP 2026</div></div></div></a>
+      <a class="item" href="/articles/which-ai-can-use-your-computer-september-2026/"><div class="item-date">05 SEP</div><div class="item-body"><div class="item-title">Which AI Can Use Your Computer, September 2026</div><div class="item-sub">What each vendor lets a model click, what it is allowed to agree to, and why the three published scores cannot be ranked.</div><div class="item-meta"><div class="item-chip">9 SOURCES</div><div class="item-checked">CHECKED 28 SEP 2026</div></div></div></a>
+      <a class="item" href="/articles/best-gpu-for-local-ai-september-2026/"><div class="item-date">05 SEP</div><div class="item-body"><div class="item-title">Best GPU for Local AI, September 2026</div><div class="item-sub">Twelve cards priced per gigabyte of VRAM, and the driver fine print that decides whether the cheapest one works.</div><div class="item-meta"><div class="item-chip">8 SOURCES</div><div class="item-checked">CHECKED 5 SEP 2026</div></div></div></a>
+      <a class="item" href="/articles/token-efficiency-compared-september-2026/"><div class="item-date">04 SEP</div><div class="item-body"><div class="item-title">Token Efficiency, Compared, September 2026</div><div class="item-sub">Output tokens spent on one identical benchmark suite, and the bill each model ran up doing it.</div><div class="item-meta"><div class="item-chip">11 SOURCES</div><div class="item-checked">CHECKED 4 SEP 2026</div></div></div></a>
+      <a class="item" href="/articles/output-speed-compared-september-2026/"><div class="item-date">04 SEP</div><div class="item-body"><div class="item-title">Output Speed, Compared, September 2026</div><div class="item-sub">Tokens per second against time to first token. At maximum effort the flagships wait minutes before writing a word.</div><div class="item-meta"><div class="item-chip">9 SOURCES</div><div class="item-checked">CHECKED 4 SEP 2026</div></div></div></a>
+      <a class="item" href="/articles/rate-limits-compared-september-2026/"><div class="item-date">04 SEP</div><div class="item-body"><div class="item-title">Rate Limits and Usage Caps, Compared, September 2026</div><div class="item-sub">Exact per-minute API limits against consumer plans that publish no number at all, and what to do at the wall.</div><div class="item-meta"><div class="item-chip">8 SOURCES</div><div class="item-checked">CHECKED 4 SEP 2026</div></div></div></a>
+      <a class="item" href="/articles/context-windows-compared-september-2026/"><div class="item-date">04 SEP</div><div class="item-body"><div class="item-title">Context Windows, Compared Honestly, September 2026</div><div class="item-sub">What is advertised, how much text a million tokens really holds, and how well models reason at 100K.</div><div class="item-meta"><div class="item-chip">9 SOURCES</div><div class="item-checked">CHECKED 4 SEP 2026</div></div></div></a>
+      <a class="item" href="/articles/best-ai-for-video-september-2026/"><div class="item-date">04 SEP</div><div class="item-body"><div class="item-title">Best AI for Video, September 2026</div><div class="item-sub">Blind-vote rankings against per-second rates. An open-weight model ranks fourth and Sora is not in the top fifteen.</div><div class="item-meta"><div class="item-chip">8 SOURCES</div><div class="item-checked">CHECKED 4 SEP 2026</div></div></div></a>
+      <a class="item" href="/articles/best-ai-for-images-september-2026/"><div class="item-date">04 SEP</div><div class="item-body"><div class="item-title">Best AI for Images, September 2026</div><div class="item-sub">Fifteen models ranked by blind human preference, then priced. The open-weight gap is far wider than in text.</div><div class="item-meta"><div class="item-chip">8 SOURCES</div><div class="item-checked">CHECKED 4 SEP 2026</div></div></div></a>
+      <a class="item" href="/articles/what-hardware-runs-which-local-model-september-2026/"><div class="item-date">04 SEP</div><div class="item-body"><div class="item-title">What Hardware Runs Which Local Model, September 2026</div><div class="item-sub">Published download sizes at every compression level against the memory in real cards and Macs.</div><div class="item-meta"><div class="item-chip">10 SOURCES</div><div class="item-checked">CHECKED 4 SEP 2026</div></div></div></a>
+      <a class="item" href="/articles/subscription-or-api-september-2026/"><div class="item-date">04 SEP</div><div class="item-body"><div class="item-title">Subscription or API: Which Is Cheaper, September 2026</div><div class="item-sub">What &euro;20 buys on each side, in output pages and finished tasks, from published rates.</div><div class="item-meta"><div class="item-chip">10 SOURCES</div><div class="item-checked">CHECKED 4 SEP 2026</div></div></div></a>
+      <a class="item" href="/articles/best-free-ai-september-2026/"><div class="item-date">04 SEP</div><div class="item-body"><div class="item-title">Best Free AI, September 2026</div><div class="item-sub">Three routes to paying nothing: free assistant tiers, free developer APIs, and models you run yourself.</div><div class="item-meta"><div class="item-chip">10 SOURCES</div><div class="item-checked">CHECKED 4 SEP 2026</div></div></div></a>
+      <a class="item" href="/articles/best-open-weight-model-september-2026/"><div class="item-date">04 SEP</div><div class="item-body"><div class="item-title">Best Open-Weight Model, September 2026</div><div class="item-sub">Nine downloadable models on intelligence, cost per task, rate per million tokens, speed, context and licence.</div><div class="item-meta"><div class="item-chip">19 SOURCES</div><div class="item-checked">CHECKED 28 SEP 2026</div></div></div></a>
+      <a class="item" href="/articles/what-open-weights-mean-september-2026/"><div class="item-date">04 SEP</div><div class="item-body"><div class="item-title">What Open Weights Actually Mean, September 2026</div><div class="item-sub">Open weights is not open source. What each term requires, the licence per model, file sizes and what you give up.</div><div class="item-meta"><div class="item-chip">11 SOURCES</div><div class="item-checked">CHECKED 4 SEP 2026</div></div></div></a>
+      <a class="item" href="/articles/what-ai-can-do-when-coding-september-2026/"><div class="item-date">04 SEP</div><div class="item-body"><div class="item-title">What AI Can Actually Do When You Code, September 2026</div><div class="item-sub">Twelve capabilities across five coding tools, and what each one is allowed to touch on your machine.</div><div class="item-meta"><div class="item-chip">13 SOURCES</div><div class="item-checked">CHECKED 28 SEP 2026</div></div></div></a>
+      <a class="item" href="/articles/what-ai-chatbots-can-do-september-2026/"><div class="item-date">04 SEP</div><div class="item-body"><div class="item-title">What AI Chatbots Can Actually Do, September 2026</div><div class="item-sub">Fourteen capabilities across the four big assistants, what each is for, and where the published limits sit.</div><div class="item-meta"><div class="item-chip">11 SOURCES</div><div class="item-checked">CHECKED 25 OCT 2026</div></div></div></a>
+      <a class="item" href="/articles/best-ai-for-coding-september-2026/"><div class="item-date">04 SEP</div><div class="item-body"><div class="item-title">Best AI for Coding, September 2026</div><div class="item-sub">SWE-bench Verified and Terminal-Bench 4.0 against cost per task, and why the two disagree.</div><div class="item-meta"><div class="item-chip">16 SOURCES</div><div class="item-checked">CHECKED 4 SEP 2026</div></div></div></a>
+      <a class="item" href="/articles/best-ai-model-september-2026/" style="border-bottom: 0;"><div class="item-date">04 SEP</div><div class="item-body"><div class="item-title">Best AI Model, September 2026</div><div class="item-sub">Nine flagships on intelligence, price, cost per finished task, token efficiency, speed and context.</div><div class="item-meta"><div class="item-chip">24 SOURCES</div><div class="item-checked">CHECKED 27 SEP 2026</div></div></div></a>
+    </div>
 <div class="articles-fade"></div>
-        </div>
+  </section>
 
-        <div class="ad ad-inline">
-          <div class="ad-tag">Advertisement</div>
-          <div class="ad-size">300 × 250 — the rail unit, moved inline below 1200 px</div>
-        </div>
-
+  <section>
+    <div class="card map">
+      <div class="map-head">
+        <div><h2 style="margin:0;font-family:var(--head);font-size:20px;letter-spacing:-0.015em">The spec map</h2>
+          <div class="meta" style="margin-top:2px">One tower per comparison · height = sources cited</div></div>
+        <div class="tabs" id="eds"><button class="on" data-e="all" type="button">All</button></div>
       </div>
-
-      <div class="rail">
-        <div class="ad" style="height: 600px;">
-          <div class="ad-tag">Advertisement</div>
-          <div class="ad-size">300 × 600</div>
-          <div class="ad-note">Half-page. 300 px because that is what buyers bid on — a 120 px rail gets almost no fill.</div>
-        </div>
-        <div style="font-family: 'JetBrains Mono', monospace; font-size: 9.5px; line-height: 1.7; color: #4E5663; padding: 0 2px;">SCROLLS AWAY WITH THE PAGE — NOT STICKY, SO IT NEVER SITS UNDER THE MENU BUTTON</div>
-      </div>
-
-    </div>
-
-    <div class="wide">
-      <div class="band">
-        <div class="band-copy">
-          <div style="display: flex; flex-direction: column; gap: 10px;">
-            <div class="band-title">Get the week's AI news in your inbox</div>
-            <div style="font-size: 17px; line-height: 1.5; color: #9BA2AE;">Everything that actually changed, in one email, with every source linked.</div>
-          </div>
-          <div class="benefit-grid">
-            <div class="benefit"><div class="benefit-mark"></div><div class="benefit-text"><span style="color: #E9EBEF; font-weight: 500;">One email a week.</span> Nothing in between — if the week was quiet, we say so in a line.</div></div>
-            <div class="benefit"><div class="benefit-mark"></div><div class="benefit-text"><span style="color: #E9EBEF; font-weight: 500;">New releases within days.</span> What launched, what it costs, and whether the published numbers back the claim.</div></div>
-            <div class="benefit"><div class="benefit-mark"></div><div class="benefit-text"><span style="color: #E9EBEF; font-weight: 500;">Every source linked.</span> Read the original whenever you want to — we would rather you checked than took our word.</div></div>
-          </div>
-        </div>
-        <div class="band-form">
-          <form class="field-row" id="subscribe" novalidate>
-            <input class="field" type="email" name="email" required autocomplete="email"
-                   placeholder="you@example.com" aria-label="Email address">
-            <button class="field-btn" type="submit">SUBSCRIBE</button>
-            <span style="position:absolute;left:-9999px" aria-hidden="true">
-              <input type="text" name="company" tabindex="-1" autocomplete="off">
-            </span>
-          </form>
-          <div class="fineprint" id="sub-status" role="status" aria-live="polite">A confirmation link arrives first — click it to finish. One click to leave, any time.</div>
-        </div>
-      </div>
-
-      <div class="ad" style="height: 92px; margin-top: 30px;">
-        <div class="ad-tag">Advertisement</div>
-        <div class="ad-size">728 × 90 — below the subscribe box, never above it</div>
-      </div>
-
-      <div class="foot">
-        <div>LEARNTHESPEC.COM — AI NEWS AND COMPARISONS, MUNICH</div>
-        <div><a href="/impressum/" style="color:#5C6473">IMPRESSUM</a> · <a href="/privacy/" style="color:#5C6473">PRIVACY</a> · <a href="/contact/" style="color:#5C6473">CONTACT</a></div>
+      <div class="stage" id="stage">
+        <canvas id="city" aria-label="3D map of all comparisons. Drag to rotate."></canvas>
+        <div class="readout" id="readout"></div>
+        <div class="map-hint meta">Drag to rotate · hover or tap a tower</div>
       </div>
     </div>
+  </section>
 
+  <div class="ad"><span class="meta">Advertisement</span></div>
+
+  <div class="news" id="newsletter">
+    <div>
+      <h2>The week in AI, with every source linked.</h2>
+      <p>One email a week: what launched, what it costs, and whether the published numbers back the claim.</p>
+    </div>
+    <div>
+      <form class="form field-row" id="subscribe" novalidate>
+        <input class="field" type="email" name="email" required autocomplete="email" placeholder="you@example.com" aria-label="Email address">
+        <button class="btn field-btn" type="submit">Subscribe</button>
+        <span style="position:absolute;left:-9999px" aria-hidden="true"><input type="text" name="company" tabindex="-1" autocomplete="off"></span>
+      </form>
+      <div class="fine" id="sub-status" role="status" aria-live="polite">A confirmation link arrives first. Click it to finish. One click to leave, any time.</div>
+    </div>
   </div>
 
-  <div class="anchor">
-    <div class="ad-tag">Advertisement</div>
-    <div class="ad-size">970 × 50 anchor — dismissible</div>
-    <div class="anchor-close">✕</div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot">
+      <div>
+        <a class="logo" href="/"><span class="mark"></span>Learnthespec</a>
+        <p>We read the releases, the benchmark results and the reviews, then write up what they add up to, with a link to every source. No press-release rewrites, no affiliate rankings.</p>
+      </div>
+      <div><h5>Topics</h5><a href="#index" data-jump="rank">Rankings</a><a href="#index" data-jump="cost">Costs &amp; limits</a><a href="#index" data-jump="local">Run it locally</a><a href="#index" data-jump="expl">Explainers</a></div>
+      <div><h5>Site</h5><a href="#newsletter">Newsletter</a><a href="/contact/">Contact</a></div>
+      <div><h5>Legal</h5><a href="/impressum/">Impressum</a><a href="/privacy/">Privacy</a></div>
+    </div>
+    <div class="foot-base"><span class="meta">learnthespec.com · AI news and comparisons, Munich</span><span class="meta">With thanks to Lanzi Wang</span></div>
   </div>
+</footer>
+
+<script>
+(function () {
+  'use strict';
+  var C = { rank: '#FF7A3D', cost: '#45C8E0', local: '#A9D85C', expl: '#9E8EFF' };
+  var NAMES = { rank: 'Rankings', cost: 'Costs & limits', local: 'Run it locally', expl: 'Explainers' };
+  var MONTHS = ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december'];
+  // Charts shown on the featured card when that article is the newest one. Figures from the article itself.
+  var CHARTS = {
+    'best-ai-for-coding-october-2026': { cap: 'Terminal-Bench 4.0 · tasks solved', rows: [
+      ['Claude Opus 5.5', 64.8], ['Claude Sonnet 5.5', 61.8], ['GPT-6 Astra', 58.2], ['GPT-6.1 Sol', 58.2], ['Claude Fable 5.1', 57.9]] },
+    // Elo is anchored at 1000 (FLUX.2 [dev]), so the bars start there rather than at zero.
+    'best-ai-for-images-october-2026': { cap: 'Image arena Elo · best model per company', side: 'From 1,000', min: 1000, max: 1250, unit: '', rows: [
+      ['GPT Image 2.5 Sunburst', 1222], ['Nano Banana 2.1', 1176], ['MAI-Image-2.6', 1166], ['Grok Imagine Image 2.0', 1166], ['Muse Image', 1127]] }
+  };
+  function topicOf(slug) {
+    if (/^best-gpu|hardware|open-weights-mean|local-model/.test(slug)) return 'local';
+    if (/^best-/.test(slug)) return 'rank';
+    if (/price|cost|limit|speed|efficiency|subscription|context-window|caching/.test(slug)) return 'cost';
+    return 'expl';
+  }
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  function txt(el, sel) { var n = el.querySelector(sel); return n ? n.textContent.trim() : ''; }
+
+  /* read the article list out of the page */
+  var list = document.querySelector('.articles-scroll');
+  var A = Array.prototype.map.call(list.querySelectorAll('a.item'), function (el, i) {
+    var url = el.getAttribute('href'), slug = url.replace(/^\/articles\/|\/$/g, '');
+    var m = slug.match(/-([a-z]+)-(\d{4})$/), mi = m ? MONTHS.indexOf(m[1]) : -1;
+    var title = txt(el, '.item-title');
+    return { el: el, url: url, slug: slug, title: title, stem: title.replace(/,\s*[A-Z][a-z]+ \d{4}$/, ''),
+      sum: txt(el, '.item-sub'), src: parseInt(txt(el, '.item-chip'), 10) || 0, date: txt(el, '.item-date'),
+      checked: txt(el, '.item-checked').replace(/^CHECKED\s+/i, ''), t: topicOf(slug), order: i,
+      ed: mi >= 0 ? m[1].slice(0, 3).toUpperCase() + ' ' + m[2] : '', edKey: mi >= 0 ? +m[2] * 12 + mi : 0,
+      edName: mi >= 0 ? m[1].charAt(0).toUpperCase() + m[1].slice(1) + ' ' + m[2] : '' };
+  });
+  var newestEd = Math.max.apply(null, A.map(function (a) { return a.edKey; }));
+  var latest = {};
+  A.forEach(function (a) { var p = latest[a.stem]; if (!p || a.edKey > p.edKey) latest[a.stem] = a; });
+  var current = A.filter(function (a) { return latest[a.stem] === a; });
+  var older = A.filter(function (a) { return latest[a.stem] !== a; });
+
+  /* dress each row: topic label and edition badge on top */
+  A.forEach(function (a) {
+    a.el.style.setProperty('--c', C[a.t]);
+    a.el.dataset.t = a.t;
+    var top = document.createElement('div');
+    top.className = 'item-top';
+    top.innerHTML = '<span class="topic"><i></i>' + esc(NAMES[a.t]) + '</span>' +
+      (a.edKey === newestEd ? '<span class="badge">' + esc(a.ed.split(' ')[0].charAt(0) + a.ed.split(' ')[0].slice(1).toLowerCase()) + '</span>' : '<span class="meta">' + esc(a.ed) + '</span>');
+    a.el.insertBefore(top, a.el.firstChild);
+    if (latest[a.stem] !== a) a.el.classList.add('is-older', 'hide');
+  });
+  var box = null;
+  if (older.length) {
+    box = document.createElement('div');
+    box.className = 'card older';
+    box.innerHTML = '<span class="topic" style="--c:var(--ink-3)"><i></i>Earlier editions</span><ul class="older-list">' + older.map(function (a) {
+      return '<li><a href="' + esc(a.url) + '"><span>' + esc(a.title) + '</span><span class="meta">' + esc(a.checked || a.ed) + '</span></a></li>';
+    }).join('') + '</ul>';
+    list.appendChild(box);
+  }
+  var none = document.createElement('div'); none.className = 'no-match'; none.hidden = true; list.appendChild(none);
+
+  /* freshest check date for the status line */
+  var lc = A.map(function (a) { return a.checked; }).filter(Boolean)
+    .sort(function (x, y) { return Date.parse(y) - Date.parse(x); })[0];
+  if (lc) document.getElementById('last-checked').textContent = ' · last checked ' + lc.toLowerCase().replace(/^(\d+) (\w)/, function (_, d, c) { return d + ' ' + c.toUpperCase(); });
+
+  /* bento: the five newest editions, the first one large */
+  var pick = current.slice().sort(function (x, y) { return y.edKey - x.edKey || x.order - y.order; }).slice(0, 5);
+  var bento = document.getElementById('bento');
+  bento.innerHTML = pick.map(function (a, i) {
+    var head = '<span class="topic" style="--c:' + C[a.t] + '"><i></i>' + esc(NAMES[a.t]) + '</span>';
+    if (i > 0) return '<a class="card small" href="' + esc(a.url) + '">' + head + '<h3>' + esc(a.title) + '</h3><p>' + esc(a.sum) + '</p>' +
+      '<div class="card-foot"><span class="meta">' + esc(a.date) + ' · ' + a.src + ' sources</span><span class="go">Read</span></div></a>';
+    var ch = CHARTS[a.slug], body;
+    if (ch) {
+      var lo = ch.min || 0, hi = ch.max || 100, unit = ch.unit === undefined ? '%' : ch.unit;
+      body = '<div class="chart"><div class="chart-cap"><span class="meta">' + esc(ch.cap) + '</span><span class="meta">' + esc(ch.side || 'Top ' + ch.rows.length) + '</span></div>' +
+        ch.rows.map(function (r, k) { return '<div class="bar-row' + (k ? '' : ' lead') + '"><span class="n">' + esc(r[0]) + '</span><span class="bar"><i data-w="' + ((r[1] - lo) / (hi - lo) * 100) + '"></i></span><span class="v">' + r[1].toLocaleString('en') + unit + '</span></div>'; }).join('') + '</div>';
+    } else {
+      body = '<div class="chart"><div class="stat-tiles"><div><b>' + a.src + '</b><span class="meta">Sources linked</span></div><div><b>' + esc(a.checked || a.date) + '</b><span class="meta">Last checked</span></div></div></div>';
+    }
+    return '<a class="card feature" href="' + esc(a.url) + '"><div style="display:flex;gap:10px;align-items:center"><span class="badge">New</span>' + head + '</div>' +
+      '<h2>' + esc(a.title) + '</h2><p>' + esc(a.sum) + '</p>' + body +
+      '<div class="card-foot"><span class="meta checked">Checked ' + esc(a.checked || a.date) + ' · ' + a.src + ' sources</span><span class="go">Read</span></div></a>';
+  }).join('');
+  requestAnimationFrame(function () { requestAnimationFrame(function () {
+    document.querySelectorAll('.bar i').forEach(function (i) { i.style.width = i.dataset.w + '%'; });
+  }); });
+
+  /* topic tabs and search share one filter */
+  var tabs = document.getElementById('tabs'), topic = 'all', query = '';
+  function apply() {
+    var q = query.trim().toLowerCase(), shown = 0;
+    tabs.querySelectorAll('button').forEach(function (b) { b.classList.toggle('on', b.dataset.t === topic); });
+    A.forEach(function (a) {
+      var pool = q ? true : latest[a.stem] === a;
+      var ok = pool && (topic === 'all' || a.t === topic) && (!q || (a.title + ' ' + a.sum).toLowerCase().indexOf(q) >= 0);
+      a.el.classList.toggle('hide', !ok); if (ok) shown++;
+    });
+    if (box) box.classList.toggle('hide', topic !== 'all' || !!q);
+    none.hidden = shown > 0;
+    none.textContent = 'Nothing matches "' + query.trim() + '". Try a model name, a price, or a topic.';
+  }
+  tabs.addEventListener('click', function (e) { var b = e.target.closest('button'); if (b) { topic = b.dataset.t; apply(); } });
+  document.querySelectorAll('[data-jump]').forEach(function (a) {
+    a.addEventListener('click', function () { topic = a.dataset.jump; query = ''; q1.value = q2.value = ''; apply(); closeMenu(); });
+  });
+  var q1 = document.getElementById('q'), q2 = document.getElementById('q2'), jumped = false;
+  function onQuery(e) {
+    query = e.target.value; topic = 'all'; apply();
+    if (!jumped && query) { jumped = true; document.getElementById('index').scrollIntoView({ behavior: 'smooth' }); }
+    if (!query) jumped = false;
+  }
+  q1.addEventListener('input', onQuery);
+  q2.addEventListener('input', onQuery);
+  q2.addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); closeMenu(); document.getElementById('index').scrollIntoView(); } });
+  document.addEventListener('keydown', function (e) {
+    var tag = document.activeElement && document.activeElement.tagName;
+    if (e.key === '/' && tag !== 'INPUT' && tag !== 'TEXTAREA') { e.preventDefault(); (q1.offsetParent ? q1 : q2).focus(); if (!q1.offsetParent) openMenu(); }
+    if (e.key === 'Escape') closeMenu();
+  });
+
+  /* mobile menu */
+  var ov = document.getElementById('overlay');
+  function openMenu() { ov.hidden = false; document.body.style.overflow = 'hidden'; }
+  function closeMenu() { ov.hidden = true; document.body.style.overflow = ''; }
+  document.getElementById('menu-open').addEventListener('click', function () { openMenu(); q2.focus(); });
+  document.getElementById('menu-close').addEventListener('click', closeMenu);
+  ov.querySelectorAll('nav a').forEach(function (a) { a.addEventListener('click', closeMenu); });
+
+  /* a soft light follows the cursor across cards */
+  document.addEventListener('pointermove', function (e) {
+    var c = e.target.closest && e.target.closest('.card, .item'); if (!c) return;
+    var r = c.getBoundingClientRect();
+    c.style.setProperty('--mx', (e.clientX - r.left) + 'px'); c.style.setProperty('--my', (e.clientY - r.top) + 'px');
+  });
+
+  /* depth backdrop */
+  (function () {
+    var c = document.getElementById('depth'), x = c.getContext('2d'), W, H, d = 1, mx = 0, my = 0, tx = 0, ty = 0, sy = 0;
+    var still = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var t0 = (1 + Math.sqrt(5)) / 2, ICO = [[-1,t0,0],[1,t0,0],[-1,-t0,0],[1,-t0,0],[0,-1,t0],[0,1,t0],[0,-1,-t0],[0,1,-t0],[t0,0,-1],[t0,0,1],[-t0,0,-1],[-t0,0,1]]
+      .map(function (v) { var l = Math.hypot(v[0], v[1], v[2]); return [v[0] / l, v[1] / l, v[2] / l]; });
+    var EDGES = []; for (var a1 = 0; a1 < 12; a1++) for (var b1 = a1 + 1; b1 < 12; b1++) {
+      var dx = ICO[a1][0] - ICO[b1][0], dy = ICO[a1][1] - ICO[b1][1], dz = ICO[a1][2] - ICO[b1][2]; if (Math.hypot(dx, dy, dz) < 1.1) EDGES.push([a1, b1]); }
+    var SOLIDS = [ { x: 0.84, y: 0.2, r: 0.2, sp: 9000, par: 50, col: '255,140,90' }, { x: 0.1, y: 0.72, r: 0.11, sp: 7000, par: 90, col: '110,210,235' } ];
+    var P = []; for (var i = 0; i < 140; i++) P.push({ x: Math.random() * 2 - 1, y: Math.random() * 2 - 1, z: Math.random(), s: Math.random() });
+    function size() { d = Math.min(2, window.devicePixelRatio || 1); W = innerWidth; H = innerHeight; c.width = W * d; c.height = H * d; x.setTransform(d, 0, 0, d, 0, 0); }
+    addEventListener('resize', size); size();
+    addEventListener('pointermove', function (e) { tx = e.clientX / W - 0.5; ty = e.clientY / H - 0.5; });
+    function draw(t) {
+      mx += (tx - mx) * 0.04; my += (ty - my) * 0.04; sy = scrollY;
+      x.clearRect(0, 0, W, H);
+      var hz = H * (0.56 - my * 0.04) - Math.min(sy * 0.08, H * 0.12), vx = W * (0.5 - mx * 0.06);
+      /* horizon glow */
+      var g = x.createRadialGradient(vx, hz, 0, vx, hz, W * 0.55);
+      g.addColorStop(0, 'rgba(255,122,61,0.30)'); g.addColorStop(0.35, 'rgba(120,90,200,0.12)'); g.addColorStop(1, 'rgba(0,0,0,0)');
+      x.fillStyle = g; x.fillRect(0, 0, W, H);
+      var g2 = x.createRadialGradient(W * 0.85, H * 0.1, 0, W * 0.85, H * 0.1, W * 0.45);
+      g2.addColorStop(0, 'rgba(69,200,224,0.10)'); g2.addColorStop(1, 'rgba(0,0,0,0)');
+      x.fillStyle = g2; x.fillRect(0, 0, W, H);
+      /* perspective floor: lines converge on the vanishing point and scroll toward the viewer */
+      var floor = H - hz, off = still ? 0 : (t / 5200) % 1;
+      x.lineWidth = 1;
+      for (var k = 0; k < 18; k++) {
+        var z = (k + 1 - off) / 18, yy = hz + floor * Math.pow(z, 2.2);
+        x.strokeStyle = 'rgba(150,175,255,' + (0.04 + 0.22 * z) + ')';
+        x.beginPath(); x.moveTo(0, yy); x.lineTo(W, yy); x.stroke();
+      }
+      for (var j = -22; j <= 22; j++) {
+        var bx = vx + j * W * 0.09;
+        var grd = x.createLinearGradient(0, hz, 0, H);
+        grd.addColorStop(0, 'rgba(140,170,255,0)'); grd.addColorStop(1, 'rgba(150,175,255,' + (0.22 - Math.abs(j) * 0.006) + ')');
+        x.strokeStyle = grd; x.beginPath(); x.moveTo(vx + j * 6, hz); x.lineTo(bx + (bx - vx) * 1.6, H); x.stroke();
+      }
+      /* fade the floor into the horizon */
+      var fade = x.createLinearGradient(0, hz - 40, 0, hz + floor * 0.25);
+      fade.addColorStop(0, 'rgba(10,14,24,1)'); fade.addColorStop(1, 'rgba(10,14,24,0)');
+      x.fillStyle = fade; x.fillRect(0, hz - 40, W, floor * 0.25 + 40);
+      /* floating wireframe solids give the scene a sense of volume */
+      SOLIDS.forEach(function (o) {
+        var a = (still ? 0.6 : t / o.sp) , ca = Math.cos(a), sa = Math.sin(a), cb = Math.cos(a * 0.7), sb = Math.sin(a * 0.7);
+        var cx = W * o.x - mx * o.par, cy = H * o.y - my * o.par * 0.6 - sy * o.par * 0.004 * H / 10, R = Math.min(W, H) * o.r;
+        var pts = ICO.map(function (v) {
+          var x1 = v[0] * ca - v[2] * sa, z1 = v[0] * sa + v[2] * ca, y1 = v[1] * cb - z1 * sb, z2 = v[1] * sb + z1 * cb;
+          var k = 2.6 / (2.6 + z2); return [cx + x1 * R * k, cy + y1 * R * k, z2];
+        });
+        EDGES.forEach(function (e) {
+          var p1 = pts[e[0]], p2 = pts[e[1]], depth = 1 - ((p1[2] + p2[2]) / 2 + 1) / 2;
+          x.strokeStyle = 'rgba(' + o.col + ',' + (0.05 + 0.30 * depth) + ')';
+          x.beginPath(); x.moveTo(p1[0], p1[1]); x.lineTo(p2[0], p2[1]); x.stroke();
+        });
+        pts.forEach(function (q) { var dd = 1 - (q[2] + 1) / 2; x.fillStyle = 'rgba(' + o.col + ',' + (0.15 + 0.6 * dd) + ')'; x.beginPath(); x.arc(q[0], q[1], 1 + dd * 1.4, 0, 6.3); x.fill(); });
+      });
+      /* particles: nearer ones are bigger, brighter and move more with the mouse and scroll */
+      P.forEach(function (p) {
+        if (!still) { p.z -= 0.0007; if (p.z < 0.02) { p.z = 1; p.x = Math.random() * 2 - 1; p.y = Math.random() * 2 - 1; } }
+        var k2 = 1 / (p.z + 0.25), px = vx + p.x * W * 0.5 * k2 * 0.6 - mx * 60 * k2, py = H * 0.42 + p.y * H * 0.5 * k2 * 0.6 - my * 40 * k2 - sy * 0.05 * k2;
+        if (px < -10 || px > W + 10 || py < -10 || py > H + 10) return;
+        var a = Math.min(1, (1 - p.z) * 1.2) * 0.55, r = 0.4 + (1 - p.z) * 1.6;
+        x.fillStyle = p.s > 0.86 ? 'rgba(255,150,100,' + a + ')' : 'rgba(190,210,255,' + a + ')';
+        x.beginPath(); x.arc(px, py, r, 0, 6.3); x.fill();
+      });
+      if (!still) requestAnimationFrame(draw);
+    }
+    requestAnimationFrame(draw);
+  })();
 
 
+  /* spec map: isometric towers on canvas */
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var cv = document.getElementById('city'), ctx = cv.getContext('2d'), stage = document.getElementById('stage'), ro = document.getElementById('readout');
+  var COLS = 6, rot = 0.62, target = 0.62, edition = 'all', hover = null, pinned = null, W = 0, H = 0, dpr = 1, dragging = false, lastX = 0, moved = 0, paths = [];
+  var ROWS = Math.ceil(A.length / COLS);
+  A.forEach(function (a, i) { a.gx = (i % COLS) - (COLS - 1) / 2; a.gy = Math.floor(i / COLS) - (ROWS - 1) / 2; a.h = 0; a.lit = 1; });
+  var maxSrc = Math.max.apply(null, A.map(function (a) { return a.src; })) || 1;
+  function resize() { dpr = Math.min(2, window.devicePixelRatio || 1); W = stage.clientWidth; H = stage.clientHeight; cv.width = W * dpr; cv.height = H * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0); }
+  window.addEventListener('resize', resize); resize();
+  function rgba(hex, f, al) { var n = parseInt(hex.slice(1), 16); return 'rgba(' + ((n >> 16) * f | 0) + ',' + ((n >> 8 & 255) * f | 0) + ',' + ((n & 255) * f | 0) + ',' + al + ')'; }
+  function show(a) {
+    a = a || pick[0];
+    ro.innerHTML = '<span class="topic" style="--c:' + C[a.t] + '"><i></i>' + esc(NAMES[a.t]) + '</span><h4>' + esc(a.title) + '</h4>' +
+      '<dl><dt>Sources</dt><dd>' + a.src + '</dd><dt>Checked</dt><dd>' + esc(a.checked || a.date) + '</dd></dl><a class="go" href="' + esc(a.url) + '">Read</a>';
+  }
+  show(null);
+  function frame(t) {
+    rot += (target - rot) * 0.08;
+    if (!dragging && !reduce) target += 0.0012;
+    var s = Math.min(W / 10, H / 6.6), cx = W / 2, cy = H * 0.6, cos = Math.cos(rot), sin = Math.sin(rot);
+    function P(x, y, z) { var rx = x * cos - y * sin, ry = x * sin + y * cos; return [cx + rx * s, cy + ry * s * 0.5 - z * s]; }
+    ctx.clearRect(0, 0, W, H);
+    ctx.lineWidth = 1;
+    for (var g = -4; g <= 4; g++) {
+      var a1 = P(g, -4, 0), a2 = P(g, 4, 0), b1 = P(-4, g, 0), b2 = P(4, g, 0);
+      ctx.strokeStyle = 'rgba(255,255,255,0.045)';
+      ctx.beginPath(); ctx.moveTo(a1[0], a1[1]); ctx.lineTo(a2[0], a2[1]); ctx.moveTo(b1[0], b1[1]); ctx.lineTo(b2[0], b2[1]); ctx.stroke();
+    }
+    var order = A.map(function (a) { return { a: a, d: a.gx * sin + a.gy * cos }; }).sort(function (x, y) { return x.d - y.d; });
+    paths = [];
+    order.forEach(function (o) {
+      var a = o.a, w = 0.3, on = edition === 'all' || a.ed === edition, focus = (hover || pinned) === a;
+      a.lit += ((on ? 1 : 0) - a.lit) * 0.1;
+      a.h += (a.src / maxSrc * 2 * (0.15 + 0.85 * a.lit) - a.h) * 0.07;
+      var col = C[a.t], al = 0.18 + 0.82 * a.lit;
+      var c = [[-w, -w], [w, -w], [w, w], [-w, w]].map(function (v) { return [a.gx + v[0], a.gy + v[1]]; });
+      var faces = [];
+      for (var i = 0; i < 4; i++) {
+        var u = c[i], v = c[(i + 1) % 4], mx = (u[0] + v[0]) / 2 - a.gx, my = (u[1] + v[1]) / 2 - a.gy;
+        if (mx * sin + my * cos > 0) faces.push({ p: [P(u[0], u[1], 0), P(v[0], v[1], 0), P(v[0], v[1], a.h), P(u[0], u[1], a.h)], f: 0.3 + 0.25 * (((mx * cos - my * sin) / w) + 1) / 2 });
+      }
+      faces.push({ p: c.map(function (u) { return P(u[0], u[1], a.h); }), f: 0.95, top: true });
+      var all = new Path2D();
+      faces.forEach(function (fc) {
+        var pp = new Path2D(); pp.moveTo(fc.p[0][0], fc.p[0][1]); fc.p.slice(1).forEach(function (q) { pp.lineTo(q[0], q[1]); }); pp.closePath();
+        ctx.fillStyle = rgba(col, fc.f * (focus ? 1.2 : 1), al * (fc.top ? 0.95 : 0.7)); ctx.fill(pp);
+        ctx.strokeStyle = rgba(col, 1.3, al * (focus ? 0.95 : 0.35)); ctx.stroke(pp);
+        all.addPath(pp);
+      });
+      if (focus) { var tp = P(a.gx, a.gy, a.h); ctx.save(); ctx.shadowColor = col; ctx.shadowBlur = 22; ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(tp[0], tp[1], 2.5, 0, 7); ctx.fill(); ctx.restore(); }
+      paths.push({ a: a, p: all });
+    });
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+  function pick(e) { var r = cv.getBoundingClientRect(), x = (e.clientX - r.left) * dpr, y = (e.clientY - r.top) * dpr;
+    for (var i = paths.length - 1; i >= 0; i--) if (ctx.isPointInPath(paths[i].p, x, y)) return paths[i].a; return null; }
+  cv.addEventListener('pointerdown', function (e) { dragging = true; lastX = e.clientX; moved = 0; });
+  window.addEventListener('pointerup', function (e) {
+    if (dragging && moved < 5 && e.target === cv) { var a = pick(e); if (a) { pinned = a; show(a); } }
+    dragging = false;
+  });
+  window.addEventListener('pointermove', function (e) {
+    if (dragging) { var dx = e.clientX - lastX; lastX = e.clientX; moved += Math.abs(dx); target += dx * 0.008; return; }
+    if (e.target !== cv) return;
+    var a = pick(e); if (a !== hover) { hover = a; if (a) show(a); else show(pinned); }
+  });
+  var eds = document.getElementById('eds');
+  A.map(function (a) { return a; }).sort(function (x, y) { return x.edKey - y.edKey; }).forEach(function (a) {
+    if (a.ed && !eds.querySelector('[data-e="' + a.ed + '"]')) {
+      var b = document.createElement('button'); b.type = 'button'; b.dataset.e = a.ed; b.textContent = a.edName.replace(/^(\w{3})\w*/, '$1'); eds.appendChild(b);
+    }
+  });
+  eds.addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    this.querySelectorAll('button').forEach(function (x) { x.classList.toggle('on', x === b); }); edition = b.dataset.e;
+  });
 
 
-  </div>
-
+})();
+</script>
 
 <script>
 (function () {
