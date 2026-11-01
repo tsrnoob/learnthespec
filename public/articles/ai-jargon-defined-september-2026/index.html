@@ -6,7 +6,7 @@
 <meta name="google-adsense-account" content="ca-pub-6413233215513891">
 <script id="google-cmp" async src="https://fundingchoicesmessages.google.com/i/pub-6413233215513891?ers=1"></script>
 <title>AI Jargon, Defined, September 2026 — Learnthespec</title>
-<meta name="description" content="Twenty-five terms, each defined with the number attached: how many characters a token is, what the Intelligence Index averages, what an Elo of 1200 is measured against, and why open weights is not open source. Checked 27 September 2026.">
+<meta name="description" content="Twenty-five terms, each defined with the number attached: how many characters a token is, what the Intelligence Index averages, what an Elo of 1200 is measured against, and why open weights is not open source. Checked 1 November 2026.">
 <link rel="stylesheet" href="/assets/fonts.css">
 <style>
 
@@ -209,7 +209,7 @@
           <span class="who">Tsrnoob</span>
           <span>5 SEPTEMBER 2026</span>
           <span>COMPILED FROM 12 SOURCES</span>
-          <span class="badge">CHECKED 27 SEP 2026</span>
+          <span class="badge">CHECKED 1 NOV 2026</span>
         </div>
 
         <div class="prose">
@@ -251,7 +251,7 @@
               <tr><td class="name">Output speed</td><td>Average tokens received per second <em>after</em> the first token arrives.</td><td class="quiet"><a href="#s4">[4]</a></td></tr>
               <tr><td class="name">Latency</td><td>The delay between submitting a prompt and receiving the output. Moves with model size, hardware, network and prompt complexity.</td><td class="quiet"><a href="#s1">[1]</a></td></tr>
               <tr><td class="name">Benchmark</td><td>A fixed task set plus a marking rule. Change either half and the number changes.</td><td class="quiet"><a href="#s5">[5]</a></td></tr>
-              <tr><td class="name">Intelligence Index</td><td>A composite, currently v4.3.2: ten evaluations weighted as agents 30%, general 30%, coding 20%, scientific reasoning 20%.</td><td class="quiet"><a href="#s5">[5]</a></td></tr>
+              <tr><td class="name">Intelligence Index</td><td>A composite, currently v5.0: nine evaluations in four categories, knowledge work, coding, science and general, weighted at 25% each.</td><td class="quiet"><a href="#s5">[5]</a></td></tr>
               <tr><td class="name">Arena Elo</td><td>A rating fitted from blind pairwise votes by Bradley-Terry maximum likelihood, then <strong>anchored by fixing one model at 1000</strong>.</td><td class="quiet"><a href="#s6">[6]</a></td></tr>
             </tbody>
           </table>
@@ -319,7 +319,7 @@
 
           <h2>Three of these changed this year</h2>
           <p>A glossary of a moving field dates in a specific way: the word survives and the thing underneath it does not.</p>
-          <p>The Intelligence Index is on version 4.3.2, so scores published under earlier versions measure something else.<sup><a href="#s5">5</a></sup> MCP deprecated two of its client primitives, sampling and logging, in specification version 2026-07-28.<sup><a href="#s12">12</a></sup> The Open Source AI Definition carries a version number for the same reason.<sup><a href="#s7">7</a></sup></p>
+          <p>The Intelligence Index is on version 5.0, so scores published under earlier versions measure something else.<sup><a href="#s5">5</a></sup> MCP deprecated two of its client primitives, sampling and logging, in specification version 2026-07-28.<sup><a href="#s12">12</a></sup> The Open Source AI Definition carries a version number for the same reason.<sup><a href="#s7">7</a></sup></p>
           <p>Check the version before quoting any of the three.</p>
 
           <h2>Which term to look up when</h2>
@@ -344,13 +344,13 @@
 
         <div class="sources" id="sources">
           <h2>Sources</h2>
-          <div class="sources-note">SOURCE [5] RE-READ ON 27 SEPTEMBER 2026; ALL OTHER PAGES READ ON 5 SEPTEMBER 2026. NOTHING HERE WAS TESTED BY US. EACH TERM IS DEFINED FROM THE PAGE OF THE ORGANISATION THAT PUBLISHES OR MAINTAINS IT, NOT FROM A SECOND-HAND SUMMARY.</div>
+          <div class="sources-note">SOURCE [5] RE-READ ON 1 NOVEMBER 2026, AND ON 27 SEPTEMBER 2026 BEFORE THAT; ALL OTHER PAGES READ ON 5 SEPTEMBER 2026. NOTHING HERE WAS TESTED BY US. EACH TERM IS DEFINED FROM THE PAGE OF THE ORGANISATION THAT PUBLISHES OR MAINTAINS IT, NOT FROM A SECOND-HAND SUMMARY.</div>
           <ol>
             <li id="s1"><a href="https://platform.claude.com/docs/en/about-claude/glossary" rel="nofollow noopener" target="_blank">Anthropic, glossary</a>: a token as approximately 3.5 English characters; the context window as working memory distinct from training data; latency; time to first token; MCP as a USB-C port for AI applications; and retrieval augmented generation.<span class="pub">ANTHROPIC &middot; PLATFORM DOCUMENTATION</span></li>
             <li id="s2"><a href="https://developers.openai.com/api/docs/guides/reasoning" rel="nofollow noopener" target="_blank">OpenAI, reasoning models</a>: reasoning tokens are not visible via the API, occupy space in the context window, and are billed as output tokens.<span class="pub">OPENAI &middot; API DOCUMENTATION</span></li>
             <li id="s3"><a href="https://artificialanalysis.ai/models/gpt-6-astra" rel="nofollow noopener" target="_blank">Artificial Analysis, model page</a>: token efficiency published as the total output tokens a model burns running the Intelligence Index, against a peer median.<span class="pub">ARTIFICIAL ANALYSIS &middot; MODEL PAGE</span></li>
             <li id="s4"><a href="https://artificialanalysis.ai/methodology" rel="nofollow noopener" target="_blank">Artificial Analysis, methodology</a>: time to first token as the seconds between request and first token; output speed as average tokens per second after the first token.<span class="pub">ARTIFICIAL ANALYSIS &middot; METHODOLOGY</span></li>
-            <li id="s5"><a href="https://artificialanalysis.ai/methodology/intelligence-benchmarking" rel="nofollow noopener" target="_blank">Artificial Analysis, intelligence benchmarking</a>: Intelligence Index v4.3.2 as a weighted average of ten evaluations across agents 30%, general 30%, coding 20% and scientific reasoning 20%.<span class="pub">ARTIFICIAL ANALYSIS &middot; METHODOLOGY</span></li>
+            <li id="s5"><a href="https://artificialanalysis.ai/methodology/intelligence-benchmarking" rel="nofollow noopener" target="_blank">Artificial Analysis, intelligence benchmarking</a>: Intelligence Index v5.0 as a weighted average of nine evaluations across four categories at 25% each.<span class="pub">ARTIFICIAL ANALYSIS &middot; METHODOLOGY</span></li>
             <li id="s6"><a href="https://artificialanalysis.ai/text-to-image/methodology" rel="nofollow noopener" target="_blank">Artificial Analysis, text-to-image methodology</a>: blind pairwise voting with identities revealed only afterwards, ratings fitted by Bradley-Terry maximum likelihood and anchored by fixing FLUX.2 [dev] at 1000.<span class="pub">ARTIFICIAL ANALYSIS &middot; METHODOLOGY</span></li>
             <li id="s7"><a href="https://opensource.org/ai/open-source-ai-definition" rel="nofollow noopener" target="_blank">Open Source Initiative, Open Source AI Definition 1.0</a>: the freedoms to use, study, modify and share, together with data information, complete training and inference code, and model parameters, all under OSI-approved terms.<span class="pub">OPEN SOURCE INITIATIVE &middot; DEFINITION</span></li>
             <li id="s8"><a href="https://huggingface.co/docs/transformers/en/quantization/concept_guide" rel="nofollow noopener" target="_blank">Hugging Face, quantization concepts</a>: an int8 model is roughly four times smaller than float32; int4 halves it again and maps to the 16 values representable in four bits, with a larger accuracy drop.<span class="pub">HUGGING FACE &middot; DOCUMENTATION</span></li>
@@ -362,6 +362,7 @@
         </div>
 
         <div class="corrections">
+          UPDATED 1 NOVEMBER 2026: THE ARTIFICIAL ANALYSIS INTELLIGENCE INDEX IS ON v5.0, NOT v4.3.2. IT NOW CARRIES NINE EVALUATIONS IN FOUR CATEGORIES WEIGHTED AT 25% EACH, WHERE v4.3.2 CARRIED TEN AT 30/30/20/20. THE DEFINITION, THE SENTENCE NAMING THE VERSION AND SOURCE [5] WERE RE-READ AT THE METHODOLOGY PAGE AND CORRECTED. SCORES ARE NOT COMPARABLE ACROSS THE TWO VERSIONS. THE BYLINE KEEPS THE ORIGINAL PUBLICATION DATE; THE CHECKED BADGE IS TODAY'S.
           FOUND AN ERROR? DEFINITIONS MOVE: TOKEN RATIOS DIFFER BY MODEL AND LANGUAGE, THE INTELLIGENCE INDEX IS VERSIONED, AND THE MCP SPECIFICATION HAS ALREADY DEPRECATED PRIMITIVES. EVERYTHING HERE IS AS ITS OWN PUBLISHER STATES IT ON THE DATE ABOVE.
           MAIL <a href="mailto:contact@learnthespec.com">CONTACT@LEARNTHESPEC.COM</a> AND WE WILL CHECK IT AGAINST THE SOURCE.
           CORRECTIONS ARE MADE IN PLACE AND NOTED HERE WITH THE DATE.
