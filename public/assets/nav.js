@@ -285,3 +285,11 @@
     }, true);
   });
 })();
+
+/* light theme: the 3D key field behind the page lives in its own file */
+(function () {
+  var s = document.createElement('script');
+  s.src = '/assets/keyfield.js';
+  s.defer = true;
+  document.head.appendChild(s);
+})();
