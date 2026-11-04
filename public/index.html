@@ -3,6 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="icon" href="/favicon.ico" sizes="32x32">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
 <meta name="google-adsense-account" content="ca-pub-6413233215513891">
 <script id="google-cmp" async src="https://fundingchoicesmessages.google.com/i/pub-6413233215513891?ers=1"></script>
 <title>Learnthespec — AI news and comparisons</title>
@@ -45,9 +49,7 @@
     backdrop-filter: saturate(160%) blur(16px); -webkit-backdrop-filter: saturate(160%) blur(16px); border-bottom: 1px solid var(--line); }
   .hdr .wrap { display: flex; align-items: center; gap: 28px; height: 60px; }
   .logo { display: flex; align-items: center; gap: 10px; font-family: var(--head); font-weight: 700; font-size: 15px; letter-spacing: 0.16em; text-transform: uppercase; }
-  .mark { width: 22px; height: 22px; border-radius: 6px; background: linear-gradient(180deg, #F58A55, var(--accent)); position: relative;
-    box-shadow: inset 0 1px 0 rgba(255,255,255,0.45), 0 3px 0 #A63A12, 0 6px 10px -3px rgba(16,24,44,0.35); transform: translateY(-1px); }
-  .mark::after { content: ""; position: absolute; inset: 4px; border-radius: 3px; background: linear-gradient(180deg, #F79A6B, #F07038); box-shadow: inset 0 1px 2px rgba(0,0,0,0.12); }
+  .mark { width: 22px; height: 22px; display: block; flex-shrink: 0; }
   .nav { display: flex; gap: 4px; }
   .nav a { padding: 7px 12px; border-radius: 8px; font-family: var(--head); font-weight: 500; font-size: 14px; color: var(--ink-2); transition: color .2s, background .2s; }
   .nav a:hover { color: var(--ink); background: rgba(15,22,41,0.06); }
@@ -281,7 +283,7 @@
 
 <header class="hdr">
   <div class="wrap">
-    <a class="logo" href="/"><span class="mark"></span>Learnthespec</a>
+    <a class="logo" href="/"><img class="mark" src="/favicon.svg" alt="" width="22" height="22">Learnthespec</a>
     <nav class="nav" aria-label="Topics">
       <a href="#index" data-jump="rank">Rankings</a>
       <a href="#index" data-jump="cost">Costs &amp; limits</a>
@@ -301,7 +303,7 @@
 </header>
 
 <div class="overlay" id="overlay" hidden>
-  <div class="overlay-top"><a class="logo" href="/"><span class="mark"></span>Learnthespec</a><button class="ghost" type="button" id="menu-close">Close</button></div>
+  <div class="overlay-top"><a class="logo" href="/"><img class="mark" src="/favicon.svg" alt="" width="22" height="22">Learnthespec</a><button class="ghost" type="button" id="menu-close">Close</button></div>
   <label class="search">
     <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
     <input type="search" id="q2" placeholder="Search comparisons" aria-label="Search comparisons" autocomplete="off">
@@ -412,7 +414,7 @@
   <div class="wrap">
     <div class="foot">
       <div>
-        <a class="logo" href="/"><span class="mark"></span>Learnthespec</a>
+        <a class="logo" href="/"><img class="mark" src="/favicon.svg" alt="" width="22" height="22">Learnthespec</a>
         <p>We read the releases, the benchmark results and the reviews, then write up what they add up to, with a link to every source. No press-release rewrites, no affiliate rankings.</p>
       </div>
       <div><h5>Topics</h5><a href="#index" data-jump="rank">Rankings</a><a href="#index" data-jump="cost">Costs &amp; limits</a><a href="#index" data-jump="local">Run it locally</a><a href="#index" data-jump="expl">Explainers</a></div>

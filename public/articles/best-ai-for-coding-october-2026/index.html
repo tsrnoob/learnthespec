@@ -3,6 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="icon" href="/favicon.ico" sizes="32x32">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
 <meta name="google-adsense-account" content="ca-pub-6413233215513891">
 <script id="google-cmp" async src="https://fundingchoicesmessages.google.com/i/pub-6413233215513891?ers=1"></script>
 <title>Best AI for Coding, October 2026 — Learnthespec</title>
@@ -46,7 +50,7 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 .hdr { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 50; background: rgba(227,231,237,0.8); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border-bottom: 1px solid var(--line); }
 .hdr .wrap { display: flex; align-items: center; gap: 16px; height: 58px; }
 .logo { display: flex; align-items: center; gap: 10px; font-family: var(--head); font-weight: 700; font-size: 14px; letter-spacing: 0.16em; text-transform: uppercase; text-decoration: none; flex-shrink: 0; }
-.mark { width: 20px; height: 20px; border-radius: 6px; background: linear-gradient(135deg, #FF9A64, #EE5E28); box-shadow: 0 4px 12px rgba(238,94,40,0.35); }
+.mark { width: 20px; height: 20px; display: block; flex-shrink: 0; }
 .steps { margin-left: auto; display: flex; gap: 2px; overflow-x: auto; scrollbar-width: none; }
 .steps a { text-decoration: none; display: flex; align-items: center; gap: 7px; padding: 6px 11px; border-radius: 99px; font-family: var(--head); font-size: 12.5px; font-weight: 600; color: var(--ink-3); white-space: nowrap; transition: color .2s, background .2s; }
 .steps a i { font-style: normal; width: 6px; height: 6px; border-radius: 50%; background: var(--c); opacity: .45; transition: opacity .2s, transform .2s; }
@@ -304,7 +308,7 @@ footer a { color: inherit; }
 
 <header class="hdr">
   <div class="wrap">
-    <a class="logo" href="/"><span class="mark"></span>Learnthespec</a>
+    <a class="logo" href="/"><img class="mark" src="/favicon.svg" alt="" width="20" height="20">Learnthespec</a>
     <nav class="steps" id="steps" aria-label="Chapters"></nav>
   </div>
   <div class="progress" id="progress"></div>
