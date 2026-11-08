@@ -6,7 +6,7 @@
 <meta name="google-adsense-account" content="ca-pub-6413233215513891">
 <script id="google-cmp" async src="https://fundingchoicesmessages.google.com/i/pub-6413233215513891?ers=1"></script>
 <title>What Open Weights Actually Mean, September 2026 — Learnthespec</title>
-<meta name="description" content="Open weights and open source are not the same thing. What each term requires, which licence each model ships under, how big the files are, what hardware runs them, and what you give up. Compiled from the OSI definition, licences and model cards, checked 4 September 2026.">
+<meta name="description" content="Open weights and open source are not the same thing. What each term requires, which licence each model ships under, how big the files are, what hardware runs them, and what you give up. Compiled from the OSI definition, licences and model cards. Checked 8 November 2026.">
 <link rel="stylesheet" href="/assets/fonts.css">
 <style>
 
@@ -210,8 +210,8 @@
         <div class="byline">
           <span class="who">Tsrnoob</span>
           <span>4 SEPTEMBER 2026</span>
-          <span>COMPILED FROM 11 SOURCES</span>
-          <span class="badge">CHECKED 4 SEP 2026</span>
+          <span>COMPILED FROM 12 SOURCES</span>
+          <span class="badge">CHECKED 8 NOV 2026</span>
         </div>
 
         <div class="prose">
@@ -262,11 +262,12 @@
               <tr><td class="name">Kimi K3</td><td>Kimi K3 License</td><td>Code and weights both under Moonshot's own licence. 2.8T total, 104B activated.</td><td class="quiet"><a href="#s6">[6]</a></td></tr>
               <tr><td class="name">GLM-5.3</td><td>GLM-5.3 License</td><td>Commercial use allowed under restrictions. Read them before shipping.</td><td class="quiet"><a href="#s11">[11]</a></td></tr>
               <tr><td class="name">Llama 3.1</td><td class="no">Llama Community License</td><td>Over 700 million monthly active users and &ldquo;you must request a license from Meta&rdquo;</td><td class="quiet"><a href="#s3">[3]</a></td></tr>
+              <tr><td class="name">Mistral Large 4</td><td class="no">Mistral Ecosystem Open-Weight License</td><td>&ldquo;a modified version of the MIT license&rdquo;, and &ldquo;operating a Model-as-a-Service business requires a separate commercial license with Mistral&rdquo;</td><td class="quiet"><a href="#s12">[12]</a></td></tr>
               <tr><td class="name">Qwen 3.8 Max</td><td class="quiet">not applicable</td><td>API only. No weights published.</td><td class="quiet"><a href="#s9">[9]</a></td></tr>
             </tbody>
           </table>
         </div>
-        <p class="tablenote">MIT AND APACHE 2.0 ARE OSI-APPROVED LICENCES. THE LLAMA COMMUNITY LICENCE IS META'S OWN AND CARRIES A USER-COUNT THRESHOLD, WHICH IS WHY LLAMA IS DESCRIBED HERE AS OPEN WEIGHT RATHER THAN OPEN SOURCE. THE THRESHOLD AFFECTS ALMOST NOBODY — BUT IT IS THE CLAUSE THAT DECIDES THE LABEL.</p>
+        <p class="tablenote">MIT AND APACHE 2.0 ARE OSI-APPROVED LICENCES. THE LLAMA COMMUNITY LICENCE IS META'S OWN AND CARRIES A USER-COUNT THRESHOLD, WHICH IS WHY LLAMA IS DESCRIBED HERE AS OPEN WEIGHT RATHER THAN OPEN SOURCE. THE THRESHOLD AFFECTS ALMOST NOBODY — BUT IT IS THE CLAUSE THAT DECIDES THE LABEL. THE MISTRAL ROW, READ AT SOURCE ON 8 NOVEMBER 2026, IS A SECOND SHAPE OF THE SAME THING: A LICENCE THAT CALLS ITSELF MODIFIED MIT AND STILL CARVES OUT ONE BUSINESS MODEL. MISTRAL LARGE 3 SHIPPED UNDER APACHE 2.0, SO THIS IS A LICENCE CHANGE AT ONE VENDOR. HUGGING FACE'S OWN LICENCE TAG FOR THE REPOSITORY READS &ldquo;OTHER&rdquo;.</p>
 
         <div class="ad ad-incontent">
           <div class="ad-tag">Advertisement</div>
@@ -347,7 +348,7 @@
 
         <div class="sources" id="sources">
           <h2>Sources</h2>
-          <div class="sources-note">ALL PAGES READ ON 4 SEPTEMBER 2026. NOTHING HERE WAS TESTED BY US — DEFINITIONS COME FROM THE OPEN SOURCE INITIATIVE, LICENCES AND SPECIFICATIONS FROM EACH PUBLISHER'S OWN PAGE.</div>
+          <div class="sources-note">SOURCE 12 READ ON 8 NOVEMBER 2026. SOURCES 1 TO 11 READ ON 4 SEPTEMBER 2026. NOTHING HERE WAS TESTED BY US — DEFINITIONS COME FROM THE OPEN SOURCE INITIATIVE, LICENCES AND SPECIFICATIONS FROM EACH PUBLISHER'S OWN PAGE.</div>
           <ol>
             <li id="s1"><a href="https://opensource.org/ai/open-source-ai-definition" rel="nofollow noopener" target="_blank">The Open Source AI Definition, version 1.0</a>: the four freedoms and the three required components.<span class="pub">OPEN SOURCE INITIATIVE · STANDARDS BODY</span></li>
             <li id="s2"><a href="https://opensource.org/ai/open-weights" rel="nofollow noopener" target="_blank">Open Weights: not quite what you've been told</a>: what open weights omits, and the four consequences OSI names.<span class="pub">OPEN SOURCE INITIATIVE · STANDARDS BODY</span></li>
@@ -360,6 +361,7 @@
             <li id="s9"><a href="https://huggingface.co/Qwen" rel="nofollow noopener" target="_blank">Qwen on Hugging Face</a>: the published model list. Qwen 3.8 Max is not among the downloadable weights.<span class="pub">ALIBABA · PUBLISHER PAGE</span></li>
             <li id="s10"><a href="https://artificialanalysis.ai/models/kimi-k3" rel="nofollow noopener" target="_blank">Kimi K3 on Artificial Analysis</a>: Intelligence Index 50, open weights confirmed, downloadable for self-hosting.<span class="pub">ARTIFICIAL ANALYSIS · INDEPENDENT BENCHMARKER</span></li>
             <li id="s11"><a href="https://artificialanalysis.ai/models/glm-5-3" rel="nofollow noopener" target="_blank">GLM-5.3 on Artificial Analysis</a>: Intelligence Index 49, open weights on Hugging Face, GLM-5.3 License with commercial-use restrictions.<span class="pub">ARTIFICIAL ANALYSIS · INDEPENDENT BENCHMARKER</span></li>
+            <li id="s12"><a href="https://huggingface.co/mistralai/Mistral-Large-4-1T-A52B" rel="nofollow noopener" target="_blank">Mistral-Large-4-1T-A52B model card</a>: the Mistral Ecosystem Open-Weight License described as a modified MIT licence, the Model-as-a-Service carve-out, the &ldquo;other&rdquo; licence tag, 1T total and 49B active parameters per token, and a 1M context window.<span class="pub">MISTRAL AI · MODEL CARD</span></li>
           </ol>
         </div>
 
@@ -367,6 +369,7 @@
           FOUND AN ERROR? LICENCES ARE REVISED AND MODELS ARE REPUBLISHED UNDER NEW TERMS.
           MAIL <a href="mailto:contact@learnthespec.com">CONTACT@LEARNTHESPEC.COM</a> AND WE WILL CHECK IT AGAINST THE SOURCE.
           CORRECTIONS ARE MADE IN PLACE AND NOTED HERE WITH THE DATE.
+          <br><br><strong style="color:#E08876">UPDATED 8 NOVEMBER 2026:</strong> MISTRAL LARGE 4 ADDED TO THE LICENCE TABLE AS SOURCE [12], READ AT ITS MODEL CARD. ITS MISTRAL ECOSYSTEM OPEN-WEIGHT LICENCE IS A LICENCE SHAPE THIS PAGE DID NOT CARRY: IT CALLS ITSELF A MODIFIED MIT LICENCE AND REQUIRES A SEPARATE COMMERCIAL LICENCE TO RUN A MODEL-AS-A-SERVICE BUSINESS. MISTRAL LARGE 3 SHIPPED UNDER APACHE 2.0. NO EXISTING ROW CHANGED.
           <br><br><strong style="color:#E08876">CORRECTION, 4 SEPTEMBER 2026:</strong> ARTIFICIAL ANALYSIS MOVED THE INTELLIGENCE INDEX FROM v4.1.1 TO v4.2, ADDING A TENTH EVALUATION. EVERY INDEX SCORE AND COST-PER-TASK FIGURE ON THIS PAGE WAS UPDATED TO v4.2 ON THE DAY OF PUBLICATION. SCORES ARE NOT COMPARABLE ACROSS INDEX VERSIONS.
           NOTHING HERE IS LEGAL ADVICE — READ THE LICENCE BEFORE YOU SHIP.
         </div>

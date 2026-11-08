@@ -13,7 +13,7 @@
     { d: "04 SEP", u: "/articles/what-ai-can-do-when-coding-september-2026/", t: "What AI Can Actually Do When You Code, September 2026",
       s: "Multi-file edits, running tests, pull requests, parallel agents, cloud work, AGENTS.md, MCP, browser control and sandboxing across five coding tools.", c: "13 SOURCES" },
     { d: "04 SEP", u: "/articles/what-open-weights-mean-september-2026/", t: "What Open Weights Actually Mean, September 2026",
-      s: "Open weights versus open source, the OSI definition, licences per model, download sizes, quantisation and self-hosting.", c: "11 SOURCES" },
+      s: "Open weights versus open source, the OSI definition, licences per model, download sizes, quantisation and self-hosting.", c: "12 SOURCES" },
     { d: "04 SEP", u: "/articles/best-open-weight-model-september-2026/", t: "Best Open-Weight Model, September 2026",
       s: "MiMo-V2.6-Pro, GLM-5.3, Kimi K3, Qwen3.8, DeepSeek V4.1 Flash, MiniMax-M3 and gpt-oss ranked on Intelligence Index v4.3.2, cost per task, rate per million tokens, speed and licence.", c: "19 SOURCES" },
     { d: "04 SEP", u: "/articles/best-free-ai-september-2026/", t: "Best Free AI, September 2026",
