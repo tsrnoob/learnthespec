@@ -19,9 +19,9 @@
   // Both are stated explicitly because whatever this file says overrides the
   // dashboard on every deploy, and silence here means "use the default".
   //
-  // workers_dev stays TRUE: the .workers.dev address is currently the only way to
-  // reach the site. Set it false only once learnthespec.com is attached.
-  "workers_dev": true,
+  // workers_dev FALSE since 13 Nov 2026: learnthespec.com is attached, and a second
+  // public copy of every page on .workers.dev is duplicate content for AdSense/Search.
+  "workers_dev": false,
   // preview_urls FALSE: otherwise every past deployment keeps its own public URL,
   // leaving several complete copies of the site reachable at once. Bad before an
   // AdSense review, and useless afterwards.
