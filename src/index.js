@@ -7,6 +7,8 @@
 // Was a root _worker.js under Pages advanced mode until 5 Sep 2026. The logic is
 // unchanged — only its location and how it is declared.
 
+import { EmailMessage } from 'cloudflare:email';
+
 const json = (body, status) =>
   new Response(JSON.stringify(body), {
     status,
@@ -89,6 +91,66 @@ async function subscribe(request, env) {
   return json({ ok: false, message: 'Something went wrong. Try again shortly.' }, 502);
 }
 
+
+// ---- contact form -----------------------------------------------------------
+// Sends each message as a plain-text email through Cloudflare Email Routing's
+// send_email binding (CONTACT_EMAIL in wrangler.jsonc). Needs, in the dashboard:
+// Email Routing enabled on learnthespec.com, the inbox it forwards to verified as a
+// destination address, and that address set as the CONTACT_TO secret. Nothing is
+// stored here: the message exists only in that inbox (privacy policy, contact section).
+const clean = (s, max) => String(s || '').replace(/\r/g, '').trim().slice(0, max);
+const oneLine = (s) => s.replace(/[\n\t]+/g, ' ');
+
+async function contact(request, env) {
+  let form;
+  try { form = await request.formData(); } catch { return json({ ok: false, message: 'Bad request.' }, 400); }
+
+  // Honeypot: hidden from people, filled in by bots. Pretend it worked.
+  if (clean(form.get('company'), 200)) return json({ ok: true, message: 'Thanks, your message was sent.' }, 200);
+
+  const email = oneLine(clean(form.get('email'), 200)).toLowerCase();
+  const subject = oneLine(clean(form.get('subject'), 150));
+  const message = clean(form.get('message'), 5000);
+
+  if (!/^[^@\s]+@[^@\s]+\.[^@\s]{2,}$/.test(email)) {
+    return json({ ok: false, message: 'Please enter a valid email address.' }, 400);
+  }
+  if (!subject || !message) return json({ ok: false, message: 'Please fill in a subject and a message.' }, 400);
+  if (form.get('consent') !== 'yes') {
+    return json({ ok: false, message: 'Please tick the privacy box so we can store your message.' }, 400);
+  }
+  if (!env.CONTACT_EMAIL || !env.CONTACT_TO) {
+    return json({ ok: false, message: 'The form is not set up yet. Please email contact@learnthespec.com.' }, 503);
+  }
+
+  const from = 'form@learnthespec.com';
+  const id = crypto.randomUUID();
+  const raw = [
+    `From: Learnthespec contact form <${from}>`,
+    `To: <${env.CONTACT_TO}>`,
+    `Reply-To: <${email}>`,
+    `Subject: [Contact] ${subject.replace(/[^\x20-\x7E]/g, '?')}`,
+    `Message-ID: <${id}@learnthespec.com>`,
+    `Date: ${new Date().toUTCString()}`,
+    'MIME-Version: 1.0',
+    'Content-Type: text/plain; charset=utf-8',
+    'Content-Transfer-Encoding: 8bit',
+    '',
+    `From: ${email}`,
+    `Subject: ${subject}`,
+    '',
+    message,
+    '',
+  ].join('\r\n');
+
+  try {
+    await env.CONTACT_EMAIL.send(new EmailMessage(from, env.CONTACT_TO, raw));
+  } catch {
+    return json({ ok: false, message: 'Could not send right now. Please email contact@learnthespec.com.' }, 502);
+  }
+  return json({ ok: true, message: 'Thanks, your message was sent. We answer within two working days.' }, 200);
+}
+
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
@@ -97,6 +159,12 @@ export default {
         return new Response('Method not allowed', { status: 405, headers: { allow: 'POST' } });
       }
       return subscribe(request, env);
+    }
+    if (url.pathname === '/api/contact') {
+      if (request.method !== 'POST') {
+        return new Response('Method not allowed', { status: 405, headers: { allow: 'POST' } });
+      }
+      return contact(request, env);
     }
     return env.ASSETS.fetch(request);
   },

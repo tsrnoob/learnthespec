@@ -26,6 +26,12 @@
   // leaving several complete copies of the site reachable at once. Bad before an
   // AdSense review, and useless afterwards.
   "preview_urls": false,
+  // Contact form (src/index.js). No destination_address here, so the inbox stays out of
+  // the public repo: the Worker sends to the CONTACT_TO secret, which must be a verified
+  // Email Routing destination address.
+  "send_email": [
+    { "name": "CONTACT_EMAIL" }
+  ],
   "observability": {
     "enabled": true
   }

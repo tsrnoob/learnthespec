@@ -71,6 +71,25 @@
       .foot { flex-direction: column; gap: 8px; }
     }
   
+
+    /* contact form (light theme) */
+    .cf { display: flex; flex-direction: column; gap: 12px; max-width: 480px; margin-top: 6px; }
+    .cf label { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: #5C6473; }
+    .cf input[type=email], .cf input[type=text], .cf textarea { width: 100%; box-sizing: border-box; margin-top: 5px;
+      background: #FFFFFF; border: 1px solid rgba(20,23,29,0.18); border-radius: 8px; color: #14171D;
+      font-family: 'Nunito Sans', system-ui, sans-serif; font-size: 16px; padding: 12px 14px; }
+    .cf textarea { min-height: 140px; resize: vertical; }
+    .cf input:focus, .cf textarea:focus { outline: 2px solid #E4703A; outline-offset: 1px; border-color: transparent; }
+    .cf .consent { display: flex; gap: 10px; align-items: flex-start; font-size: 14px; line-height: 1.5; color: #4A5260;
+      text-transform: none; letter-spacing: 0; font-family: 'Nunito Sans', system-ui, sans-serif; }
+    .cf .consent input { margin-top: 3px; width: 16px; height: 16px; accent-color: #E4703A; flex-shrink: 0; }
+    .cf .hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+    .cf button { align-self: flex-start; background: #E4703A; color: #14171D; border: 0; cursor: pointer;
+      font-family: 'Archivo', sans-serif; font-weight: 700; font-size: 13px; letter-spacing: 0.04em;
+      padding: 14px 34px; border-radius: 999px; }
+    .cf button:disabled { opacity: 0.6; cursor: default; }
+    .cf .status { font-size: 15px; line-height: 1.5; color: #4A5260; min-height: 1.5em; }
+    .cf .status.err { color: #B4321E; }
 </style>
 <link rel="stylesheet" href="/assets/nav.css">
 <script src="/assets/analytics.js" defer></script>
@@ -93,6 +112,18 @@
         <div class="val">Email: contact@learnthespec.com<br>We answer within two working days.</div>
       </div>
       <div class="block">
+        <div class="label">Or use the form</div>
+        <form class="cf" id="contact-form" novalidate>
+          <label>Your email<input type="email" name="email" autocomplete="email" required maxlength="200"></label>
+          <label>Subject<input type="text" name="subject" required maxlength="150"></label>
+          <label>Message<textarea name="message" required maxlength="5000"></textarea></label>
+          <div class="hp" aria-hidden="true"><label>Company<input type="text" name="company" tabindex="-1" autocomplete="off"></label></div>
+          <label class="consent"><input type="checkbox" name="consent" value="yes" required><span>I have read the <a href="/privacy/">privacy policy</a> and agree that my message will be stored to answer it.</span></label>
+          <button type="submit">SEND</button>
+          <div class="status" id="cf-status" role="status" aria-live="polite"></div>
+        </form>
+      </div>
+      <div class="block">
         <div class="label">Corrections</div>
         <div class="val">If something on this site is wrong, tell us and say where. Corrected articles carry a dated note at the bottom saying what changed.</div>
       </div>
@@ -106,5 +137,31 @@
   </div>
 </div>
 
+
+<script>
+(function () {
+  var form = document.getElementById('contact-form');
+  if (!form) return;
+  var status = document.getElementById('cf-status');
+  var btn = form.querySelector('button');
+  function say(msg, err) { status.textContent = msg; status.className = 'status' + (err ? ' err' : ''); }
+  form.addEventListener('submit', async function (e) {
+    e.preventDefault();
+    var email = form.email.value.trim(), subject = form.subject.value.trim(), message = form.message.value.trim();
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]{2,}$/.test(email)) return say('Please enter a valid email address.', true);
+    if (!subject || !message) return say('Please fill in a subject and a message.', true);
+    if (!form.consent.checked) return say('Please tick the privacy box so we can store your message.', true);
+    btn.disabled = true; say('Sending...');
+    try {
+      var res = await fetch('/api/contact', { method: 'POST', body: new FormData(form) });
+      var data = await res.json();
+      say(data.message || (data.ok ? 'Sent.' : 'Something went wrong.'), !data.ok);
+      if (data.ok) form.reset();
+    } catch (err) {
+      say('Network problem. Try again, or email contact@learnthespec.com.', true);
+    } finally { btn.disabled = false; }
+  });
+})();
+</script>
 </body>
 </html>
