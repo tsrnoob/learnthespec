@@ -151,6 +151,34 @@ async function contact(request, env) {
   return json({ ok: true, message: 'Thanks, your message was sent. We answer within two working days.' }, 200);
 }
 
+// ---- sitemap ------------------------------------------------------------------
+// Built on request from the start page's links, so publishing an article (which
+// always adds it to public/index.html) is all it takes to list it. Pages that carry
+// <meta name="robots" content="noindex..."> (superseded editions) are left out.
+// There must be NO public/sitemap.xml, or the static file would shadow this.
+const SITE = 'https://learnthespec.com';
+const FIXED = ['/', '/about/', '/contact/', '/impressum/', '/privacy/'];
+
+async function sitemap(request, env) {
+  const origin = new URL(request.url).origin;
+  const get = (path) => env.ASSETS.fetch(new Request(origin + path));
+  const home = await (await get('/')).text();
+  const articles = [...new Set([...home.matchAll(/href="(\/articles\/[a-z0-9-]+\/)"/g)].map((m) => m[1]))];
+  const urls = [];
+  for (const path of [...FIXED, ...articles]) {
+    const res = await get(path);
+    if (!res.ok) continue;
+    const html = await res.text();
+    if (/<meta name="robots" content="[^"]*noindex/i.test(html)) continue;
+    urls.push(`  <url><loc>${SITE}${path}</loc></url>`);
+  }
+  const body = '<?xml version="1.0" encoding="UTF-8"?>\n' +
+    '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + urls.join('\n') + '\n</urlset>\n';
+  return new Response(body, {
+    headers: { 'content-type': 'application/xml; charset=utf-8', 'cache-control': 'public, max-age=3600' },
+  });
+}
+
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
@@ -160,6 +188,7 @@ export default {
       }
       return subscribe(request, env);
     }
+    if (url.pathname === '/sitemap.xml') return sitemap(request, env);
     if (url.pathname === '/api/contact') {
       if (request.method !== 'POST') {
         return new Response('Method not allowed', { status: 405, headers: { allow: 'POST' } });
