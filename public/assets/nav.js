@@ -4,6 +4,8 @@
   'use strict';
 
   var ARTICLES = [
+    { d: "15 NOV", u: "/articles/which-ai-fixes-a-security-bug-november-2026/", t: "Which AI Fixes a Security Bug, November 2026",
+      s: "CWE-bench v2: thirteen models fixing real security weaknesses and CVEs in real repositories, pass@1 and pass@4, cost per rollout, harness, vulnerability patching against the Intelligence Index.", c: "9 SOURCES" },
     { d: "04 SEP", u: "/articles/best-ai-model-september-2026/", t: "Best AI Model, September 2026",
       s: "Nine flagships on intelligence, price, cost per finished task, token efficiency, speed and context.", c: "24 SOURCES" },
     { d: "04 SEP", u: "/articles/best-ai-for-coding-september-2026/", t: "Best AI for Coding, September 2026",

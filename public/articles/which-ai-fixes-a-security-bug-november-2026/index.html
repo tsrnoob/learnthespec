@@ -1,0 +1,576 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="google-adsense-account" content="ca-pub-6413233215513891">
+<script id="google-cmp" async src="https://fundingchoicesmessages.google.com/i/pub-6413233215513891?ers=1"></script>
+<title>Which AI Fixes a Security Bug, November 2026 — Learnthespec</title>
+<meta name="description" content="Thirteen models patch real security weaknesses in real repositories, checked by running the exploit. Pass rates on one attempt and on four, what an attempt costs, and the harness behind every row. Checked 15 November 2026.">
+<link rel="stylesheet" href="/assets/fonts.css">
+<style>
+
+    html, body { height: 100%; margin: 0; background: #0A0C10; }
+    a { color: #E4703A; text-decoration: none; }
+    a:hover { color: #F5936A; }
+
+    .root { position: relative; width: 100%; height: 100vh; overflow: hidden;
+      background: linear-gradient(155deg, #1B1F28 0%, #101319 46%, #090B0F 100%);
+      font-family: 'Nunito Sans', system-ui, sans-serif; font-weight: 400;
+      color: #E9EBEF; box-sizing: border-box; -webkit-font-smoothing: antialiased; }
+    .glow { position: absolute; top: -180px; right: -140px; width: 660px; height: 660px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(228,112,58,0.10) 0%, rgba(228,112,58,0) 68%); pointer-events: none; }
+
+    .page { position: relative; height: 100%; overflow-y: auto; box-sizing: border-box;
+      padding: 46px 56px 118px 56px; transition: filter .4s ease;
+      scrollbar-width: thin; scrollbar-color: rgba(255,255,255,0.16) transparent; }
+    .page::-webkit-scrollbar { width: 7px; }
+    .page::-webkit-scrollbar-track { background: transparent; }
+    .page::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 4px; }
+    .root.searching .page { filter: blur(7px); }
+
+    .top { display: flex; gap: 44px; align-items: flex-start; }
+    .col { flex-grow: 1; min-width: 0; max-width: 760px; }
+    .rail { width: 300px; flex-shrink: 0; display: flex; flex-direction: column; gap: 20px; }
+    .rail-left { width: 160px; flex-shrink: 0; display: flex; flex-direction: column; gap: 20px; }
+
+    .wordmark { font-family: 'Archivo', sans-serif; font-weight: 700; font-size: 16px; letter-spacing: 0.15em;
+      text-transform: uppercase; color: #E9EBEF; display: inline-block; margin-bottom: 30px; }
+
+    .crumb { font-family: 'JetBrains Mono', monospace; font-size: 10.5px; letter-spacing: 0.16em;
+      text-transform: uppercase; color: #E4703A; margin-bottom: 16px; }
+
+    h1 { font-family: 'Archivo', sans-serif; font-weight: 700; font-size: 44px; line-height: 1.06;
+      letter-spacing: -0.03em; margin: 0 0 16px 0; max-width: 18ch; text-wrap: balance; }
+    .standfirst { font-size: 20px; font-weight: 500; line-height: 1.5; color: #C3C9D3;
+      margin-bottom: 26px; max-width: 34em; }
+
+    .byline { display: flex; flex-wrap: wrap; gap: 10px 18px; align-items: center;
+      padding: 14px 0 16px 0; border-top: 1px solid rgba(255,255,255,0.10);
+      border-bottom: 1px solid rgba(255,255,255,0.10); margin-bottom: 30px;
+      font-family: 'JetBrains Mono', monospace; font-size: 10.5px; letter-spacing: 0.08em; color: #6C7482; }
+    .byline .who { color: #E9EBEF; }
+    .badge { border: 1px solid rgba(111,184,148,0.40); color: #6FB894; border-radius: 999px;
+      padding: 4px 11px; font-size: 9.5px; letter-spacing: 0.12em; }
+
+    .prose p { font-size: 17px; font-weight: 500; line-height: 1.65; color: #C3C9D3;
+      margin: 0 0 16px 0; max-width: 32em; }
+    .prose strong { color: #E9EBEF; font-weight: 700; }
+    .prose h2 { font-family: 'Archivo', sans-serif; font-weight: 700; font-size: 18px;
+      letter-spacing: 0.13em; text-transform: uppercase; color: #E9EBEF;
+      margin: 38px 0 14px 0; }
+    .prose sup { font-family: 'JetBrains Mono', monospace; font-size: 9.5px; }
+    .prose sup a { color: #E4703A; padding: 0 1px; }
+    .mono { font-family: 'JetBrains Mono', monospace; font-size: 15px; color: #E9EBEF; }
+
+    .def { border-left: 2px solid rgba(155,162,174,0.35); padding: 2px 0 2px 18px;
+      margin: 0 0 16px 0; max-width: 32em; }
+    .def p { font-size: 16.5px; margin: 0; color: #9BA2AE; }
+    .def .term { color: #E9EBEF; font-weight: 700; }
+
+    .tablewrap { overflow-x: auto; overscroll-behavior-x: contain; margin: 0 0 8px 0;
+      border: 1px solid rgba(255,255,255,0.10); border-radius: 8px; background: rgba(255,255,255,0.035);
+      scrollbar-width: thin; scrollbar-color: rgba(255,255,255,0.18) transparent; }
+    .tablewrap::-webkit-scrollbar { height: 7px; }
+    .tablewrap::-webkit-scrollbar-track { background: transparent; }
+    .tablewrap::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.17); border-radius: 4px; }
+    table { border-collapse: collapse; width: 100%; min-width: 660px; }
+    caption { text-align: left; padding: 15px 20px 0 20px; font-family: 'JetBrains Mono', monospace;
+      font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: #6C7482; }
+    th { font-family: 'Archivo', sans-serif; font-weight: 600; font-size: 10.5px; letter-spacing: 0.11em;
+      text-transform: uppercase; color: #9BA2AE; text-align: left; padding: 15px 20px 10px 20px;
+      border-bottom: 1px solid rgba(255,255,255,0.13); white-space: nowrap; }
+    td { padding: 12px 20px; border-bottom: 1px solid rgba(255,255,255,0.07);
+      font-size: 15px; line-height: 1.42; color: #C3C9D3; vertical-align: top; }
+    tr:last-child td { border-bottom: 0; }
+    td.name { color: #E9EBEF; font-family: 'Archivo', sans-serif; font-weight: 600;
+      font-size: 14px; white-space: nowrap; }
+    td.num { font-family: 'JetBrains Mono', monospace; font-size: 13.5px; color: #E9EBEF;
+      white-space: nowrap; font-variant-numeric: tabular-nums; }
+    td.quiet { font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: #6C7482; }
+    td.best { color: #6FB894; }
+    td.no { color: #E08876; }
+    .bar { display: block; height: 3px; background: #E4703A; border-radius: 2px; margin-top: 5px; }
+    .bar.g { background: #6FB894; }
+    .tablenote { font-family: 'JetBrains Mono', monospace; font-size: 10.5px; line-height: 1.7;
+      color: #6C7482; margin: 0 0 30px 0; max-width: 62em; }
+
+    .ad { border: 1px dashed rgba(255,255,255,0.17); background: rgba(255,255,255,0.025); border-radius: 6px;
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px;
+      box-sizing: border-box; text-align: center; }
+    .ad-tag { font-family: 'JetBrains Mono', monospace; font-size: 9.5px; letter-spacing: 0.16em;
+      text-transform: uppercase; color: #6C7482; }
+    .ad-size { font-family: 'JetBrains Mono', monospace; font-size: 10.5px; color: #565E6C; padding: 0 16px; }
+    .ad-note { font-family: 'JetBrains Mono', monospace; font-size: 9.5px; color: #4E5663; line-height: 1.6; padding: 0 22px; }
+    .ad-incontent { height: 280px; margin: 0 0 34px 0; }
+    .ad.ad-inline { display: none; }
+
+    .sources { background: rgba(255,255,255,0.035); border: 1px solid rgba(255,255,255,0.10);
+      border-radius: 8px; padding: 24px 26px; margin: 40px 0 0 0; }
+    .sources h2 { font-family: 'Archivo', sans-serif; font-weight: 600; font-size: 12px;
+      letter-spacing: 0.15em; text-transform: uppercase; color: #E9EBEF; margin: 0 0 6px 0; }
+    .sources-note { font-family: 'JetBrains Mono', monospace; font-size: 10.5px; line-height: 1.7;
+      color: #6C7482; margin-bottom: 18px; }
+    .sources ol { margin: 0; padding-left: 22px; }
+    .sources li { font-size: 14.5px; line-height: 1.55; color: #9BA2AE; margin-bottom: 12px; }
+    .sources li:last-child { margin-bottom: 0; }
+    .sources .pub { font-family: 'JetBrains Mono', monospace; font-size: 10.5px;
+      letter-spacing: 0.06em; color: #6C7482; display: block; margin-top: 3px; }
+
+    .corrections { font-family: 'JetBrains Mono', monospace; font-size: 11px; line-height: 1.75;
+      color: #6C7482; border-top: 1px solid rgba(255,255,255,0.08); margin-top: 34px; padding-top: 18px; }
+
+    .signup { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.10);
+      border-radius: 8px; padding: 26px 30px; margin-top: 34px; }
+    .signup-title { font-family: 'Archivo', sans-serif; font-weight: 700; font-size: 21px;
+      letter-spacing: -0.02em; margin-bottom: 7px; }
+    .signup-sub { font-size: 16px; line-height: 1.5; color: #9BA2AE; margin-bottom: 18px; max-width: 34em; }
+    .field-row { display: flex; align-items: stretch; max-width: 420px; }
+    .field { flex-grow: 1; min-width: 0; background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.13); border-right: 0; border-radius: 999px 0 0 999px;
+      color: #E9EBEF; font-family: 'JetBrains Mono', monospace; font-size: 12.5px; padding: 14px 20px; outline: none; }
+    .field::placeholder { color: #6C7482; }
+    .field-btn { background: #E4703A; color: #14171D; font-family: 'Archivo', sans-serif; font-weight: 700;
+      font-size: 13px; letter-spacing: 0.04em; padding: 14px 26px; border: 0;
+      border-radius: 0 999px 999px 0; cursor: pointer; white-space: nowrap; }
+    .field-btn:disabled { opacity: .6; cursor: default; }
+    .fineprint { font-family: 'JetBrains Mono', monospace; font-size: 10.5px; line-height: 1.65;
+      color: #6C7482; margin-top: 10px; }
+
+    .readnext { margin-top: 40px; }
+    .readnext-label { font-family: 'Archivo', sans-serif; font-weight: 600; font-size: 12px;
+      letter-spacing: 0.15em; text-transform: uppercase; color: #E9EBEF; margin-bottom: 14px; }
+    .rn { display: flex; gap: 16px; padding: 13px 0; border-bottom: 1px solid rgba(255,255,255,0.07); align-items: baseline; }
+    .rn:last-of-type { border-bottom: 0; }
+    .rn-chip { font-family: 'JetBrains Mono', monospace; font-size: 9.5px; color: #6C7482;
+      width: 92px; flex-shrink: 0; letter-spacing: 0.1em; }
+    .rn-title { font-family: 'Archivo', sans-serif; font-weight: 600; font-size: 16px;
+      line-height: 1.26; letter-spacing: -0.012em; color: #9BA2AE; }
+    .rn-title a { color: #E9EBEF; }
+    .rn-sub { font-size: 14px; line-height: 1.45; color: #6C7482; margin-top: 3px; }
+
+    .foot { margin-top: 40px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.07);
+      display: flex; justify-content: space-between; align-items: center; gap: 14px; flex-wrap: wrap;
+      font-family: 'JetBrains Mono', monospace; font-size: 10.5px; color: #5C6473; letter-spacing: 0.06em; }
+
+    .anchor { position: absolute; left: 0; right: 0; bottom: 0; height: 62px; z-index: 35;
+      background: rgba(14,17,22,0.96); border-top: 1px solid rgba(255,255,255,0.10);
+      backdrop-filter: blur(10px); display: flex; align-items: center; justify-content: center;
+      gap: 18px; padding: 0 44px 0 16px; box-sizing: border-box; }
+    .anchor-close { position: absolute; right: 14px; top: 50%; transform: translateY(-50%);
+      width: 22px; height: 22px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.16);
+      display: flex; align-items: center; justify-content: center; cursor: pointer;
+      font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #7C8494; }
+    .anchor.gone { display: none; }
+
+    @media (max-width: 1200px) { .ad.ad-inline { display: flex; height: 250px; margin: 0 0 34px 0; } }
+    @media (max-width: 1440px) { .rail-left { display: none; } }
+    @media (max-width: 1180px) { .rail { display: none; } }
+    @media (max-width: 900px)  { .page { padding: 38px 30px 110px 30px; } h1 { font-size: 34px; } }
+    @media (max-width: 640px)  {
+      .page { padding: 30px 20px 104px 20px; }
+      h1 { font-size: 29px; }
+      .standfirst { font-size: 18px; }
+      .field-row { flex-direction: column; }
+      .field { border-right: 1px solid rgba(255,255,255,0.13); border-radius: 8px; }
+      .field-btn { border-radius: 8px; margin-top: 8px; }
+    }
+
+</style>
+<link rel="stylesheet" href="/assets/nav.css">
+<script src="/assets/analytics.js" defer></script>
+<script src="/assets/nav.js" defer></script>
+</head>
+<body class="has-anchor">
+
+<div class="root">
+  <div class="glow"></div>
+  <div class="page">
+    <div class="top">
+
+      <div class="rail-left">
+        <div class="ad" style="height: 600px;">
+          <div class="ad-tag">Advertisement</div>
+          <div class="ad-size">160 &times; 600</div>
+          <div class="ad-note">Wide skyscraper. Hidden below 1440 px, where it would squeeze the 32em measure.</div>
+        </div>
+      </div>
+
+      <div class="col">
+
+        <a class="wordmark" href="/">Learnthespec</a>
+
+        <div class="crumb">AI &middot; Comparisons</div>
+
+        <h1>Which AI Fixes a Security Bug, November 2026</h1>
+        <div class="standfirst">One public benchmark gives an agent a real repository with a real weakness and checks the patch by running the exploit. Thirteen models, what each fixes on one try and on four, and what one try costs.</div>
+
+        <div class="byline">
+          <span class="who">Tsrnoob</span>
+          <span>15 NOVEMBER 2026</span>
+          <span>COMPILED FROM 9 SOURCES</span>
+          <span class="badge">CHECKED 15 NOV 2026</span>
+        </div>
+
+        <div class="prose">
+          <h2>The thirteen models</h2>
+          <p>One public benchmark scores a model on closing a real security weakness without breaking the code around it.<sup><a href="#s1">1</a></sup></p>
+        </div>
+
+        <div class="tablewrap">
+          <table>
+            <caption>CWE-bench v2 leaderboard, public set, in the board's own order, read 15 November 2026</caption>
+            <thead><tr><th>Model</th><th>Harness</th><th>pass@1</th><th>Src</th></tr></thead>
+            <tbody>
+              <tr><td class="name">Claude Fable 5.2</td><td>Claude Code</td><td class="num best">78.5</td><td class="quiet"><a href="#s1">[1]</a></td></tr>
+              <tr><td class="name">Gemini 4 Hydrogen</td><td>Antigravity SDK</td><td class="num">69.5</td><td class="quiet"><a href="#s1">[1]</a></td></tr>
+              <tr><td class="name">Gemini 4 Argon</td><td>Antigravity SDK</td><td class="num">67.8</td><td class="quiet"><a href="#s1">[1]</a></td></tr>
+              <tr><td class="name">Claude Opus 5.5</td><td>Claude Code</td><td class="num">67.3</td><td class="quiet"><a href="#s1">[1]</a></td></tr>
+              <tr><td class="name">Muse Wonder</td><td>OpenCode</td><td class="num">64.8</td><td class="quiet"><a href="#s1">[1]</a></td></tr>
+              <tr><td class="name">GPT-6 Astra</td><td>Codex</td><td class="num">63.8</td><td class="quiet"><a href="#s1">[1]</a></td></tr>
+              <tr><td class="name">DeepSeek V4.1 Flash (1017)</td><td>OpenCode</td><td class="num">57.0</td><td class="quiet"><a href="#s1">[1]</a></td></tr>
+              <tr><td class="name">Grok 4.7</td><td>OpenCode</td><td class="num">55.5</td><td class="quiet"><a href="#s1">[1]</a></td></tr>
+              <tr><td class="name">Hy4 Preview</td><td>OpenCode</td><td class="num">52.0</td><td class="quiet"><a href="#s1">[1]</a></td></tr>
+              <tr><td class="name">Mistral Large 4</td><td>OpenCode</td><td class="num">46.3</td><td class="quiet"><a href="#s1">[1]</a></td></tr>
+              <tr><td class="name">Qwen 3.8 Max (0902)</td><td>OpenCode</td><td class="num">45.0</td><td class="quiet"><a href="#s1">[1]</a></td></tr>
+              <tr><td class="name">GLM 5.3</td><td>OpenCode</td><td class="num">44.0</td><td class="quiet"><a href="#s1">[1]</a></td></tr>
+              <tr><td class="name">Kimi K3.1 Pro</td><td>OpenCode</td><td class="num no">41.5</td><td class="quiet"><a href="#s1">[1]</a></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="tablenote">ONE BOARD, ONE PASS, READ 15 NOVEMBER 2026. THE BOARD STATES IT WAS UPDATED ON 12 NOVEMBER 2026. IT IS HEADED &ldquo;CWE-BENCH v2&rdquo; AND PRINTS NO SUB-VERSION; THE DATASET CARD PUBLISHES 2.0 AND 2.0.1. <strong>THE HARNESS COLUMN IS NOT A CONTROL: EACH MODEL RAN IN ONE HARNESS AND NO MODEL WAS RUN IN TWO, SO EVERY ROW IS A MODEL AND A HARNESS TOGETHER.</strong><sup><a href="#s3">[3]</a></sup></p>
+
+        <div class="prose">
+          <h2>What one task is</h2>
+          <p>A task is a repository with one weakness in it. The grader runs the exploit inputs and the legitimate cases, so a patch either closes the hole and keeps the code working, or scores nothing.<sup><a href="#s3">3</a></sup></p>
+          <div class="def"><p><span class="term">CWE</span> &mdash; Common Weakness Enumeration, MITRE's catalogue of software weakness types. The public set covers 91 of them across 100 tasks in eight languages.<sup><a href="#s2">2</a></sup></p></div>
+          <p>Go carries more than a quarter of the set on its own.<sup><a href="#s3">3</a></sup></p>
+        </div>
+
+        <div class="tablewrap">
+          <table>
+            <caption>The 100 public tasks by language, as the dataset card lists them</caption>
+            <thead><tr><th>Language</th><th>Tasks</th><th>Src</th></tr></thead>
+            <tbody>
+              <tr><td class="name">Go</td><td class="num best">27</td><td class="quiet"><a href="#s3">[3]</a></td></tr>
+              <tr><td class="name">Java</td><td class="num">15</td><td class="quiet"><a href="#s3">[3]</a></td></tr>
+              <tr><td class="name">JavaScript</td><td class="num">15</td><td class="quiet"><a href="#s3">[3]</a></td></tr>
+              <tr><td class="name">C++</td><td class="num">14</td><td class="quiet"><a href="#s3">[3]</a></td></tr>
+              <tr><td class="name">C</td><td class="num">10</td><td class="quiet"><a href="#s3">[3]</a></td></tr>
+              <tr><td class="name">Python</td><td class="num">10</td><td class="quiet"><a href="#s3">[3]</a></td></tr>
+              <tr><td class="name">Rust</td><td class="num">5</td><td class="quiet"><a href="#s3">[3]</a></td></tr>
+              <tr><td class="name">TypeScript</td><td class="num no">4</td><td class="quiet"><a href="#s3">[3]</a></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="tablenote">ONE PAGE, ONE PASS, READ 15 NOVEMBER 2026. THE EIGHT ROWS SUM TO 100. THE REPOSITORY IS GATED: ANYONE MAY READ THE CARD, BUT THE TASK FILES NEED THE ACCESS CONDITIONS ACCEPTED FIRST. THE CARD ASKS THAT THE TASKS AND THEIR SOLUTIONS NOT BE USED TO TRAIN MODELS THAT WILL BE EVALUATED ON THEM.<sup><a href="#s3">[3]</a></sup></p>
+
+        <div class="ad ad-incontent">
+          <div class="ad-tag">Advertisement</div>
+          <div class="ad-size">336 &times; 280 &mdash; in-content, below the tables</div>
+        </div>
+
+        <div class="ad ad-inline">
+          <div class="ad-tag">Advertisement</div>
+          <div class="ad-size">300 &times; 250 &mdash; rail unit, moved inline below 1200 px</div>
+        </div>
+
+        <div class="prose">
+          <h2>One attempt, and four</h2>
+          <p>Every model gets four tries at each task. The two columns answer different questions, and the distance between them is not the same for every row.<sup><a href="#s1">1</a></sup></p>
+          <div class="def"><p><span class="term">pass@1</span> &mdash; the mean reward over all 400 trials, which is 100 tasks at four attempts each. <span class="term">pass@4</span> is the share of tasks solved at least once in those four.<sup><a href="#s1">1</a></sup><sup><a href="#s2">2</a></sup></p></div>
+          <p>A second chance buys the cheaper rows more than it buys the dear ones. The order below the top four is not the order of the column beside it.<sup><a href="#s1">1</a></sup></p>
+        </div>
+
+        <div class="tablewrap">
+          <table>
+            <caption>pass@1 against pass@4, CWE-bench v2 public set, one pass, 15 November 2026</caption>
+            <thead><tr><th>Model</th><th>pass@1</th><th>pass@4</th><th>Src</th></tr></thead>
+            <tbody>
+              <tr><td class="name">Claude Fable 5.2</td><td class="num best">78.5</td><td class="num best">87.0</td><td class="quiet"><a href="#s1">[1]</a></td></tr>
+              <tr><td class="name">Gemini 4 Hydrogen</td><td class="num">69.5</td><td class="num">82.0</td><td class="quiet"><a href="#s1">[1]</a></td></tr>
+              <tr><td class="name">Gemini 4 Argon</td><td class="num">67.8</td><td class="num">81.0</td><td class="quiet"><a href="#s1">[1]</a></td></tr>
+              <tr><td class="name">Claude Opus 5.5</td><td class="num">67.3</td><td class="num">78.0</td><td class="quiet"><a href="#s1">[1]</a></td></tr>
+              <tr><td class="name">Muse Wonder</td><td class="num">64.8</td><td class="num">79.0</td><td class="quiet"><a href="#s1">[1]</a></td></tr>
+              <tr><td class="name">GPT-6 Astra</td><td class="num">63.8</td><td class="num no">70.0</td><td class="quiet"><a href="#s1">[1]</a></td></tr>
+              <tr><td class="name">DeepSeek V4.1 Flash (1017)</td><td class="num">57.0</td><td class="num">72.0</td><td class="quiet"><a href="#s1">[1]</a></td></tr>
+              <tr><td class="name">Grok 4.7</td><td class="num">55.5</td><td class="num">74.0</td><td class="quiet"><a href="#s1">[1]</a></td></tr>
+              <tr><td class="name">Hy4 Preview</td><td class="num">52.0</td><td class="num">68.0</td><td class="quiet"><a href="#s1">[1]</a></td></tr>
+              <tr><td class="name">Mistral Large 4</td><td class="num">46.3</td><td class="num no">59.0</td><td class="quiet"><a href="#s1">[1]</a></td></tr>
+              <tr><td class="name">Qwen 3.8 Max (0902)</td><td class="num">45.0</td><td class="num">62.0</td><td class="quiet"><a href="#s1">[1]</a></td></tr>
+              <tr><td class="name">GLM 5.3</td><td class="num">44.0</td><td class="num">65.0</td><td class="quiet"><a href="#s1">[1]</a></td></tr>
+              <tr><td class="name">Kimi K3.1 Pro</td><td class="num no">41.5</td><td class="num">63.0</td><td class="quiet"><a href="#s1">[1]</a></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="tablenote">SAME BOARD, SAME PASS, SAME ROWS AS THE FIRST TABLE, SO THE TWO READ TOGETHER. GREEN IS THE BEST CELL IN EACH COLUMN AND RED THE WORST. <strong>GPT-6 ASTRA AND GROK 4.7 CROSS OVER: ASTRA IS AHEAD ON ONE ATTEMPT AND BEHIND ON FOUR.</strong> A ROW COUNTS AS SOLVED IN pass@4 IF ANY ONE OF ITS FOUR ATTEMPTS WORKED, SO THE COLUMN IS NOT A RELIABILITY FIGURE.<sup><a href="#s1">[1]</a></sup></p>
+
+        <div class="prose">
+          <h2>What an attempt costs</h2>
+          <p>List price does not tell you what one fix costs. A model that thinks longer spends more on the same repository.<sup><a href="#s1">1</a></sup></p>
+          <div class="def"><p><span class="term">Rollout</span> &mdash; one agent run at one task. The board gives each rollout a one-hour time limit and counts a timeout as a failure rather than a void trial.<sup><a href="#s1">1</a></sup></p></div>
+          <p>The money spread is far wider than the score spread. The cheapest row on the board still closes more than half the set.<sup><a href="#s1">1</a></sup></p>
+        </div>
+
+        <div class="tablewrap">
+          <table>
+            <caption>Cost of one rollout, USD, against pass@1, one board pass, 15 November 2026</caption>
+            <thead><tr><th>Model</th><th>USD / rollout</th><th>pass@1</th><th>Src</th></tr></thead>
+            <tbody>
+              <tr><td class="name">DeepSeek V4.1 Flash (1017)</td><td class="num best">0.04</td><td class="num">57.0</td><td class="quiet"><a href="#s1">[1]</a></td></tr>
+              <tr><td class="name">Mistral Large 4</td><td class="num">0.36</td><td class="num">46.3</td><td class="quiet"><a href="#s1">[1]</a></td></tr>
+              <tr><td class="name">Hy4 Preview</td><td class="num">0.42</td><td class="num">52.0</td><td class="quiet"><a href="#s1">[1]</a></td></tr>
+              <tr><td class="name">GLM 5.3</td><td class="num">0.60</td><td class="num">44.0</td><td class="quiet"><a href="#s1">[1]</a></td></tr>
+              <tr><td class="name">Kimi K3.1 Pro</td><td class="num">0.92</td><td class="num no">41.5</td><td class="quiet"><a href="#s1">[1]</a></td></tr>
+              <tr><td class="name">Claude Opus 5.5</td><td class="num">1.83</td><td class="num">67.3</td><td class="quiet"><a href="#s1">[1]</a></td></tr>
+              <tr><td class="name">Qwen 3.8 Max (0902)</td><td class="num">2.05</td><td class="num">45.0</td><td class="quiet"><a href="#s1">[1]</a></td></tr>
+              <tr><td class="name">Muse Wonder</td><td class="num">2.54</td><td class="num">64.8</td><td class="quiet"><a href="#s1">[1]</a></td></tr>
+              <tr><td class="name">Gemini 4 Hydrogen</td><td class="num">2.72</td><td class="num">69.5</td><td class="quiet"><a href="#s1">[1]</a></td></tr>
+              <tr><td class="name">Grok 4.7</td><td class="num">2.86</td><td class="num">55.5</td><td class="quiet"><a href="#s1">[1]</a></td></tr>
+              <tr><td class="name">GPT-6 Astra</td><td class="num">3.86</td><td class="num">63.8</td><td class="quiet"><a href="#s1">[1]</a></td></tr>
+              <tr><td class="name">Gemini 4 Argon</td><td class="num">3.92</td><td class="num">67.8</td><td class="quiet"><a href="#s1">[1]</a></td></tr>
+              <tr><td class="name">Claude Fable 5.2</td><td class="num no">7.73</td><td class="num best">78.5</td><td class="quiet"><a href="#s1">[1]</a></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="tablenote">SAME BOARD, SAME PASS, SORTED BY COST RATHER THAN BY SCORE. <strong>CLAUDE OPUS 5.5 SITS WITHIN HALF A POINT OF GEMINI 4 ARGON AT UNDER HALF THE COST PER ATTEMPT.</strong> GREEN IS THE CHEAPEST ROLLOUT AND RED THE DEAREST; THE pass@1 COLUMN KEEPS ITS OWN BEST AND WORST. THESE ARE COSTS PER ATTEMPT, NOT PER FIX, AND FOUR ATTEMPTS WERE RUN FOR EVERY TASK.<sup><a href="#s1">[1]</a></sup></p>
+
+        <div class="prose">
+          <h2>Where the cost figure comes from</h2>
+          <p>Two of the three figure columns are measured the same way for every row. The money column is not.<sup><a href="#s1">1</a></sup></p>
+          <p>Four rows are what the harness recorded while it ran. The other nine are a list price applied to a token count, and the price has a date on it.<sup><a href="#s1">1</a></sup></p>
+          <p>Two of those nine are Gemini rows, and Google's own page dates a rise on one of them.<sup><a href="#s8">8</a></sup></p>
+        </div>
+
+        <div class="tablewrap">
+          <table>
+            <caption>How the board arrived at each cost figure, as its own note states it</caption>
+            <thead><tr><th>Model</th><th>How the cost was arrived at</th><th>USD / rollout</th><th>Src</th></tr></thead>
+            <tbody>
+              <tr><td class="name">Claude Fable 5.2</td><td class="best">Recorded by the harness</td><td class="num">7.73</td><td class="quiet"><a href="#s1">[1]</a></td></tr>
+              <tr><td class="name">Claude Opus 5.5</td><td class="best">Recorded by the harness</td><td class="num">1.83</td><td class="quiet"><a href="#s1">[1]</a></td></tr>
+              <tr><td class="name">GPT-6 Astra</td><td class="best">Recorded by the harness</td><td class="num">3.86</td><td class="quiet"><a href="#s1">[1]</a></td></tr>
+              <tr><td class="name">Qwen 3.8 Max (0902)</td><td class="best">Recorded by the harness</td><td class="num">2.05</td><td class="quiet"><a href="#s1">[1]</a></td></tr>
+              <tr><td class="name">The other nine rows</td><td>Trajectory tokens at OpenRouter list price of 3 Nov 2026, cached-input discount applied</td><td class="quiet">Varies by row</td><td class="quiet"><a href="#s1">[1]</a></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="tablenote">THE BOARD'S OWN FOOTNOTE, READ 15 NOVEMBER 2026. <strong>NINE OF THIRTEEN COST CELLS ARE A THIRD PARTY'S LIST PRICE ON A FIXED DATE, NOT MONEY ANYONE SPENT.</strong> A VENDOR THAT HAS CHANGED ITS RATE SINCE 3 NOVEMBER WILL NOT COST WHAT ITS ROW SAYS. THE FOUR HARNESS-RECORDED ROWS AND THE NINE LIST-PRICED ROWS ARE NOT RANKED AGAINST EACH OTHER IN THIS TABLE. GEMINI 4 ARGON IS 2.00 AND 10.00 USD PER 1M TOKENS THROUGH 30 NOVEMBER 2026 AND 4.00 AND 20.00 FROM 1 DECEMBER, SO ITS COST CELL HAS A DATE ON IT THAT THE BOARD DOES NOT PRINT; GEMINI 4 HYDROGEN CARRIES NO DATED CHANGE.<sup><a href="#s8">[8]</a></sup></p>
+
+        <div class="prose">
+          <h2>The same models on the index</h2>
+          <p>A general leaderboard ranks most of these models too, on nine evaluations that include coding and do not include security patching.<sup><a href="#s4">4</a></sup><sup><a href="#s5">5</a></sup> That board prints its own version string nowhere on itself, only on each model's page.<sup><a href="#s9">9</a></sup></p>
+          <div class="def"><p><span class="term">Intelligence Index</span> &mdash; Artificial Analysis's weighted average of nine evaluations in four categories, knowledge work, coding, science and general, weighted at 25% each. It is on v5.0.1.<sup><a href="#s5">5</a></sup></p></div>
+          <p>The two boards agree at the top and part company underneath it. The index's best open-weight model is last here.<sup><a href="#s1">1</a></sup><sup><a href="#s4">4</a></sup></p>
+        </div>
+
+        <div class="tablewrap">
+          <table>
+            <caption>CWE-bench v2 against Intelligence Index v5.0.1, two boards, each read once on 15 November 2026</caption>
+            <thead><tr><th>Model</th><th>pass@1</th><th>Index score</th><th>Index effort level</th><th>Src</th></tr></thead>
+            <tbody>
+              <tr><td class="name">Claude Fable 5.2</td><td class="num best">78.5</td><td class="num best">65</td><td>Max</td><td class="quiet"><a href="#s1">[1]</a><a href="#s4">[4]</a></td></tr>
+              <tr><td class="name">Gemini 4 Hydrogen</td><td class="num">69.5</td><td class="num">54</td><td>Xhigh</td><td class="quiet"><a href="#s1">[1]</a><a href="#s4">[4]</a></td></tr>
+              <tr><td class="name">Gemini 4 Argon</td><td class="num">67.8</td><td class="num">50</td><td>High</td><td class="quiet"><a href="#s1">[1]</a><a href="#s4">[4]</a></td></tr>
+              <tr><td class="name">Claude Opus 5.5</td><td class="num">67.3</td><td class="num">59</td><td>Max</td><td class="quiet"><a href="#s1">[1]</a><a href="#s4">[4]</a></td></tr>
+              <tr><td class="name">Muse Wonder</td><td class="num">64.8</td><td class="quiet">Not read in this pass</td><td class="quiet">&mdash;</td><td class="quiet"><a href="#s1">[1]</a></td></tr>
+              <tr><td class="name">GPT-6 Astra</td><td class="num">63.8</td><td class="num">57</td><td>Max</td><td class="quiet"><a href="#s1">[1]</a><a href="#s4">[4]</a></td></tr>
+              <tr><td class="name">DeepSeek V4.1 Flash (1017)</td><td class="num">57.0</td><td class="num">33</td><td>Max</td><td class="quiet"><a href="#s1">[1]</a><a href="#s4">[4]</a></td></tr>
+              <tr><td class="name">Grok 4.7</td><td class="num">55.5</td><td class="num">35</td><td>Xhigh</td><td class="quiet"><a href="#s1">[1]</a><a href="#s4">[4]</a></td></tr>
+              <tr><td class="name">Hy4 Preview</td><td class="num">52.0</td><td class="num">35</td><td class="quiet">None printed</td><td class="quiet"><a href="#s1">[1]</a><a href="#s4">[4]</a></td></tr>
+              <tr><td class="name">Mistral Large 4</td><td class="num">46.3</td><td class="num no">26</td><td>High</td><td class="quiet"><a href="#s1">[1]</a><a href="#s4">[4]</a></td></tr>
+              <tr><td class="name">Qwen 3.8 Max (0902)</td><td class="num">45.0</td><td class="num">34</td><td class="quiet">None printed</td><td class="quiet"><a href="#s1">[1]</a><a href="#s4">[4]</a></td></tr>
+              <tr><td class="name">GLM 5.3</td><td class="num">44.0</td><td class="num">32</td><td>Max</td><td class="quiet"><a href="#s1">[1]</a><a href="#s4">[4]</a></td></tr>
+              <tr><td class="name">Kimi K3.1 Pro</td><td class="num no">41.5</td><td class="num">46</td><td class="quiet">None printed</td><td class="quiet"><a href="#s1">[1]</a><a href="#s4">[4]</a></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="tablenote">TWO BOARDS, EACH READ ONCE ON 15 NOVEMBER 2026, AND THE TWO SCORE COLUMNS ARE NOT COMPARABLE WITH EACH OTHER. <strong>KIMI K3.1 PRO IS THE HIGHEST-SCORING OPEN-WEIGHT ROW ON THE INDEX AND THE LAST ROW OF THIRTEEN HERE.</strong> THE INDEX ROWS CARRY A REASONING EFFORT LEVEL AND THE CWE-BENCH ROWS DO NOT, SO THE TWO WERE NOT NECESSARILY RUN AT THE SAME SETTING. THE INDEX LEADER, GEMINI 4 CARBON AT 60, IS NOT ON THE CWE-BENCH BOARD AT ALL. THE STRING v5.0.1 WAS READ ON THE METHODOLOGY PAGE AND ON A MODEL PAGE, BECAUSE THE LEADERBOARD ITSELF PRINTS NO VERSION.<sup><a href="#s5">[5]</a></sup><sup><a href="#s9">[9]</a></sup></p>
+
+        <div class="prose">
+          <h2>What the vendors publish instead</h2>
+          <p>Vendors publish security figures of their own, on benchmarks they choose and mostly without a version string.<sup><a href="#s6">6</a></sup><sup><a href="#s7">7</a></sup></p>
+          <p>Google prints a patching figure for a model that is not on this board. Anthropic prints no patching figure at all.<sup><a href="#s6">6</a></sup><sup><a href="#s7">7</a></sup></p>
+        </div>
+
+        <div class="tablewrap">
+          <table>
+            <caption>What two vendors publish about security on their own launch pages, read 15 November 2026</caption>
+            <thead><tr><th>Vendor and model</th><th>What it measures</th><th>Figure</th><th>Version string</th><th>Src</th></tr></thead>
+            <tbody>
+              <tr><td class="name">Google, Gemini 4 Carbon</td><td>CWE-bench, patching</td><td class="num">71.0%</td><td class="quiet no">None printed</td><td class="quiet"><a href="#s6">[6]</a></td></tr>
+              <tr><td class="name">Google, Gemini 4 Carbon</td><td>SEC-bench Pro, vulnerability finding</td><td class="num">88.2%</td><td class="quiet no">None printed</td><td class="quiet"><a href="#s6">[6]</a></td></tr>
+              <tr><td class="name">Google, Gemini 4 Carbon</td><td>ExploitGym, exploitation</td><td class="num">54.8%</td><td class="quiet no">None printed</td><td class="quiet"><a href="#s6">[6]</a></td></tr>
+              <tr><td class="name">Google, Gemini 4 Carbon</td><td>Gray Swan indirect prompt injection, attack success rate</td><td class="num best">0.0%</td><td class="quiet no">None printed</td><td class="quiet"><a href="#s6">[6]</a></td></tr>
+              <tr><td class="name">Anthropic, Claude Mythos 5.2</td><td>CVE Rediscovery, vulnerabilities found against Claude Opus 5.5</td><td class="num">10.2% more</td><td class="quiet no">None printed</td><td class="quiet"><a href="#s7">[7]</a></td></tr>
+              <tr><td class="name">Anthropic, Claude Mythos 5.2</td><td>Use of files or credentials outside a deliberately weakened sandbox</td><td class="num">3.1%</td><td class="quiet no">None printed</td><td class="quiet"><a href="#s7">[7]</a></td></tr>
+              <tr><td class="name">Anthropic, Claude Fable 5.2</td><td>Any score for fixing a security weakness</td><td class="quiet no">Not published</td><td class="quiet">&mdash;</td><td class="quiet"><a href="#s7">[7]</a></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="tablenote">TWO VENDOR PAGES, EACH READ ONCE ON 15 NOVEMBER 2026, AND <strong>NOT ONE OF THESE ROWS IS COMPARABLE WITH THE CWE-BENCH TABLE OR WITH ANOTHER ROW HERE.</strong> GOOGLE'S 71.0% IS ON A BENCHMARK IT NAMES &ldquo;CWE-BENCH&rdquo; WITH NO VERSION BESIDE IT, AND GEMINI 4 CARBON IS ABSENT FROM THE v2 BOARD, SO THE TWO FIGURES CANNOT BE PLACED IN ONE COLUMN. GOOGLE PUBLISHES NO RIVAL MODEL'S SCORE ON ANY OF ITS FOUR CYBER BENCHMARKS. ANTHROPIC'S CVE FIGURE IS A RELATIVE ONE AND ITS OWN PAGE DOES NOT PRINT THE UNDERLYING RATES.<sup><a href="#s6">[6]</a></sup><sup><a href="#s7">[7]</a></sup></p>
+
+        <div class="prose">
+          <h2>What is not published</h2>
+          <p>A security score invites a decision, so the gaps matter more here than on a price table.<sup><a href="#s1">1</a></sup></p>
+        </div>
+
+        <div class="tablewrap">
+          <table>
+            <caption>Questions a reader of this board will ask, and what the three pages answer</caption>
+            <thead><tr><th>Question</th><th>What the pages publish</th><th>Src</th></tr></thead>
+            <tbody>
+              <tr><td class="name">Which effort level each row ran at</td><td class="quiet no">Not published</td><td class="quiet"><a href="#s1">[1]</a></td></tr>
+              <tr><td class="name">Which weakness types each model fails</td><td class="quiet no">Not published</td><td class="quiet"><a href="#s2">[2]</a></td></tr>
+              <tr><td class="name">Scores on the held-out set</td><td class="quiet no">Not published; the set exists and is reached by email</td><td class="quiet"><a href="#s2">[2]</a></td></tr>
+              <tr><td class="name">A sub-version beside the board's &ldquo;v2&rdquo;</td><td class="quiet">Not on the board; the dataset card publishes 2.0 and 2.0.1</td><td class="quiet"><a href="#s3">[3]</a></td></tr>
+              <tr><td class="name">How many tasks no model has solved</td><td>95 of 100 solved by at least one of the eleven models evaluated on 3 Nov 2026</td><td class="quiet"><a href="#s2">[2]</a></td></tr>
+              <tr><td class="name">Whether a model memorised a fix</td><td class="quiet">No result published; the card asks that the tasks not be trained on</td><td class="quiet"><a href="#s3">[3]</a></td></tr>
+              <tr><td class="name">Whether the agent could reach the internet</td><td class="best">Published: the agent phase runs with no network but the model's own API host</td><td class="quiet"><a href="#s3">[3]</a></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="tablenote">THREE PAGES, EACH READ ONCE ON 15 NOVEMBER 2026, AND THE SRC CELL NAMES WHICH ONE ANSWERED. <strong>THE 95-OF-100 COUNT WAS PUBLISHED WHEN ELEVEN MODELS HAD RUN; THIRTEEN ARE ON THE BOARD TODAY AND THE COUNT HAS NOT BEEN RESTATED.</strong> THE DATASET IS APACHE 2.0 AND THE SCORING IS FULLY PROGRAMMATIC, SO ANYONE WHO ACCEPTS THE ACCESS CONDITIONS CAN RE-RUN IT.<sup><a href="#s2">[2]</a></sup><sup><a href="#s3">[3]</a></sup></p>
+
+        <div class="prose">
+          <h2>Which one to pick</h2>
+          <p>There is no single winner. The right model depends on whether you are paying per attempt or reading the patch afterwards.</p>
+        </div>
+
+        <div class="tablewrap">
+          <table>
+            <caption>Recommendation by what you are optimising for</caption>
+            <thead><tr><th>If you</th><th>Pick</th><th>Why</th></tr></thead>
+            <tbody>
+              <tr><td class="name">Want the highest pass rate</td><td class="best">Claude Fable 5.2</td><td>The only row above seventy on one attempt, and the only one above eighty-five on four. It is also the dearest rollout on the board.</td></tr>
+              <tr><td class="name">Are paying for every attempt</td><td class="best">Claude Opus 5.5</td><td>Within half a point of the Gemini that led this board in early November, at under half the cost per rollout.</td></tr>
+              <tr><td class="name">Are running your own weights</td><td class="best">DeepSeek V4.1 Flash (1017)</td><td>The cheapest rollout on the board by an order of magnitude over the next row, and it still closes more than half the set.</td></tr>
+              <tr><td class="name">Pick by the Intelligence Index</td><td class="no">Do not</td><td>The index's strongest open-weight model is the weakest row here. The two boards measure different work and only agree at the top.</td></tr>
+              <tr><td class="name">Want the weakness found, not fixed</td><td class="no">No row here</td><td>This board scores patching only. The vendors that publish a finding score use benchmarks with no version string and print no rival's figure.</td></tr>
+              <tr><td class="name">Would ship the patch unreviewed</td><td class="no">Do not</td><td>No row solves every task, and pass@4 counts a task solved when one attempt in four worked.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="tablenote">EVERY FIGURE HERE APPEARS WITH ITS SOURCE EARLIER IN THE ARTICLE. THE BOARD MOVED ON 12 NOVEMBER 2026 AND ITS LEADER CHANGED, SO TREAT THE ORDER AS DATED RATHER THAN SETTLED. COST CELLS FOR NINE OF THE THIRTEEN ROWS ARE A THIRD PARTY'S LIST PRICE ON 3 NOVEMBER 2026 AND NOT MONEY ANYONE SPENT.<sup><a href="#s1">[1]</a></sup></p>
+
+        <div class="sources" id="sources">
+          <h2>Sources</h2>
+          <div class="sources-note">ALL NINE PAGES READ ON 15 NOVEMBER 2026. NOTHING HERE WAS TESTED BY US, AND NO MODEL WAS RUN BY US. EVERY pass@1, pass@4 AND ROLLOUT COST COMES FROM ONE PASS OVER ONE INDEPENDENT BENCHMARKER'S BOARD; EVERY INDEX FIGURE FROM ONE PASS OVER ANOTHER; EVERY VENDOR CLAIM FROM THAT VENDOR'S OWN PAGE. ROWS DRAWN FROM MORE THAN ONE PAGE ARE NOT RANKED AGAINST EACH OTHER.</div>
+          <ol>
+            <li id="s1"><a href="https://huggingface.co/spaces/collinear-ai/cwe-bench-leaderboard" rel="nofollow noopener" target="_blank">Collinear AI, CWE-bench leaderboard</a>: read in one pass for all thirteen rows, each model's harness, pass@1, pass@4 and USD per rollout. The board's own note defines pass@1 as the mean reward over 400 rollouts, pass@4 as the share of tasks solved at least once, the one-hour agent limit, and which four rows are harness-recorded against the nine priced from OpenRouter list prices of 3 November 2026. It states it was updated on 12 November 2026.<span class="pub">COLLINEAR AI &middot; LEADERBOARD</span></li>
+            <li id="s2"><a href="https://huggingface.co/blog/cwe-bench" rel="nofollow noopener" target="_blank">Collinear AI, CWE-bench v2</a>: the public set of 100 tasks over 91 CWEs, four attempts per task, 400 trials, scoring described as fully programmatic and deterministic, 95 of 100 tasks solved by at least one of the eleven models evaluated, and the held-out set reached by email. Published 3 November 2026.<span class="pub">COLLINEAR AI &middot; BENCHMARK ANNOUNCEMENT</span></li>
+            <li id="s3"><a href="https://huggingface.co/datasets/collinear-ai/cwe-bench" rel="nofollow noopener" target="_blank">Collinear AI, CWE-bench dataset card</a>: the eight languages and their task counts, the reward rule that every exploit input must be closed and every legitimate case kept working, the no-network agent phase, the Apache 2.0 licence, the gated access conditions, and the changelog giving 2.0 on 30 October 2026 and 2.0.1 on 6 November 2026 with no model score changed.<span class="pub">COLLINEAR AI &middot; DATASET CARD</span></li>
+            <li id="s4"><a href="https://artificialanalysis.ai/leaderboards/models" rel="nofollow noopener" target="_blank">Artificial Analysis, LLM Leaderboard</a>: read in one pass for the Intelligence Index score and the reasoning effort level of each row that matches a model on the CWE-bench board, and for Gemini 4 Carbon at 60. The page prints no index version string in its visible text.<span class="pub">ARTIFICIAL ANALYSIS &middot; INDEPENDENT BENCHMARKER</span></li>
+            <li id="s5"><a href="https://artificialanalysis.ai/methodology/intelligence-benchmarking" rel="nofollow noopener" target="_blank">Artificial Analysis, Intelligence Benchmarking methodology</a>: the version string v5.0.1 in the page's own visible text, the nine evaluations, and the four categories, knowledge work, coding, science and general, weighted at 25% each. None of the nine is a security-patching evaluation.<span class="pub">ARTIFICIAL ANALYSIS &middot; METHODOLOGY</span></li>
+            <li id="s6"><a href="https://blog.google/innovation-and-ai/models-and-research/gemini-models/introducing-gemini-4-carbon/" rel="nofollow noopener" target="_blank">Google, Gemini 4 Carbon</a>: CWE-bench 71.0% for patching, SEC-bench Pro 88.2%, ExploitGym 54.8% and a 0.0% attack success rate on the Gray Swan indirect prompt injection benchmark against Gemini 4 Argon's 0.7%, all published without a version string and without any rival model's score.<span class="pub">GOOGLE &middot; MODEL ANNOUNCEMENT</span></li>
+            <li id="s7"><a href="https://www.anthropic.com/claude-fable-and-mythos-5-2" rel="nofollow noopener" target="_blank">Anthropic, Claude Fable 5.2 and Mythos 5.2</a>: the list price of 8.00 and 40.00 USD per 1M tokens, the 3.1% use of files or credentials outside a deliberately weakened sandbox over more than 1,800 scenarios, and CVE Rediscovery given as 10.2% more vulnerabilities found than Claude Opus 5.5. The page publishes no score on any security-patching benchmark.<span class="pub">ANTHROPIC &middot; MODEL ANNOUNCEMENT</span></li>
+            <li id="s8"><a href="https://aistudio.google.com/docs/pricing" rel="nofollow noopener" target="_blank">Google, Gemini API pricing</a>: Gemini 4 Hydrogen at 1.50 and 7.50 USD per 1M tokens with no dated change attached, and Gemini 4 Argon at 2.00 and 10.00 through 30 November 2026 and 4.00 and 20.00 from 1 December 2026. Two of the three Gemini rows on the CWE-bench board are priced from this page.<span class="pub">GOOGLE &middot; API PRICING PAGE</span></li>
+            <li id="s9"><a href="https://artificialanalysis.ai/models/claude-fable-5-2" rel="nofollow noopener" target="_blank">Artificial Analysis, Claude Fable 5.2</a>: the same index version string, v5.0.1, read as a second page on the same day, with the index score of 65 and a cost of 26.54 USD per index task, against a cost of 7.73 USD per CWE-bench rollout on the other board.<span class="pub">ARTIFICIAL ANALYSIS &middot; MODEL PAGE</span></li>
+          </ol>
+        </div>
+
+        <div class="corrections">
+          FOUND AN ERROR? THIS BOARD MOVES. IT WAS PUBLISHED ON 3 NOVEMBER 2026 WITH ELEVEN MODELS AND A DIFFERENT LEADER, AND ON 12 NOVEMBER 2026 IT HAD THIRTEEN. THE DATASET BEHIND IT IS VERSIONED AND THE BOARD PRINTS NO SUB-VERSION. EVERY FIGURE ON THIS PAGE IS ONE PASS OVER ONE BOARD ON 15 NOVEMBER 2026 AND IS DATED FOR THAT REASON.
+          MAIL <a href="mailto:contact@learnthespec.com">CONTACT@LEARNTHESPEC.COM</a> AND WE WILL CHECK IT AGAINST THE SOURCE.
+          CORRECTIONS ARE MADE IN PLACE AND NOTED HERE WITH THE DATE.
+        </div>
+
+        <div class="signup">
+          <div class="signup-title">Get the week's AI news in your inbox</div>
+          <div class="signup-sub">Everything that actually changed, in one email, every source linked.</div>
+          <form class="field-row" id="subscribe" novalidate>
+            <input class="field" type="email" name="email" required autocomplete="email"
+                   placeholder="you@example.com" aria-label="Email address">
+            <button class="field-btn" type="submit">SUBSCRIBE</button>
+            <span style="position:absolute;left:-9999px" aria-hidden="true">
+              <input type="text" name="company" tabindex="-1" autocomplete="off">
+            </span>
+          </form>
+          <div class="fineprint" id="sub-status" role="status" aria-live="polite">A confirmation link arrives first — click it to finish. One click to leave, any time.</div>
+        </div>
+
+        <div class="readnext">
+          <div class="readnext-label">Read next</div>
+          <div class="rn">
+            <div class="rn-chip">PUBLISHED</div>
+            <div>
+              <div class="rn-title"><a href="/articles/best-ai-for-coding-october-2026/">Best AI for Coding, October 2026</a></div>
+              <div class="rn-sub">The same models on Terminal-Bench 4.0, where the harness also changes the score, and the board that has not scored a current model since February.</div>
+            </div>
+          </div>
+          <div class="rn">
+            <div class="rn-chip">PUBLISHED</div>
+            <div>
+              <div class="rn-title"><a href="/articles/ai-agent-permissions-compared-november-2026/">AI Agent Permissions, Compared, November 2026</a></div>
+              <div class="rn-sub">What each coding agent is allowed to touch while it works, and the published failures that followed.</div>
+            </div>
+          </div>
+          <div class="rn">
+            <div class="rn-chip">PUBLISHED</div>
+            <div>
+              <div class="rn-title"><a href="/articles/what-reasoning-effort-costs-november-2026/">What Reasoning Effort Costs, November 2026</a></div>
+              <div class="rn-sub">The setting this board does not record, and what it does to the score and the bill on the index.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="foot">
+          <div>LEARNTHESPEC.COM — AI NEWS AND COMPARISONS, MUNICH</div>
+          <div><a href="/impressum/" style="color:#5C6473">IMPRESSUM</a> &middot; <a href="/privacy/" style="color:#5C6473">PRIVACY</a> &middot; <a href="/contact/" style="color:#5C6473">CONTACT</a></div>
+        </div>
+
+      </div>
+
+      <div class="rail">
+        <div class="ad" style="height: 600px;">
+          <div class="ad-tag">Advertisement</div>
+          <div class="ad-size">300 &times; 600</div>
+          <div class="ad-note">Half-page. Scrolls with the page — not sticky, so it never sits under the menu button.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="anchor" id="anchor">
+    <div class="ad-tag">Advertisement</div>
+    <div class="ad-size">970 &times; 50 anchor — dismissible</div>
+    <div class="anchor-close" id="anchor-close">&#10005;</div>
+  </div>
+
+</div>
+
+<script>
+(function () {
+  var close = document.getElementById('anchor-close');
+  var anchor = document.getElementById('anchor');
+  if (close && anchor) {
+    close.addEventListener('click', function () { anchor.classList.add('gone'); });
+  }
+
+  var form = document.getElementById('subscribe');
+  if (!form) return;
+  var status = document.getElementById('sub-status');
+  var btn = form.querySelector('button');
+  var idle = status.textContent;
+  form.addEventListener('submit', async function (e) {
+    e.preventDefault();
+    btn.disabled = true;
+    status.textContent = 'Sending...';
+    try {
+      var res = await fetch('/api/subscribe', { method: 'POST', body: new FormData(form) });
+      var data = await res.json();
+      status.textContent = data.message || (data.ok ? 'Done.' : 'Something went wrong.');
+      if (data.ok) form.reset();
+    } catch (err) {
+      status.textContent = 'Network problem - try again.';
+    } finally {
+      btn.disabled = false;
+      setTimeout(function () { status.textContent = idle; }, 9000);
+    }
+  });
+})();
+</script>
+
+</body>
+</html>
