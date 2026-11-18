@@ -4,6 +4,8 @@
   'use strict';
 
   var ARTICLES = [
+    { d: "18 NOV", u: "/articles/best-ai-for-video-november-2026/", t: "Best AI for Video, November 2026",
+      s: "AA-Video-T2V v2.1 text-to-video leaderboard with audio: Elo, Range, price per minute, Wan 3.0, Gemini Omni Flash 1.2, FLUX 3, Seedance, Veo and Sora missing, open-weight MiniMax H3 licence excludes EU UK US, LTX-2.5.", c: "15 SOURCES" },
     { d: "15 NOV", u: "/articles/which-ai-fixes-a-security-bug-november-2026/", t: "Which AI Fixes a Security Bug, November 2026",
       s: "CWE-bench v2: thirteen models fixing real security weaknesses and CVEs in real repositories, pass@1 and pass@4, cost per rollout, harness, vulnerability patching against the Intelligence Index.", c: "9 SOURCES" },
     { d: "04 SEP", u: "/articles/best-ai-model-september-2026/", t: "Best AI Model, September 2026",
