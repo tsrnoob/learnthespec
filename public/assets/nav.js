@@ -4,6 +4,8 @@
   'use strict';
 
   var ARTICLES = [
+    { d: "22 NOV", u: "/articles/which-coding-agent-costs-least-november-2026/", t: "Which Coding Agent Costs Least, November 2026",
+      s: "Which coding agent costs least, November 2026: FrontierHarness Eval v1.1 prices 22 agent configurations of 18 harnesses on five open-weight models over 62 tasks and 27,280 runs. Cost per pass from Codex CLI at 0.937 USD to Antigravity CLI at 1.63, pass rate from ZCode 61.9% to Exo 50.6%, Claude Code, OpenCode, Cline CLI, GitHub Copilot CLI, Grok Build, KimiCode, MiniMax Code, mini-SWE-agent and the four DeepSeek Harness profiles. The cheapest agent changes with the model, a dearer agent does not pass more often, only steps predict cost, and 64.5% of the spend went to runs that did not pass.", c: "11 SOURCES" },
     { d: "18 NOV", u: "/articles/best-ai-for-video-november-2026/", t: "Best AI for Video, November 2026",
       s: "AA-Video-T2V v2.1 text-to-video leaderboard with audio: Elo, Range, price per minute, Wan 3.0, Gemini Omni Flash 1.2, FLUX 3, Seedance, Veo and Sora missing, open-weight MiniMax H3 licence excludes EU UK US, LTX-2.5.", c: "15 SOURCES" },
     { d: "15 NOV", u: "/articles/which-ai-fixes-a-security-bug-november-2026/", t: "Which AI Fixes a Security Bug, November 2026",
