@@ -6,7 +6,7 @@
 <meta name="google-adsense-account" content="ca-pub-6413233215513891">
 <script id="google-cmp" async src="https://fundingchoicesmessages.google.com/i/pub-6413233215513891?ers=1"></script>
 <title>AI Agent Permissions, Compared, November 2026 — Learnthespec</title>
-<meta name="description" content="Five coding and desktop agents, compared on what each is allowed to touch: the permission modes each vendor publishes, what runs without asking, and two boundary failures with a published score. Checked 1 November 2026.">
+<meta name="description" content="Five coding and desktop agents, compared on what each is allowed to touch: the permission modes each vendor publishes, what runs without asking, and three boundary failures with a published score. Checked 22 November 2026.">
 <link rel="stylesheet" href="/assets/fonts.css">
 <style>
 
@@ -208,8 +208,8 @@
         <div class="byline">
           <span class="who">Tsrnoob</span>
           <span>1 NOVEMBER 2026</span>
-          <span>COMPILED FROM 9 SOURCES</span>
-          <span class="badge">CHECKED 1 NOV 2026</span>
+          <span>COMPILED FROM 10 SOURCES</span>
+          <span class="badge">CHECKED 22 NOV 2026</span>
         </div>
 
         <div class="prose">
@@ -355,9 +355,9 @@
         <div class="prose">
 
           <h2>When the boundary failed</h2>
-          <p>Two failures this autumn were published with figures attached. Neither was a permission setting working wrongly.</p>
+          <p>Three failures this autumn were published with figures attached. None was a permission setting working wrongly.</p>
           <div class="def"><p><span class="term">CVSS</span> &mdash; a published severity score from 0 to 10. The same flaw carries two of them, because version 3.1 and version 4.0 score it differently: CVE-2026-111322 reads 9.8 on one and 9.3 on the other.<sup><a href="#s8">8</a></sup></p></div>
-          <p>One shipped a dangerous default on a public address. The other arrived through the marketplace that distributes the extension.</p>
+          <p>One shipped a dangerous default on a public address. One arrived through the marketplace that distributes the extension. The third is the saved approval itself, committed to a public repository.<sup><a href="#s10">10</a></sup></p>
         </div>
 
         <div class="tablewrap">
@@ -367,6 +367,7 @@
             <tbody>
               <tr><td class="name">Missing authentication</td><td>Archon, CVE-2026-111322</td><td class="num no">9.8 CVSS 3.1 &middot; 9.3 CVSS 4.0 &middot; versions 0.2.13 to 0.11.1</td><td>An unauthenticated <code>/api/*</code> control API bound to <code>0.0.0.0</code>, with the agent running under <code>bypassPermissions</code>. No patched version is listed</td><td class="quiet"><a href="#s8">[8]</a></td></tr>
               <tr><td class="name">Tampered build</td><td>Claude Code for VS Code, served from the Cursor marketplace</td><td class="num no">2 affected versions &middot; 6 credential patterns &middot; up to 40 variable names</td><td>Appended an attacker's SSH key to <code>~/.ssh/authorized_keys</code>, opened a reverse tunnel to a remote host on port 22, installed a macOS LaunchAgent, and collected the names of environment variables matching KEY, TOKEN, SECRET, PASS, AWS and GCP</td><td class="quiet"><a href="#s9">[9]</a></td></tr>
+              <tr><td class="name">Secret in a saved approval</td><td>Claude Code, <code>.claude/settings.local.json</code> on public GitHub</td><td class="num no">1,122 of 104,185 files &middot; 2,539 real secrets &middot; 1,994 repositories &middot; 63 organisations</td><td>The allow rule records the approved command as typed, so a password or key inside it is saved to the project folder. The rule reaches the repository's default branch. Two generic scanners found 564 and 643 of the 1,122 files, and neither found 215 of them</td><td class="quiet"><a href="#s10">[10]</a></td></tr>
             </tbody>
           </table>
         </div>
@@ -397,7 +398,7 @@
 
         <div class="sources" id="sources">
           <h2>Sources</h2>
-          <div class="sources-note">ALL NINE PAGES READ ON 1 NOVEMBER 2026. NOTHING HERE WAS TESTED BY US. EVERY COUNT IS OF ITEMS NAMED ON THE PAGE IT IS CITED FROM, AND THE COUNTS ARE NOT RANKED AGAINST EACH OTHER, BECAUSE THE FIVE VENDORS DO NOT DIVIDE THE CONTROLS THE SAME WAY.</div>
+          <div class="sources-note">SOURCE 10 READ ON 22 NOVEMBER 2026 AND SOURCES 1 TO 9 ON 1 NOVEMBER 2026. NOTHING HERE WAS TESTED BY US. EVERY COUNT IS OF ITEMS NAMED ON THE PAGE IT IS CITED FROM, AND THE COUNTS ARE NOT RANKED AGAINST EACH OTHER, BECAUSE THE FIVE VENDORS DO NOT DIVIDE THE CONTROLS THE SAME WAY.</div>
           <ol>
             <li id="s1"><a href="https://code.claude.com/docs/en/permissions" rel="nofollow noopener" target="_blank">Anthropic, Claude Code: configure permissions</a>: the six permission modes, the allow, ask and deny rule lists, the tool-type table showing which actions ask, the read-only Bash commands and preapproved WebFetch domains, deny precedence from any level, managed settings, and the warning on <code>bypassPermissions</code>.<span class="pub">ANTHROPIC &middot; PRODUCT DOCUMENTATION</span></li>
             <li id="s2"><a href="https://learn.chatgpt.com/docs/sandboxing" rel="nofollow noopener" target="_blank">OpenAI, Codex: sandboxing</a>: the three sandbox modes and two approval policies, the file-write scope of each, the absence of a stated network default for <code>read-only</code> and <code>workspace-write</code>, and the ChatGPT Work setting that restricts commands to a managed hostname allowlist.<span class="pub">OPENAI &middot; PRODUCT DOCUMENTATION</span></li>
@@ -408,11 +409,13 @@
             <li id="s7"><a href="https://www.meta.com/help/artificial-intelligence/1126304576638594" rel="nofollow noopener" target="_blank">Meta, Muse on your computer</a>: Full Disk Access, Automation and Notifications as the macOS permissions required, and the three per-application levels, from no access through read-only to reading and acting in the app.<span class="pub">META &middot; HELP PAGE</span></li>
             <li id="s8"><a href="https://strix.ai/cve/CVE-2026-111322" rel="nofollow noopener" target="_blank">Strix, CVE-2026-111322</a>: CVSS 3.1 at 9.8 and CVSS 4.0 at 9.3, affected versions 0.2.13 through 0.11.1 of Archon, the <code>/api/*</code> control API bound to <code>0.0.0.0</code> without authentication, the agent running under <code>bypassPermissions</code>, and no patched version listed.<span class="pub">STRIX &middot; VULNERABILITY DATABASE</span></li>
             <li id="s9"><a href="https://phorion.io/blog/offical-claude-code-vsx-compromise/" rel="nofollow noopener" target="_blank">Phorion, the Claude Code VSX compromise</a>: versions 2.1.312 and 2.1.313 served from the Cursor marketplace, the SSH key appended to <code>~/.ssh/authorized_keys</code>, the reverse tunnel on port 22, the LaunchAgent, and up to 40 environment variable names matching six credential patterns, with values not collected.<span class="pub">PHORION &middot; SECURITY ANALYSIS</span></li>
+            <li id="s10"><a href="https://apiiro.com/blog/coding-agents-leaking-secrets-github-dont-ask-again" rel="nofollow noopener" target="_blank">Apiiro, coding agents are leaking your secrets to GitHub</a>: 1,122 of 104,185 public copies of <code>.claude/settings.local.json</code> holding a real secret, 2,539 distinct real secrets across 1,994 repositories, 63 organisations affected, 1,379 distinct secrets in the allow lists themselves, gitleaks flagging 564 files and TruffleHog 643 with 215 found by neither, and 539 of 1,105 traced repositories where a commit co-authored by Claude changed the file.<span class="pub">APIIRO &middot; SECURITY RESEARCH</span></li>
           </ol>
         </div>
 
         <div class="corrections">
-          FOUND AN ERROR? THE COUNTS ON THIS PAGE ARE OF SETTINGS NAMED IN DOCUMENTATION, WHICH VENDORS REWRITE WITHOUT NOTICE, AND THEY ARE NOT A RANKING. THE TWO FAILURE ROWS COME FROM A VULNERABILITY DATABASE AND A SECURITY FIRM, NOT FROM THE VENDORS THEMSELVES.
+          UPDATED 22 NOV 2026: A THIRD FAILURE ROW ADDED, READ AT APIIRO AS SOURCE 10. THE SAVED APPROVAL ITSELF IS THE LEAK: 1,122 OF 104,185 PUBLIC COPIES OF <code>.claude/settings.local.json</code> HOLD A REAL SECRET. NO OTHER FIGURE ON THIS PAGE CHANGED.
+          FOUND AN ERROR? THE COUNTS ON THIS PAGE ARE OF SETTINGS NAMED IN DOCUMENTATION, WHICH VENDORS REWRITE WITHOUT NOTICE, AND THEY ARE NOT A RANKING. THE THREE FAILURE ROWS COME FROM A VULNERABILITY DATABASE AND TWO SECURITY FIRMS, NOT FROM THE VENDORS THEMSELVES.
           MAIL <a href="mailto:contact@learnthespec.com">CONTACT@LEARNTHESPEC.COM</a> AND WE WILL CHECK IT AGAINST THE SOURCE.
           CORRECTIONS ARE MADE IN PLACE AND NOTED HERE WITH THE DATE.
         </div>
