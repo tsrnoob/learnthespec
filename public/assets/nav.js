@@ -4,6 +4,8 @@
   'use strict';
 
   var ARTICLES = [
+    { d: "25 NOV", u: "/articles/output-speed-compared-november-2026/", t: "Output Speed, Compared, November 2026",
+      s: "Output speed compared, November 2026: time per task in minutes, time to first answer token and tokens per second on Artificial Analysis Intelligence Index v5.0.2 for Claude Fable 5.2, GPT-6.2 Astra and Sol, Gemini 4 Neon, Carbon, Hydrogen and Argon, Claude Opus 5.5 and Sonnet 5.5, Kimi K3.1 Pro and Muse Wonder. Reasoning effort levels low to max, what one level below max saves, fast mode and Ultrafast pricing at OpenAI and Anthropic, and the fastest and slowest rows on the board.", c: "8 SOURCES" },
     { d: "25 NOV", u: "/articles/context-windows-compared-november-2026/", t: "Context Windows, Compared Honestly, November 2026",
       s: "Context windows compared, November 2026: context window and max output tokens for Claude Fable 5.2, Opus 5.5, Haiku 5.5, GPT-6.2 Astra and Sol, Gemini 4 Carbon, Grok 4.7, DeepSeek V4.1 Flash, Kimi K3.1 Pro and Muse Ember. Muse Ember 512K output, DeepSeek 384K, Claude 128K and 300K on the batch API, Gemini long decode up to 1,048,576. Long-context pricing thresholds at 100,000, 200K and 272K tokens, ChatGPT plan context 27K to 400K, AA-LCR v1.1, and context against GPU memory on a 24 GB card.", c: "18 SOURCES" },
     { d: "22 NOV", u: "/articles/which-coding-agent-costs-least-november-2026/", t: "Which Coding Agent Costs Least, November 2026",

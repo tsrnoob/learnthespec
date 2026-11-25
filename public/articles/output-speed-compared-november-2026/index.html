@@ -1,0 +1,515 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="google-adsense-account" content="ca-pub-6413233215513891">
+<script id="google-cmp" async src="https://fundingchoicesmessages.google.com/i/pub-6413233215513891?ers=1"></script>
+<title>Output Speed, Compared, November 2026 — Learnthespec</title>
+<meta name="description" content="How many minutes each leading model takes per benchmark task, how long it waits before answering, what one effort step saves, and what a paid fast tier costs. Checked 25 November 2026.">
+<link rel="stylesheet" href="/assets/fonts.css">
+<style>
+
+    html, body { height: 100%; margin: 0; background: #0A0C10; }
+    a { color: #E4703A; text-decoration: none; }
+    a:hover { color: #F5936A; }
+
+    .root { position: relative; width: 100%; height: 100vh; overflow: hidden;
+      background: linear-gradient(155deg, #1B1F28 0%, #101319 46%, #090B0F 100%);
+      font-family: 'Nunito Sans', system-ui, sans-serif; font-weight: 400;
+      color: #E9EBEF; box-sizing: border-box; -webkit-font-smoothing: antialiased; }
+    .glow { position: absolute; top: -180px; right: -140px; width: 660px; height: 660px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(228,112,58,0.10) 0%, rgba(228,112,58,0) 68%); pointer-events: none; }
+
+    .page { position: relative; height: 100%; overflow-y: auto; box-sizing: border-box;
+      padding: 46px 56px 118px 56px; transition: filter .4s ease;
+      scrollbar-width: thin; scrollbar-color: rgba(255,255,255,0.16) transparent; }
+    .page::-webkit-scrollbar { width: 7px; }
+    .page::-webkit-scrollbar-track { background: transparent; }
+    .page::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 4px; }
+    .root.searching .page { filter: blur(7px); }
+
+    .top { display: flex; gap: 44px; align-items: flex-start; }
+    .col { flex-grow: 1; min-width: 0; max-width: 760px; }
+    .rail { width: 300px; flex-shrink: 0; display: flex; flex-direction: column; gap: 20px; }
+    .rail-left { width: 160px; flex-shrink: 0; display: flex; flex-direction: column; gap: 20px; }
+
+    .wordmark { font-family: 'Archivo', sans-serif; font-weight: 700; font-size: 16px; letter-spacing: 0.15em;
+      text-transform: uppercase; color: #E9EBEF; display: inline-block; margin-bottom: 30px; }
+
+    .crumb { font-family: 'JetBrains Mono', monospace; font-size: 10.5px; letter-spacing: 0.16em;
+      text-transform: uppercase; color: #E4703A; margin-bottom: 16px; }
+
+    h1 { font-family: 'Archivo', sans-serif; font-weight: 700; font-size: 44px; line-height: 1.06;
+      letter-spacing: -0.03em; margin: 0 0 16px 0; max-width: 18ch; text-wrap: balance; }
+    .standfirst { font-size: 20px; font-weight: 500; line-height: 1.5; color: #C3C9D3;
+      margin-bottom: 26px; max-width: 34em; }
+
+    .byline { display: flex; flex-wrap: wrap; gap: 10px 18px; align-items: center;
+      padding: 14px 0 16px 0; border-top: 1px solid rgba(255,255,255,0.10);
+      border-bottom: 1px solid rgba(255,255,255,0.10); margin-bottom: 30px;
+      font-family: 'JetBrains Mono', monospace; font-size: 10.5px; letter-spacing: 0.08em; color: #6C7482; }
+    .byline .who { color: #E9EBEF; }
+    .badge { border: 1px solid rgba(111,184,148,0.40); color: #6FB894; border-radius: 999px;
+      padding: 4px 11px; font-size: 9.5px; letter-spacing: 0.12em; }
+
+    .prose p { font-size: 17px; font-weight: 500; line-height: 1.65; color: #C3C9D3;
+      margin: 0 0 16px 0; max-width: 32em; }
+    .prose strong { color: #E9EBEF; font-weight: 700; }
+    .prose h2 { font-family: 'Archivo', sans-serif; font-weight: 700; font-size: 18px;
+      letter-spacing: 0.13em; text-transform: uppercase; color: #E9EBEF;
+      margin: 38px 0 14px 0; }
+    .prose sup { font-family: 'JetBrains Mono', monospace; font-size: 9.5px; }
+    .prose sup a { color: #E4703A; padding: 0 1px; }
+    .mono { font-family: 'JetBrains Mono', monospace; font-size: 15px; color: #E9EBEF; }
+
+    .def { border-left: 2px solid rgba(155,162,174,0.35); padding: 2px 0 2px 18px;
+      margin: 0 0 16px 0; max-width: 32em; }
+    .def p { font-size: 16.5px; margin: 0; color: #9BA2AE; }
+    .def .term { color: #E9EBEF; font-weight: 700; }
+
+    .tablewrap { overflow-x: auto; overscroll-behavior-x: contain; margin: 0 0 8px 0;
+      border: 1px solid rgba(255,255,255,0.10); border-radius: 8px; background: rgba(255,255,255,0.035);
+      scrollbar-width: thin; scrollbar-color: rgba(255,255,255,0.18) transparent; }
+    .tablewrap::-webkit-scrollbar { height: 7px; }
+    .tablewrap::-webkit-scrollbar-track { background: transparent; }
+    .tablewrap::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.17); border-radius: 4px; }
+    table { border-collapse: collapse; width: 100%; min-width: 660px; }
+    caption { text-align: left; padding: 15px 20px 0 20px; font-family: 'JetBrains Mono', monospace;
+      font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: #6C7482; }
+    th { font-family: 'Archivo', sans-serif; font-weight: 600; font-size: 10.5px; letter-spacing: 0.11em;
+      text-transform: uppercase; color: #9BA2AE; text-align: left; padding: 15px 20px 10px 20px;
+      border-bottom: 1px solid rgba(255,255,255,0.13); white-space: nowrap; }
+    td { padding: 12px 20px; border-bottom: 1px solid rgba(255,255,255,0.07);
+      font-size: 15px; line-height: 1.42; color: #C3C9D3; vertical-align: top; }
+    tr:last-child td { border-bottom: 0; }
+    td.name { color: #E9EBEF; font-family: 'Archivo', sans-serif; font-weight: 600;
+      font-size: 14px; white-space: nowrap; }
+    td.num { font-family: 'JetBrains Mono', monospace; font-size: 13.5px; color: #E9EBEF;
+      white-space: nowrap; font-variant-numeric: tabular-nums; }
+    td.quiet { font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: #6C7482; }
+    td.best { color: #6FB894; }
+    td.no { color: #E08876; }
+    .bar { display: block; height: 3px; background: #E4703A; border-radius: 2px; margin-top: 5px; }
+    .bar.g { background: #6FB894; }
+    .tablenote { font-family: 'JetBrains Mono', monospace; font-size: 10.5px; line-height: 1.7;
+      color: #6C7482; margin: 0 0 30px 0; max-width: 62em; }
+
+    .ad { border: 1px dashed rgba(255,255,255,0.17); background: rgba(255,255,255,0.025); border-radius: 6px;
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px;
+      box-sizing: border-box; text-align: center; }
+    .ad-tag { font-family: 'JetBrains Mono', monospace; font-size: 9.5px; letter-spacing: 0.16em;
+      text-transform: uppercase; color: #6C7482; }
+    .ad-size { font-family: 'JetBrains Mono', monospace; font-size: 10.5px; color: #565E6C; padding: 0 16px; }
+    .ad-note { font-family: 'JetBrains Mono', monospace; font-size: 9.5px; color: #4E5663; line-height: 1.6; padding: 0 22px; }
+    .ad-incontent { height: 280px; margin: 0 0 34px 0; }
+    .ad.ad-inline { display: none; }
+
+    .sources { background: rgba(255,255,255,0.035); border: 1px solid rgba(255,255,255,0.10);
+      border-radius: 8px; padding: 24px 26px; margin: 40px 0 0 0; }
+    .sources h2 { font-family: 'Archivo', sans-serif; font-weight: 600; font-size: 12px;
+      letter-spacing: 0.15em; text-transform: uppercase; color: #E9EBEF; margin: 0 0 6px 0; }
+    .sources-note { font-family: 'JetBrains Mono', monospace; font-size: 10.5px; line-height: 1.7;
+      color: #6C7482; margin-bottom: 18px; }
+    .sources ol { margin: 0; padding-left: 22px; }
+    .sources li { font-size: 14.5px; line-height: 1.55; color: #9BA2AE; margin-bottom: 12px; }
+    .sources li:last-child { margin-bottom: 0; }
+    .sources .pub { font-family: 'JetBrains Mono', monospace; font-size: 10.5px;
+      letter-spacing: 0.06em; color: #6C7482; display: block; margin-top: 3px; }
+
+    .corrections { font-family: 'JetBrains Mono', monospace; font-size: 11px; line-height: 1.75;
+      color: #6C7482; border-top: 1px solid rgba(255,255,255,0.08); margin-top: 34px; padding-top: 18px; }
+
+    .signup { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.10);
+      border-radius: 8px; padding: 26px 30px; margin-top: 34px; }
+    .signup-title { font-family: 'Archivo', sans-serif; font-weight: 700; font-size: 21px;
+      letter-spacing: -0.02em; margin-bottom: 7px; }
+    .signup-sub { font-size: 16px; line-height: 1.5; color: #9BA2AE; margin-bottom: 18px; max-width: 34em; }
+    .field-row { display: flex; align-items: stretch; max-width: 420px; }
+    .field { flex-grow: 1; min-width: 0; background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.13); border-right: 0; border-radius: 999px 0 0 999px;
+      color: #E9EBEF; font-family: 'JetBrains Mono', monospace; font-size: 12.5px; padding: 14px 20px; outline: none; }
+    .field::placeholder { color: #6C7482; }
+    .field-btn { background: #E4703A; color: #14171D; font-family: 'Archivo', sans-serif; font-weight: 700;
+      font-size: 13px; letter-spacing: 0.04em; padding: 14px 26px; border: 0;
+      border-radius: 0 999px 999px 0; cursor: pointer; white-space: nowrap; }
+    .field-btn:disabled { opacity: .6; cursor: default; }
+    .fineprint { font-family: 'JetBrains Mono', monospace; font-size: 10.5px; line-height: 1.65;
+      color: #6C7482; margin-top: 10px; }
+
+    .readnext { margin-top: 40px; }
+    .readnext-label { font-family: 'Archivo', sans-serif; font-weight: 600; font-size: 12px;
+      letter-spacing: 0.15em; text-transform: uppercase; color: #E9EBEF; margin-bottom: 14px; }
+    .rn { display: flex; gap: 16px; padding: 13px 0; border-bottom: 1px solid rgba(255,255,255,0.07); align-items: baseline; }
+    .rn:last-of-type { border-bottom: 0; }
+    .rn-chip { font-family: 'JetBrains Mono', monospace; font-size: 9.5px; color: #6C7482;
+      width: 92px; flex-shrink: 0; letter-spacing: 0.1em; }
+    .rn-title { font-family: 'Archivo', sans-serif; font-weight: 600; font-size: 16px;
+      line-height: 1.26; letter-spacing: -0.012em; color: #9BA2AE; }
+    .rn-title a { color: #E9EBEF; }
+    .rn-sub { font-size: 14px; line-height: 1.45; color: #6C7482; margin-top: 3px; }
+
+    .foot { margin-top: 40px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.07);
+      display: flex; justify-content: space-between; align-items: center; gap: 14px; flex-wrap: wrap;
+      font-family: 'JetBrains Mono', monospace; font-size: 10.5px; color: #5C6473; letter-spacing: 0.06em; }
+
+    .anchor { position: absolute; left: 0; right: 0; bottom: 0; height: 62px; z-index: 35;
+      background: rgba(14,17,22,0.96); border-top: 1px solid rgba(255,255,255,0.10);
+      backdrop-filter: blur(10px); display: flex; align-items: center; justify-content: center;
+      gap: 18px; padding: 0 44px 0 16px; box-sizing: border-box; }
+    .anchor-close { position: absolute; right: 14px; top: 50%; transform: translateY(-50%);
+      width: 22px; height: 22px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.16);
+      display: flex; align-items: center; justify-content: center; cursor: pointer;
+      font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #7C8494; }
+    .anchor.gone { display: none; }
+
+    @media (max-width: 1200px) { .ad.ad-inline { display: flex; height: 250px; margin: 0 0 34px 0; } }
+    @media (max-width: 1440px) { .rail-left { display: none; } }
+    @media (max-width: 1180px) { .rail { display: none; } }
+    @media (max-width: 900px)  { .page { padding: 38px 30px 110px 30px; } h1 { font-size: 34px; } }
+    @media (max-width: 640px)  {
+      .page { padding: 30px 20px 104px 20px; }
+      h1 { font-size: 29px; }
+      .standfirst { font-size: 18px; }
+      .field-row { flex-direction: column; }
+      .field { border-right: 1px solid rgba(255,255,255,0.13); border-radius: 8px; }
+      .field-btn { border-radius: 8px; margin-top: 8px; }
+    }
+
+</style>
+<link rel="stylesheet" href="/assets/nav.css">
+<script src="/assets/analytics.js" defer></script>
+<script src="/assets/nav.js" defer></script>
+</head>
+<body class="has-anchor">
+
+<div class="root">
+  <div class="glow"></div>
+  <div class="page">
+    <div class="top">
+
+      <div class="rail-left">
+        <div class="ad" style="height: 600px;">
+          <div class="ad-tag">Advertisement</div>
+          <div class="ad-size">160 &times; 600</div>
+          <div class="ad-note">Wide skyscraper. Hidden below 1440 px, where it would squeeze the 32em measure.</div>
+        </div>
+      </div>
+
+      <div class="col">
+
+        <a class="wordmark" href="/">Learnthespec</a>
+
+        <div class="crumb">AI &middot; Comparisons</div>
+
+        <h1>Output Speed, Compared, November 2026</h1>
+        <div class="standfirst">The public board now times a whole task instead of printing tokens per second. Here is how long each leading model takes, how long it waits before answering, and what an effort step or a paid fast tier changes.</div>
+
+        <div class="byline">
+          <span class="who">Tsrnoob</span>
+          <span>25 NOVEMBER 2026</span>
+          <span>COMPILED FROM 8 SOURCES</span>
+          <span class="badge">CHECKED 25 NOV 2026</span>
+        </div>
+
+        <div class="prose">
+
+          <h2>Time per task</h2>
+          <p>Among the ten highest-scoring models, the slowest takes four times as long per task as the fastest.<sup><a href="#s1">1</a></sup></p>
+          <div class="def"><p><span class="term">Time per task</span> — the minutes a model takes to finish one average Intelligence Index task. Artificial Analysis computes it as output tokens divided by end-to-end output speed, and gives 12.4 minutes as the median for comparable models.<sup><a href="#s2">2</a></sup></p></div>
+        </div>
+
+        <div class="tablewrap">
+          <table>
+            <caption>Time per task and wait before the answer, Intelligence Index v5.0.2, each model at its top effort, read 25 Nov 2026</caption>
+            <thead><tr><th>Model</th><th>Time per task, minutes</th><th>First answer token, seconds</th><th>Index</th><th>Cost per task</th><th>Src</th></tr></thead>
+            <tbody>
+              <tr><td class="name">Claude Fable 5.2 (max)</td><td class="num no">40.5</td><td class="num">219.80</td><td class="num best">65</td><td class="num">$26.54</td><td class="quiet"><a href="#s1">[1]</a></td></tr>
+              <tr><td class="name">GPT-6.2 Astra (max)</td><td class="num">14.2</td><td class="num">161.42</td><td class="num">62</td><td class="num">$4.00</td><td class="quiet"><a href="#s1">[1]</a></td></tr>
+              <tr><td class="name">Gemini 4 Neon (xhigh)</td><td class="num">25.6</td><td class="num">60.05</td><td class="num">62</td><td class="num">$6.44</td><td class="quiet"><a href="#s1">[1]</a></td></tr>
+              <tr><td class="name">Gemini 4 Carbon (high)</td><td class="num">38.1</td><td class="num">73.30</td><td class="num">60</td><td class="num">$7.76</td><td class="quiet"><a href="#s1">[1]</a></td></tr>
+              <tr><td class="name">Claude Opus 5.5 (max)</td><td class="num">24.7</td><td class="num no">337.81</td><td class="num">59</td><td class="num">$10.04</td><td class="quiet"><a href="#s1">[1]</a></td></tr>
+              <tr><td class="name">GPT-6.2 Sol (max)</td><td class="num best">10.0</td><td class="num">105.86</td><td class="num">57</td><td class="num">$1.01</td><td class="quiet"><a href="#s1">[1]</a></td></tr>
+              <tr><td class="name">Claude Sonnet 5.5 (max)</td><td class="num">30.7</td><td class="num">259.42</td><td class="num">55</td><td class="num">$10.02</td><td class="quiet"><a href="#s1">[1]</a></td></tr>
+              <tr><td class="name">Gemini 4 Hydrogen (xhigh)</td><td class="num">15.9</td><td class="num">56.32</td><td class="num">54</td><td class="num">$3.16</td><td class="quiet"><a href="#s1">[1]</a></td></tr>
+              <tr><td class="name">GPT-6.1 Terra (max)</td><td class="num">14.0</td><td class="num">164.52</td><td class="num">51</td><td class="num">$0.96</td><td class="quiet"><a href="#s1">[1]</a></td></tr>
+              <tr><td class="name">Gemini 4 Argon (high)</td><td class="num">23.8</td><td class="num">37.46</td><td class="num">51</td><td class="num">$9.95</td><td class="quiet"><a href="#s1">[1]</a></td></tr>
+              <tr><td class="name">Kimi K3.1 Pro</td><td class="num">34.0</td><td class="num">155.60</td><td class="num">47</td><td class="num">$3.68</td><td class="quiet"><a href="#s1">[1]</a></td></tr>
+              <tr><td class="name">Muse Wonder (max)</td><td class="num">16.0</td><td class="num best">25.90</td><td class="num">44</td><td class="num">$6.95</td><td class="quiet"><a href="#s1">[1]</a></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="tablenote">ONE PAGE, ONE PASS: THE ARTIFICIAL ANALYSIS MODEL LEADERBOARD, TWELVE HIGHEST-SCORING ROWS THAT CARRY BOTH TIMES. THE BOARD NO LONGER PRINTS A TOKENS-PER-SECOND COLUMN, SO THE SEPTEMBER EDITION'S MAIN COLUMN CANNOT BE RE-READ THERE.<sup><a href="#s1">[1]</a></sup></p>
+
+        <div class="prose">
+
+          <h2>Two waits, not one</h2>
+          <p>A task time says when the work is done. It does not say when the answer starts.</p>
+          <div class="def"><p><span class="term">Time to first answer token</span> — the seconds before the first token of the answer arrives, with the model's thinking time counted. Claude Opus 5.5 at max effort reads 337.81 seconds on the board.<sup><a href="#s1">1</a></sup><sup><a href="#s2">2</a></sup></p></div>
+          <p>The three longest waits in the table all belong to Claude models. The model that finishes a task fastest is not the one that answers first.<sup><a href="#s1">1</a></sup></p>
+
+          <h2>Effort sets the time</h2>
+          <p>The same model has a different task time at each effort level.</p>
+          <div class="def"><p><span class="term">Reasoning effort</span> — a setting for how long a model thinks before it answers. GPT-6.2 Astra has five levels on its Artificial Analysis page, from low to max.<sup><a href="#s2">2</a></sup></p></div>
+          <p>Astra's xhigh level scores the same as max in a little over half the time. The writing speed barely moves.<sup><a href="#s2">2</a></sup></p>
+        </div>
+
+        <div class="tablewrap">
+          <table>
+            <caption>GPT-6.2 Astra at five effort levels, Intelligence Index v5.0.2, read 25 Nov 2026</caption>
+            <thead><tr><th>Effort</th><th>Time per task, minutes</th><th>Output speed, tokens a second</th><th>Index</th><th>Src</th></tr></thead>
+            <tbody>
+              <tr><td class="name">Max</td><td class="num no">14.2</td><td class="num">48</td><td class="num best">62</td><td class="quiet"><a href="#s2">[2]</a></td></tr>
+              <tr><td class="name">Xhigh</td><td class="num">8.1</td><td class="num">46</td><td class="num best">62</td><td class="quiet"><a href="#s2">[2]</a></td></tr>
+              <tr><td class="name">High</td><td class="num">6.2</td><td class="num">48</td><td class="num">60</td><td class="quiet"><a href="#s2">[2]</a></td></tr>
+              <tr><td class="name">Medium</td><td class="num">4.6</td><td class="num">48</td><td class="num">57</td><td class="quiet"><a href="#s2">[2]</a></td></tr>
+              <tr><td class="name">Low</td><td class="num best">2.0</td><td class="num">43</td><td class="num no">46</td><td class="quiet"><a href="#s2">[2]</a></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="tablenote">ONE PAGE, ONE PASS: THE GPT-6.2 ASTRA MODEL PAGE. FROM LOW TO MAX THE TASK TAKES SEVEN TIMES AS LONG.<sup><a href="#s2">[2]</a></sup></p>
+
+        <div class="ad ad-incontent">
+          <div class="ad-tag">Advertisement</div>
+          <div class="ad-size">336 &times; 280 &mdash; in-content, below the tables</div>
+        </div>
+
+        <div class="ad ad-inline">
+          <div class="ad-tag">Advertisement</div>
+          <div class="ad-size">300 &times; 250 &mdash; rail unit, moved inline below 1200 px</div>
+        </div>
+
+        <div class="prose">
+
+          <h2>One step below the top</h2>
+          <p>The last effort step is the dearest in time on every model read.</p>
+          <p>One step down saves about four tenths of the time on all five. It costs between zero and three index points.</p>
+        </div>
+
+        <div class="tablewrap">
+          <table>
+            <caption>Top effort against one level down, minutes per task and index, v5.0.2, read 25 Nov 2026</caption>
+            <thead><tr><th>Model</th><th>Top level</th><th>Minutes at top</th><th>Minutes one level down</th><th>Index at top</th><th>Index one level down</th><th>Src</th></tr></thead>
+            <tbody>
+              <tr><td class="name">Claude Fable 5.2</td><td>Max</td><td class="num no">40.5</td><td class="num">24.2</td><td class="num best">65</td><td class="num">62</td><td class="quiet"><a href="#s3">[3]</a></td></tr>
+              <tr><td class="name">Gemini 4 Neon</td><td>Xhigh</td><td class="num">25.6</td><td class="num">14.7</td><td class="num">62</td><td class="num">60</td><td class="quiet"><a href="#s4">[4]</a></td></tr>
+              <tr><td class="name">Claude Opus 5.5</td><td>Max</td><td class="num">24.7</td><td class="num">15.7</td><td class="num">59</td><td class="num">58</td><td class="quiet"><a href="#s5">[5]</a></td></tr>
+              <tr><td class="name">GPT-6.2 Astra</td><td>Max</td><td class="num">14.2</td><td class="num">8.1</td><td class="num">62</td><td class="num best">62</td><td class="quiet"><a href="#s2">[2]</a></td></tr>
+              <tr><td class="name">GPT-6.2 Sol</td><td>Max</td><td class="num best">10.0</td><td class="num best">6.2</td><td class="num">57</td><td class="num">56</td><td class="quiet"><a href="#s6">[6]</a></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="tablenote">EACH ROW IS THAT MODEL'S OWN ARTIFICIAL ANALYSIS PAGE, ALL FIVE READ ON THE SAME DAY ON THE SAME INDEX VERSION. THE LEVEL BELOW THE TOP IS XHIGH ON FOUR OF THEM AND HIGH ON GEMINI 4 NEON.</p>
+
+        <div class="prose">
+
+          <h2>Tokens per second</h2>
+          <p>The September edition ranked on this figure. The model pages still print it, one model at a time.</p>
+          <div class="def"><p><span class="term">Output speed</span> — tokens written per second. Artificial Analysis counts it as output tokens divided by total request time, including the time to first token.<sup><a href="#s2">2</a></sup></p></div>
+          <p>Both Claude models write more than twice as fast as GPT-6.2 Astra and still take longer per task. The gap is in how many tokens each one spends.</p>
+        </div>
+
+        <div class="tablewrap">
+          <table>
+            <caption>Output speed at the top and the lowest effort level, tokens a second, read 25 Nov 2026</caption>
+            <thead><tr><th>Model</th><th>At top effort</th><th>At low effort</th><th>Minutes per task at top</th><th>Src</th></tr></thead>
+            <tbody>
+              <tr><td class="name">Claude Opus 5.5</td><td class="num best">117</td><td class="num">105</td><td class="num">24.7</td><td class="quiet"><a href="#s5">[5]</a></td></tr>
+              <tr><td class="name">Claude Fable 5.2</td><td class="num">113</td><td class="num best">110</td><td class="num no">40.5</td><td class="quiet"><a href="#s3">[3]</a></td></tr>
+              <tr><td class="name">Gemini 4 Neon</td><td class="num">92</td><td class="num">96</td><td class="num">25.6</td><td class="quiet"><a href="#s4">[4]</a></td></tr>
+              <tr><td class="name">GPT-6.2 Sol</td><td class="num">67</td><td class="num">62</td><td class="num best">10.0</td><td class="quiet"><a href="#s6">[6]</a></td></tr>
+              <tr><td class="name">GPT-6.2 Astra</td><td class="num no">48</td><td class="num no">43</td><td class="num">14.2</td><td class="quiet"><a href="#s2">[2]</a></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="tablenote">EACH ROW IS THAT MODEL'S OWN PAGE, SO THE ROWS ARE LISTED AND NOT RANKED AS A BOARD WOULD RANK THEM. THE MODEL THAT WRITES SLOWEST HERE HAS THE SECOND SHORTEST TASK TIME.</p>
+
+        <div class="prose">
+
+          <h2>A faster tier costs double</h2>
+          <p>Two vendors sell speed as a price tier. Both charge twice the standard rate for the first step.<sup><a href="#s7">7</a></sup><sup><a href="#s8">8</a></sup></p>
+          <div class="def"><p><span class="term">Fast mode</span> — a paid tier that serves the same model faster. Anthropic states up to 2.5x higher output tokens per second for it.<sup><a href="#s8">8</a></sup></p></div>
+        </div>
+
+        <div class="tablewrap">
+          <table>
+            <caption>Paid faster tiers, USD per 1M tokens, input / output, read 25 Nov 2026</caption>
+            <thead><tr><th>Model</th><th>Standard</th><th>Tier</th><th>Tier rate</th><th>Times standard</th><th>Speed gain the page states</th><th>Src</th></tr></thead>
+            <tbody>
+              <tr><td class="name">Claude Fable 5.2</td><td class="num">$8 / $40</td><td>Fast mode</td><td class="num">$16 / $80</td><td class="num">2</td><td class="num best">Up to 2.5x tokens a second</td><td class="quiet"><a href="#s8">[8]</a></td></tr>
+              <tr><td class="name">Claude Opus 5.5</td><td class="num">$4 / $20</td><td>Fast mode</td><td class="num">$8 / $40</td><td class="num">2</td><td class="num best">Up to 2.5x tokens a second</td><td class="quiet"><a href="#s8">[8]</a></td></tr>
+              <tr><td class="name">GPT-6.2 Astra</td><td class="num">$8.00 / $40.00</td><td>Fast</td><td class="num">$16.00 / $80.00</td><td class="num">2</td><td class="quiet">Not stated on the page</td><td class="quiet"><a href="#s7">[7]</a></td></tr>
+              <tr><td class="name">GPT-6.2 Astra</td><td class="num">$8.00 / $40.00</td><td>Ultrafast</td><td class="num">$24.00 / $120.00</td><td class="num no">3</td><td class="quiet">Not stated on the page</td><td class="quiet"><a href="#s7">[7]</a></td></tr>
+              <tr><td class="name">GPT-6.2 Sol</td><td class="num">$2.00 / $10.00</td><td>Fast</td><td class="num">$4.00 / $20.00</td><td class="num">2</td><td class="quiet">Not stated on the page</td><td class="quiet"><a href="#s7">[7]</a></td></tr>
+              <tr><td class="name">GPT-6.2 Sol</td><td class="num">$2.00 / $10.00</td><td>Ultrafast</td><td class="num">$6.00 / $30.00</td><td class="num no">3</td><td class="quiet">Not stated on the page</td><td class="quiet"><a href="#s7">[7]</a></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="tablenote">TWO PAGES, ONE PER VENDOR. OPENAI STATES THAT ULTRAFAST ON GPT-6.2 ASTRA AND SOL COSTS 3 TIMES THE STANDARD RATE THROUGH 28 FEBRUARY 2027 AND 6 TIMES FROM 1 MARCH 2027.<sup><a href="#s7">[7]</a></sup> ANTHROPIC'S FAST MODE IS NOT AVAILABLE WITH THE BATCH API.<sup><a href="#s8">[8]</a></sup></p>
+
+        <div class="prose">
+
+          <h2>The extremes</h2>
+          <p>The fastest rows on the board are not the leaders.</p>
+          <p>Every outright speed record belongs to a model that scores under twenty or has no score. So does the slowest task time.<sup><a href="#s1">1</a></sup></p>
+        </div>
+
+        <div class="tablewrap">
+          <table>
+            <caption>Records on the Artificial Analysis model leaderboard, v5.0.2, read 25 Nov 2026</caption>
+            <thead><tr><th>Record</th><th>Model</th><th>Figure</th><th>Index</th><th>Src</th></tr></thead>
+            <tbody>
+              <tr><td class="name">Shortest time per task</td><td>Beam 1.0 and Mistral Small 4 (reasoning)</td><td class="num best">1.6 minutes</td><td class="num">18 and 4</td><td class="quiet"><a href="#s1">[1]</a></td></tr>
+              <tr><td class="name">Shortest time per task above index 40</td><td>GPT-6.2 Sol (max)</td><td class="num">10.0 minutes</td><td class="num">57</td><td class="quiet"><a href="#s1">[1]</a></td></tr>
+              <tr><td class="name">Longest time per task</td><td>Solar Pro 4</td><td class="num no">63.9 minutes</td><td class="num">14</td><td class="quiet"><a href="#s1">[1]</a></td></tr>
+              <tr><td class="name">Shortest wait, any row</td><td>Tiny Aya Global</td><td class="num best">0.21 seconds</td><td class="quiet">No score</td><td class="quiet"><a href="#s1">[1]</a></td></tr>
+              <tr><td class="name">Shortest wait, scored rows</td><td>North Mini Code</td><td class="num">3.22 seconds</td><td class="num">3</td><td class="quiet"><a href="#s1">[1]</a></td></tr>
+              <tr><td class="name">Longest wait</td><td>Claude Opus 5.5 (max)</td><td class="num no">337.81 seconds</td><td class="num">59</td><td class="quiet"><a href="#s1">[1]</a></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="tablenote">ONE PAGE, ONE PASS. THE BOARD PRINTS A TIME PER TASK ON 51 OF ITS 67 SCORED ROWS AND A FIRST ANSWER TOKEN ON 97 OF ITS 203 ROWS, SO A RECORD HERE IS A RECORD AMONG THE ROWS THAT CARRY THE FIGURE.<sup><a href="#s1">[1]</a></sup></p>
+
+        <div class="prose">
+
+          <h2>Which one to pick</h2>
+          <p>There is no single winner. The right pick depends on which wait you are trying to shorten.</p>
+        </div>
+
+        <div class="tablewrap">
+          <table>
+            <caption>Recommendation by use case</caption>
+            <thead><tr><th>If you want</th><th>Pick</th><th>Why</th></tr></thead>
+            <tbody>
+              <tr><td class="name">The highest score, whatever the wait</td><td class="best">Claude Fable 5.2 (max)</td><td>Index 65 at 40.5 minutes a task, the slowest of the top ten.</td></tr>
+              <tr><td class="name">A top-three score in the least time</td><td class="best">GPT-6.2 Astra (xhigh)</td><td>Index 62 in 8.1 minutes, against 14.2 at max for the same score.</td></tr>
+              <tr><td class="name">The shortest task time above index 55</td><td class="best">GPT-6.2 Sol</td><td>10.0 minutes at max for 57, or 6.2 at xhigh for 56.</td></tr>
+              <tr><td class="name">The shortest wait among the leaders</td><td class="best">Muse Wonder (max)</td><td>25.90 seconds to the first answer token. Gemini 4 Argon (high) reads 37.46.</td></tr>
+              <tr><td class="name">A Claude model, sooner</td><td class="best">One level below max</td><td>Fable 5.2 falls from 40.5 to 24.2 minutes for three index points. Fast mode doubles the rate instead.</td></tr>
+              <tr><td class="name">Max effort as a default</td><td class="no">Reconsider</td><td>One level down saves about four tenths of the time on all five models read, for zero to three points.</td></tr>
+              <tr><td class="name">To rank models by tokens per second</td><td class="no">Do not</td><td>Claude Opus 5.5 writes at 117 against GPT-6.2 Astra's 48 and takes 24.7 minutes a task against 14.2.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="tablenote">EVERY FIGURE HERE APPEARS WITH ITS SOURCE EARLIER IN THE ARTICLE.</p>
+
+        <div class="sources" id="sources">
+          <h2>Sources</h2>
+          <div class="sources-note">ALL PAGES READ ON 25 NOVEMBER 2026. NOTHING HERE WAS TESTED BY US. EVERY TIME, SPEED AND INDEX FIGURE IS AN ARTIFICIAL ANALYSIS MEASUREMENT ON INTELLIGENCE INDEX V5.0.2, QUOTED FROM THE PAGE NAMED BESIDE IT. PRICES ARE THE VENDORS' OWN.</div>
+          <ol>
+            <li id="s1"><a href="https://artificialanalysis.ai/leaderboards/models" rel="nofollow noopener" target="_blank">Artificial Analysis, model leaderboard</a>: time per task, first answer token, index and cost per task for every row, and the records.<span class="pub">ARTIFICIAL ANALYSIS &middot; LEADERBOARD</span></li>
+            <li id="s2"><a href="https://artificialanalysis.ai/models/gpt-6-2-astra" rel="nofollow noopener" target="_blank">Artificial Analysis, GPT-6.2 Astra</a>: the five effort levels with time per task, output speed and index, the 12.4-minute median, and the definitions of the three measures.<span class="pub">ARTIFICIAL ANALYSIS &middot; MODEL PAGE</span></li>
+            <li id="s3"><a href="https://artificialanalysis.ai/models/claude-fable-5-2" rel="nofollow noopener" target="_blank">Artificial Analysis, Claude Fable 5.2</a>: time per task, output speed and index at each effort level.<span class="pub">ARTIFICIAL ANALYSIS &middot; MODEL PAGE</span></li>
+            <li id="s4"><a href="https://artificialanalysis.ai/models/gemini-4-neon" rel="nofollow noopener" target="_blank">Artificial Analysis, Gemini 4 Neon</a>: time per task, output speed and index at each effort level.<span class="pub">ARTIFICIAL ANALYSIS &middot; MODEL PAGE</span></li>
+            <li id="s5"><a href="https://artificialanalysis.ai/models/claude-opus-5-5" rel="nofollow noopener" target="_blank">Artificial Analysis, Claude Opus 5.5</a>: time per task, output speed and index at each effort level.<span class="pub">ARTIFICIAL ANALYSIS &middot; MODEL PAGE</span></li>
+            <li id="s6"><a href="https://artificialanalysis.ai/models/gpt-6-2-sol" rel="nofollow noopener" target="_blank">Artificial Analysis, GPT-6.2 Sol</a>: time per task, output speed and index at each effort level.<span class="pub">ARTIFICIAL ANALYSIS &middot; MODEL PAGE</span></li>
+            <li id="s7"><a href="https://developers.openai.com/api/docs/pricing" rel="nofollow noopener" target="_blank">OpenAI, API pricing</a>: Standard, Fast and Ultrafast rates for GPT-6.2 Astra and Sol, and the dated Ultrafast multiple.<span class="pub">OPENAI &middot; VENDOR PRICING PAGE</span></li>
+            <li id="s8"><a href="https://platform.claude.com/docs/en/about-claude/pricing" rel="nofollow noopener" target="_blank">Anthropic, Pricing</a>: fast mode rates for Claude Fable 5.2 and Opus 5.5, the stated speed gain, and the batch exclusion.<span class="pub">ANTHROPIC &middot; VENDOR DOCUMENTATION</span></li>
+          </ol>
+        </div>
+
+        <div class="corrections">
+          FOUND AN ERROR? SPEED FIGURES MOVE FROM DAY TO DAY, AND A FIGURE ON ONE INDEX VERSION IS NOT COMPARABLE WITH ONE ON ANOTHER.
+          MAIL <a href="mailto:contact@learnthespec.com">CONTACT@LEARNTHESPEC.COM</a> AND WE WILL CHECK IT AGAINST THE SOURCE.
+          CORRECTIONS ARE MADE IN PLACE AND NOTED HERE WITH THE DATE.
+        </div>
+
+        <div class="signup">
+          <div class="signup-title">Get the week's AI news in your inbox</div>
+          <div class="signup-sub">Everything that actually changed, in one email, every source linked.</div>
+          <form class="field-row" id="subscribe" novalidate>
+            <input class="field" type="email" name="email" required autocomplete="email"
+                   placeholder="you@example.com" aria-label="Email address">
+            <button class="field-btn" type="submit">SUBSCRIBE</button>
+            <span style="position:absolute;left:-9999px" aria-hidden="true">
+              <input type="text" name="company" tabindex="-1" autocomplete="off">
+            </span>
+          </form>
+          <div class="fineprint" id="sub-status" role="status" aria-live="polite">A confirmation link arrives first — click it to finish. One click to leave, any time.</div>
+        </div>
+
+        <div class="readnext">
+          <div class="readnext-label">Read next</div>
+          <div class="rn">
+            <div class="rn-chip">PUBLISHED</div>
+            <div>
+              <div class="rn-title"><a href="/articles/what-reasoning-effort-costs-november-2026/">What Reasoning Effort Costs, November 2026</a></div>
+              <div class="rn-sub">What each effort level costs in money, where this page counts minutes.</div>
+            </div>
+          </div>
+          <div class="rn">
+            <div class="rn-chip">PUBLISHED</div>
+            <div>
+              <div class="rn-title"><a href="/articles/token-efficiency-compared-october-2026/">Token Efficiency, Compared, October 2026</a></div>
+              <div class="rn-sub">How many tokens each model spends, the other half of a task time.</div>
+            </div>
+          </div>
+          <div class="rn">
+            <div class="rn-chip">PUBLISHED</div>
+            <div>
+              <div class="rn-title"><a href="/articles/context-windows-compared-november-2026/">Context Windows, Compared Honestly, November 2026</a></div>
+              <div class="rn-sub">How long one reply can be, model by model.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="foot">
+          <div>LEARNTHESPEC.COM — AI NEWS AND COMPARISONS, MUNICH</div>
+          <div><a href="/impressum/" style="color:#5C6473">IMPRESSUM</a> &middot; <a href="/privacy/" style="color:#5C6473">PRIVACY</a> &middot; <a href="/contact/" style="color:#5C6473">CONTACT</a></div>
+        </div>
+
+      </div>
+
+      <div class="rail">
+        <div class="ad" style="height: 600px;">
+          <div class="ad-tag">Advertisement</div>
+          <div class="ad-size">300 &times; 600</div>
+          <div class="ad-note">Half-page. Scrolls with the page — not sticky, so it never sits under the menu button.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="anchor" id="anchor">
+    <div class="ad-tag">Advertisement</div>
+    <div class="ad-size">970 &times; 50 anchor — dismissible</div>
+    <div class="anchor-close" id="anchor-close">&#10005;</div>
+  </div>
+
+</div>
+
+<script>
+(function () {
+  var close = document.getElementById('anchor-close');
+  var anchor = document.getElementById('anchor');
+  if (close && anchor) {
+    close.addEventListener('click', function () { anchor.classList.add('gone'); });
+  }
+
+  var form = document.getElementById('subscribe');
+  if (!form) return;
+  var status = document.getElementById('sub-status');
+  var btn = form.querySelector('button');
+  var idle = status.textContent;
+  form.addEventListener('submit', async function (e) {
+    e.preventDefault();
+    btn.disabled = true;
+    status.textContent = 'Sending...';
+    try {
+      var res = await fetch('/api/subscribe', { method: 'POST', body: new FormData(form) });
+      var data = await res.json();
+      status.textContent = data.message || (data.ok ? 'Done.' : 'Something went wrong.');
+      if (data.ok) form.reset();
+    } catch (err) {
+      status.textContent = 'Network problem - try again.';
+    } finally {
+      btn.disabled = false;
+      setTimeout(function () { status.textContent = idle; }, 9000);
+    }
+  });
+})();
+</script>
+
+</body>
+</html>
