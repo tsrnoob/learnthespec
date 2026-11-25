@@ -4,6 +4,8 @@
   'use strict';
 
   var ARTICLES = [
+    { d: "25 NOV", u: "/articles/context-windows-compared-november-2026/", t: "Context Windows, Compared Honestly, November 2026",
+      s: "Context windows compared, November 2026: context window and max output tokens for Claude Fable 5.2, Opus 5.5, Haiku 5.5, GPT-6.2 Astra and Sol, Gemini 4 Carbon, Grok 4.7, DeepSeek V4.1 Flash, Kimi K3.1 Pro and Muse Ember. Muse Ember 512K output, DeepSeek 384K, Claude 128K and 300K on the batch API, Gemini long decode up to 1,048,576. Long-context pricing thresholds at 100,000, 200K and 272K tokens, ChatGPT plan context 27K to 400K, AA-LCR v1.1, and context against GPU memory on a 24 GB card.", c: "18 SOURCES" },
     { d: "22 NOV", u: "/articles/which-coding-agent-costs-least-november-2026/", t: "Which Coding Agent Costs Least, November 2026",
       s: "Which coding agent costs least, November 2026: FrontierHarness Eval v1.1 prices 22 agent configurations of 18 harnesses on five open-weight models over 62 tasks and 27,280 runs. Cost per pass from Codex CLI at 0.937 USD to Antigravity CLI at 1.63, pass rate from ZCode 61.9% to Exo 50.6%, Claude Code, OpenCode, Cline CLI, GitHub Copilot CLI, Grok Build, KimiCode, MiniMax Code, mini-SWE-agent and the four DeepSeek Harness profiles. The cheapest agent changes with the model, a dearer agent does not pass more often, only steps predict cost, and 64.5% of the spend went to runs that did not pass.", c: "11 SOURCES" },
     { d: "18 NOV", u: "/articles/best-ai-for-video-november-2026/", t: "Best AI for Video, November 2026",
