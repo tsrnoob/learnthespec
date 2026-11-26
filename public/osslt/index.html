@@ -1014,7 +1014,7 @@ function home(){Q=null;A.className='';const R=TILES.length,opened=(f,t)=>ALL.sli
  ${tileGrid(0,R)}
  <h2>Reading tips 阅读技巧 · ${opened(R,ALL.length)} of ${RTIPS.length} opened</h2>
  ${tileGrid(R,ALL.length)}
- ${any||Object.keys(best).length?'<button class="go ghost" id="reset">Reset all progress 重置进度</button><p class="fine">Clears best scores and opened ticks so you can start everything again.</p>':''}`}
+ <button class="go ghost" id="reset">Reset all progress 重置进度</button><p class="fine">Clears best scores and opened ticks so you can start everything again.</p>`}
 function texts(){Q=null;A.className='';
  const rows=TEXTS.map(i=>{const P=PASS[i],n=SETS.pdfr.filter(q=>q.ps===i).length,b=best['pdfr:'+i];
   return `<button class="trow" data-text="${i}"><span class="tt"><b>${esc(P.title)}</b><span>${esc(P.sel)} · ${P.kind} · ${n} questions</span></span>${b?`<span class="bst">${b[0]}/${b[1]}</span>`:''}</button>`}).join('');
@@ -1085,11 +1085,11 @@ function openMenu(){const qs=SETS[Q.k];let h='',last=null;
   h+=`<button class="dot ${stateOf(id)} ${j===Q.i?'cur':''}" data-go="${j}">${j+1}</button>`});
  MENU.hidden=false;MENU.innerHTML=`<div class="sheet menu" role="dialog" aria-modal="true" aria-label="Question list"><div class="top"><h3 style="margin:0;flex:1">Questions</h3><button class="x-btn" id="mclose" aria-label="Close list">✕</button></div>${h}</div>
  <p class="leg"><span class="dot done"></span> answered <span class="dot ok"></span> correct <span class="dot no"></span> wrong</p>
- <button class="go" id="finish">Finish and see score</button></div>`;
+ <button class="go" id="finish">Finish and see score</button><button class="go ghost" id="restart" style="margin-top:10px">Start over 重新开始</button></div>`;
  const s=MENU.firstChild;s.style.transform='translateY(-20px) scale(.96)';s.style.opacity='0';requestAnimationFrame(()=>{MENU.classList.add('on');s.style.transform='none';s.style.opacity='1'})}
 function closeMenu(){MENU.classList.remove('on');MENU.hidden=true;MENU.innerHTML=''}
 MENU.addEventListener('click',e=>{const b=e.target.closest('button');if(e.target===MENU||(b&&b.id==='mclose')){closeMenu();return}if(!b)return;
- if(b.dataset.go!=null){closeMenu();go(+b.dataset.go)}else if(b.id==='finish'){closeMenu();results()}});
+ if(b.dataset.go!=null){closeMenu();go(+b.dataset.go)}else if(b.id==='finish'){closeMenu();results()}else if(b.id==='restart'){closeMenu();start(Q.k,false,Q.ps);window.scrollTo(0,0)}});
 function results(){const qs=SETS[Q.k];let right=0,n=0;
  const rows=Q.order.map((id,j)=>{const q=qs[id],a=Q.ans[id],head=`<b>${j+1}.</b> <span class="rq">${esc(q.q.split('\n')[0])}</span><br>`;
   if(q.t==='open')return `<div class="rv">${head}${words(a)?`<span class="mine">${br(a)}</span><br>`:''}<small>${q.sample?'Sample answer':'A strong answer could include'} (not scored)</small><br><span class="v">${br(correctText(q))}</span></div>`;
