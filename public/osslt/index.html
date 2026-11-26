@@ -1,0 +1,1134 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="robots" content="noindex,nofollow"><title>OSSLT Grammar Practice</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@500;700;800;900&display=swap">
+<style>
+/* Layout: playful lesson app. Home = big set buttons + grid of rule tiles that zoom open. Quiz = progress bar, one big question, chunky answers, bottom feedback sheet. Light only by design. */
+:root{color-scheme:light;--bg:#ffffff;--ink:#283241;--muted:#6f7b8b;--line:#e2e6ec;--line2:#c9d0d9;--pri:#3d6cf2;--pri-d:#2a4fc0;--pri-soft:#e6edff;--good:#2e9e4d;--good-d:#237a3b;--good-soft:#dcf5e1;--bad:#e04848;--bad-d:#b53434;--bad-soft:#fde4e4;--sun:#ffc531;--sun-d:#d99f00;
+--t1:#ffe9c2;--t2:#d9f0ff;--t3:#e3f7d6;--t4:#f3e2ff;--t5:#ffe0e6;--font:'Nunito',system-ui,-apple-system,'Segoe UI',sans-serif}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{background:var(--bg);color:var(--ink);font-family:var(--font);font-size:17px;line-height:1.45;font-weight:500;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+button{font:inherit;color:inherit;cursor:pointer;border:none;background:none}
+:focus-visible{outline:3px solid var(--pri);outline-offset:3px}
+#app{max-width:640px;margin:0 auto;min-height:100%;display:flex;flex-direction:column;padding-block:18px 24px;gap:18px}
+h1{font-size:1.5rem;font-weight:900;margin:0}
+h2{font-size:1.05rem;font-weight:800;margin:6px 0 0;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.sub{color:var(--muted);margin:2px 0 0}
+.big{display:flex;align-items:center;gap:14px;width:100%;text-align:left;padding:16px 18px;border-radius:16px;border:2px solid var(--line);border-bottom-width:5px;background:var(--bg);transition:transform .08s}
+.big:active,.tile:active,.opt:active,.chip:active,.go:active{transform:translateY(2px)}
+.big .ic{flex:none;width:52px;height:52px;border-radius:14px;display:grid;place-items:center;font-weight:900;font-size:1.3rem;color:#fff;background:var(--pri);border-bottom:4px solid var(--pri-d)}
+.big.sun .ic{background:var(--sun);border-color:var(--sun-d);color:var(--ink)}
+.big b{font-weight:800;font-size:1.1rem;display:block}
+.big span{color:var(--muted);font-size:.92rem}
+.sets{display:flex;flex-direction:column;gap:12px}
+.switch{display:flex;gap:10px;align-items:center;color:var(--muted);font-size:.92rem;font-weight:700}
+.switch input{width:20px;height:20px;accent-color:var(--pri)}
+.tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(138px,1fr));gap:12px}
+.tile{position:relative;aspect-ratio:1;max-width:100%;border-radius:18px;border:2px solid var(--line);border-bottom-width:5px;padding:12px;display:flex;flex-direction:column;justify-content:space-between;text-align:left;transition:transform .08s}
+.tile .g{font-weight:900;font-size:1.9rem;line-height:1}
+.tile .n{font-weight:800;font-size:.98rem;line-height:1.2}
+.tile .n small{display:block;font-weight:700;color:var(--muted);font-size:.8rem}
+.tile .ck{position:absolute;top:10px;right:10px;width:24px;height:24px;border-radius:50%;background:var(--good);color:#fff;font-weight:900;font-size:.85rem;display:grid;place-items:center}
+.c1{background:var(--t1)}.c2{background:var(--t2)}.c3{background:var(--t3)}.c4{background:var(--t4)}.c5{background:var(--t5)}
+.veil{position:fixed;inset:0;background:rgba(40,50,65,.45);opacity:0;transition:opacity .28s;z-index:20;display:grid;place-items:center;padding:max(16px,env(safe-area-inset-top,0px)) 16px max(16px,env(safe-area-inset-bottom,0px))}
+.veil.on{opacity:1}
+.sheet{width:min(520px,100%);max-height:100%;overflow:auto;border-radius:22px;border:2px solid var(--line);border-bottom-width:6px;padding:22px;transition:transform .32s cubic-bezier(.2,.9,.3,1.15),opacity .25s;transform-origin:center}
+.sheet .g{font-weight:900;font-size:2.6rem;line-height:1}
+.sheet h3{margin:8px 0 2px;font-size:1.35rem;font-weight:900}
+.sheet .cn{color:var(--muted);font-weight:700;margin:0 0 12px}
+.sheet p{margin:0 0 12px}
+.ex{background:var(--bg);border-radius:14px;padding:12px 14px;margin:0 0 10px;font-weight:700}
+.ex .x{color:var(--bad);text-decoration:line-through;text-decoration-thickness:2px;display:block}
+.ex .v{color:var(--good);display:block}
+.sheet ul{margin:0 0 12px;padding-left:20px}.sheet li{margin:5px 0}
+.go{width:100%;padding:14px;border-radius:14px;font-weight:900;text-transform:uppercase;letter-spacing:.05em;color:#fff;background:var(--pri);border-bottom:5px solid var(--pri-d);transition:transform .08s}
+.go:disabled{background:var(--line);border-color:var(--line2);color:var(--muted);cursor:default}
+.go.good{background:var(--good);border-color:var(--good-d)}.go.bad{background:var(--bad);border-color:var(--bad-d)}
+.go.ghost{background:var(--bg);color:var(--pri);border:2px solid var(--line);border-bottom-width:5px}
+.top{display:flex;align-items:center;gap:14px}
+.x-btn{font-size:1.5rem;font-weight:900;color:var(--muted);width:40px;height:40px;border-radius:10px}
+.prog{flex:1;height:16px;background:var(--line);border-radius:99px;overflow:hidden}
+.prog i{display:block;height:100%;background:var(--good);border-radius:99px;transition:width .35s;box-shadow:inset 0 4px 0 rgba(255,255,255,.3)}
+.cnt{font-weight:800;color:var(--muted);font-variant-numeric:tabular-nums}
+.q{flex:1;display:flex;flex-direction:column;gap:16px;animation:in .28s ease-out}
+@keyframes in{from{opacity:0;transform:translateY(var(--dx,24px))}to{opacity:1;transform:none}}
+@keyframes pop{0%{transform:scale(.9)}60%{transform:scale(1.04)}100%{transform:scale(1)}}
+@keyframes shake{20%{transform:translateX(-6px)}40%{transform:translateX(6px)}60%{transform:translateX(-4px)}80%{transform:translateX(4px)}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+.instr{font-size:1.3rem;font-weight:900;margin:0;text-wrap:balance}
+.para{white-space:pre-line;background:#f5f7fa;border-radius:14px;padding:12px 14px;margin:0}
+.stem{font-size:1.2rem;font-weight:700;margin:0;line-height:2.2}
+.slot{display:inline-block;min-width:74px;text-align:center;border-bottom:3px solid var(--line2);padding:0 8px;margin:0 3px;color:var(--pri);font-weight:800;line-height:1.5}
+.slot.right{color:var(--good);border-color:var(--good)}.slot.wrong{color:var(--bad);border-color:var(--bad)}
+.opts{display:flex;flex-direction:column;gap:10px}
+.opt{display:flex;gap:12px;align-items:center;text-align:left;width:100%;padding:13px 16px;border-radius:14px;border:2px solid var(--line);border-bottom-width:5px;background:var(--bg);font-weight:700;transition:transform .08s}
+.opt .k{flex:none;width:30px;height:30px;border-radius:8px;border:2px solid var(--line);display:grid;place-items:center;font-weight:800;font-size:.9rem;color:var(--muted)}
+.opt.sel{background:var(--pri-soft);border-color:var(--pri);color:var(--pri-d)}.opt.sel .k{border-color:var(--pri);color:var(--pri)}
+.opt.right{background:var(--good-soft);border-color:var(--good);color:var(--good-d);animation:pop .3s}
+.opt.wrong{background:var(--bad-soft);border-color:var(--bad);color:var(--bad-d);animation:shake .35s}
+.blank{display:flex;flex-direction:column;gap:6px}
+.blank label{font-weight:800;color:var(--muted);font-size:.85rem;text-transform:uppercase;letter-spacing:.05em}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{padding:9px 16px;border-radius:12px;border:2px solid var(--line);border-bottom-width:4px;font-weight:800;background:var(--bg);transition:transform .08s}
+.chip.sel{background:var(--pri-soft);border-color:var(--pri);color:var(--pri-d)}
+.foot{position:sticky;bottom:0;margin:0 -16px;padding:14px 16px calc(14px + env(safe-area-inset-bottom,0px));background:var(--bg);border-top:2px solid var(--line)}
+.foot.ok{background:var(--good-soft);border-color:var(--good-soft)}.foot.no{background:var(--bad-soft);border-color:var(--bad-soft)}
+.foot .msg{font-weight:900;font-size:1.15rem;margin:0 0 2px}
+.foot.ok .msg{color:var(--good-d)}.foot.no .msg{color:var(--bad-d)}
+.foot .ans{margin:0 0 10px;font-weight:700}
+.foot.no .ans{color:var(--bad-d)}.foot.ok .ans{color:var(--good-d)}
+.res{text-align:center;display:flex;flex-direction:column;gap:14px;align-items:center}
+.ring{width:150px;height:150px;border-radius:50%;display:grid;place-items:center;font-weight:900;font-size:2.2rem;animation:pop .45s;background:conic-gradient(var(--good) calc(var(--p)*1%),var(--line) 0)}
+.ring span{width:118px;height:118px;border-radius:50%;background:var(--bg);display:grid;place-items:center}
+.rev{width:100%;text-align:left;display:flex;flex-direction:column;gap:8px}
+.rv{border:2px solid var(--line);border-radius:14px;padding:10px 14px}
+.rv.no{border-color:var(--bad);background:var(--bad-soft)}
+.rv b{font-weight:800}.rv .v{color:var(--good-d);font-weight:800}.rv .x{color:var(--bad-d);font-weight:700;text-decoration:line-through}
+.rv small{color:var(--muted);font-weight:700}
+.row{display:flex;gap:10px;align-items:stretch}.row .go{flex:1}
+.arr{flex:none;width:54px;border-radius:14px;border:2px solid var(--line);border-bottom-width:5px;background:var(--bg);font-size:1.1rem;color:var(--pri);font-weight:900}
+.arr:disabled{color:var(--line2);cursor:default}
+.pass{border:2px solid var(--line);border-radius:14px;background:#f7f9fc}
+.pass summary{padding:10px 14px;font-weight:800;cursor:pointer}.pass summary small{color:var(--muted);font-weight:700;margin-left:6px}
+.ptxt{max-height:38vh;overflow:auto;padding:0 14px 6px;font-size:.98rem;border-top:2px solid var(--line)}.ptxt p{margin:10px 0}
+.sheet.menu{background:var(--bg)}
+.mh{font-weight:800;color:var(--muted);font-size:.85rem;margin:12px 0 6px}
+.mg{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.dot{width:42px;height:42px;border-radius:10px;border:2px solid var(--line);border-bottom-width:4px;font-weight:800;font-variant-numeric:tabular-nums;background:var(--bg)}
+.dot.done{background:var(--pri-soft);border-color:var(--pri);color:var(--pri-d)}.dot.ok{background:var(--good-soft);border-color:var(--good);color:var(--good-d)}.dot.no{background:var(--bad-soft);border-color:var(--bad);color:var(--bad-d)}
+.dot.cur{outline:3px solid var(--ink);outline-offset:2px}
+.leg{display:flex;gap:8px;align-items:center;flex-wrap:wrap;color:var(--muted);font-size:.85rem;font-weight:700;margin:14px 0}.leg .dot{width:18px;height:18px;border-radius:5px;border-bottom-width:2px;display:inline-block}
+body{margin:0}[hidden]{display:none!important}
+/* --- added: practice-test sets (word bank, true/false grid, written answers, text list) --- */
+:root{--soft:#f5f7fa}
+.big .bw{flex:1;min-width:0}
+.big .bst,.trow .bst{flex:none;font-weight:800;font-size:.8rem;color:var(--good-d);background:var(--good-soft);border-radius:99px;padding:3px 10px;font-variant-numeric:tabular-nums;white-space:nowrap}
+.top h1{flex:1;min-width:0}
+.src{font-size:.78rem;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin:0}
+.note,.hint{font-size:.9rem;color:var(--muted);font-weight:700;margin:0}
+.qb{display:flex;flex-direction:column;gap:16px;min-width:0}
+button.slot{vertical-align:baseline;max-width:100%;border-bottom:3px solid var(--line2);border-radius:8px 8px 0 0;color:var(--pri);font-weight:800}
+button.slot.act{border-color:var(--pri);background:var(--pri-soft)}
+button.slot.right{color:var(--good);border-color:var(--good)}button.slot.wrong{color:var(--bad);border-color:var(--bad)}
+.chip{max-width:100%}
+.chip.used{opacity:.35;cursor:default}
+.chip.right{background:var(--good-soft);border-color:var(--good);color:var(--good-d)}
+.chip.wrong{background:var(--bad-soft);border-color:var(--bad);color:var(--bad-d)}
+.chip:disabled{cursor:default}
+.chips.long{flex-direction:column;align-items:stretch}.chips.long .chip{text-align:left;font-weight:700}
+.boxes,.grid,.tlist{display:flex;flex-direction:column;gap:10px}
+.bx{display:flex;flex-direction:column;gap:4px}
+.bl{font-weight:800;color:var(--muted);font-size:.85rem;text-transform:uppercase;letter-spacing:.05em}
+.bt{display:block;width:100%;min-height:48px;text-align:left;padding:10px 14px;border-radius:12px;border:2px dashed var(--line2);font-weight:700;background:var(--bg)}
+.bt.act{border-color:var(--pri);background:var(--pri-soft)}
+.bt.full{border-style:solid;border-color:var(--pri);background:var(--pri-soft);color:var(--pri-d)}
+.bt.fixd{border-style:solid;border-color:var(--line);background:var(--soft)}
+.bt.right{border-style:solid;border-color:var(--good);background:var(--good-soft);color:var(--good-d)}
+.bt.wrong{border-style:solid;border-color:var(--bad);background:var(--bad-soft);color:var(--bad-d)}
+.gr{display:flex;flex-direction:column;gap:8px;padding:12px 14px;border:2px solid var(--line);border-radius:14px}
+.gs{margin:0;font-weight:700}
+.key{border:2px solid var(--good);background:var(--good-soft);color:var(--good-d);border-radius:14px;padding:10px 14px;font-weight:700}
+.key b{display:block;font-weight:900}
+.ta{display:block;width:100%;font:inherit;color:inherit;padding:12px 14px;border-radius:14px;border:2px solid var(--line2);background:var(--bg);resize:vertical;min-height:150px}
+.wc{margin:0;color:var(--muted);font-weight:700;font-size:.85rem;font-variant-numeric:tabular-nums}
+.foot{max-height:70vh;overflow:auto}
+.foot .ans{margin:0 0 4px}
+.why{margin:0 0 10px;font-size:.92rem;font-weight:700;color:var(--muted)}
+.foot.no .why{color:var(--bad-d)}
+.foot .ans+.row,.foot .msg+.row{margin-top:10px}
+.trow{display:flex;align-items:center;gap:12px;width:100%;text-align:left;padding:12px 16px;border-radius:14px;border:2px solid var(--line);border-bottom-width:4px;background:var(--bg);transition:transform .08s}
+.trow:active{transform:translateY(2px)}
+.trow .tt{flex:1;min-width:0}.trow b{display:block;font-weight:800}.trow .tt span{color:var(--muted);font-size:.88rem}
+.fine,.cred{color:var(--muted);font-size:.85rem;margin:0}
+.ptxt .cred{margin:10px 0}
+.rq{color:var(--muted);font-weight:700}
+.rv .mine{font-weight:500}
+.big .ic{width:auto;min-width:76px;height:auto;padding:7px 8px 6px;display:flex;flex-direction:column;align-items:center;line-height:1.1}
+.big .ic b{font-weight:900;font-size:1.35rem;display:block;color:inherit}
+.big .ic small{font-weight:800;font-size:.62rem;text-transform:uppercase;letter-spacing:.05em}
+.minis{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.mini{display:flex;align-items:center;gap:8px;min-width:0;text-align:left;padding:11px 12px 11px 14px;border-radius:14px;border:2px solid rgba(40,50,65,.14);border-bottom-width:4px;transition:transform .08s}
+.mini:active{transform:translateY(2px)}
+.mini .mw{flex:1;min-width:0;display:flex;flex-direction:column;gap:1px}
+.mini b{font-weight:800}.mini .mw span{color:var(--muted);font-size:.85rem;font-weight:700}
+.mini .mgo{flex:none;font-weight:900;font-size:.82rem;color:var(--pri-d);white-space:nowrap}
+.mini.a{background:var(--t2)}.mini.b{background:var(--t4)}.mini.c{background:var(--t1);grid-column:1/-1}
+.hrow{display:flex;align-items:baseline;gap:10px}.hrow span{flex:1;min-width:0}
+.lnk{flex:none;font-size:.8rem;font-weight:800;color:var(--pri);text-transform:none;letter-spacing:0;text-decoration:underline}
+.zh{margin:0 0 10px;font-size:.95rem;font-weight:500;line-height:1.6}
+.sheet .zh{background:rgba(255,255,255,.65);border-radius:12px;padding:10px 12px;margin-bottom:14px}
+.foot .zh{font-weight:700}.foot.ok .zh{color:var(--good-d)}.foot.no .zh{color:var(--bad-d)}
+.switch{align-items:flex-start}
+@media (min-width:980px){
+ #app.rd{max-width:1160px}
+ #app.rd .q{flex-direction:row;align-items:flex-start;gap:28px}
+ #app.rd .pass{flex:1 1 0;min-width:0;position:sticky;top:12px}
+ #app.rd .qb{flex:1 1 0}
+ #app.rd .ptxt{max-height:calc(100vh - 220px)}
+}
+body{margin:0}[hidden]{display:none!important}</style>
+</head><body>
+<div id="app"></div>
+<div id="veil" class="veil" hidden></div>
+<div id="menu" class="veil" hidden></div>
+<script>
+const M=(q,o,a,r,p)=>({t:'mc',q,o,a,r,p});
+const SETS={
+warm:[
+ {t:'dd',q:'Choose the answers that best complete the sentences.',parts:['Last night, Priya ',{o:['finishes','finished','is finishing'],a:1},' her essay. Then she ',{o:['goes','went','is going'],a:1},' to bed.'],r:'Time word "last night" = past tense'},
+ M('Choose the word that best completes the sentence.\nEach of the players ___ a uniform.',['has','have','are having','were'],0,'"Each" is singular = has'),
+ M('Choose the sentence that is written correctly.',['The store was closed, we went home.','The store was closed we went home.','The store was closed, so we went home.','The store was closed so, we went home.'],2,'Two full sentences need comma + so/and/but'),
+ M('Choose the answer that best completes the sentence.\n___, he missed the first class.',['The bus was late','Because the bus was late','The bus being late and'],1,'"Because" clause + comma + main sentence'),
+ {t:'dd',q:'Choose the three answers that best complete the sentence.',parts:['We can walk to the park ',{o:['and','or','but','so'],a:1},' take the bus, ',{o:['and','or','but','so'],a:2},' we must leave soon ',{o:['and','or','but','so'],a:3},' we arrive before dark.'],r:'or = choice, but = contrast, so = result'},
+ M('Choose the word that best completes the sentence.\nNeither the students ___ the teacher knew the answer.',['or','nor','and','but'],1,'Pair: neither ... nor'),
+ M('Choose the sentence that is written correctly.',['I packed three things a hat, sunscreen and water.','I packed three things: a hat, sunscreen and water.','I packed three: things a hat, sunscreen and water.','I packed three things a hat: sunscreen and water.'],1,'Colon after a full sentence, before a list'),
+ M('Choose the best way to combine the following sentences.\nJamal was hungry. He made a sandwich.',['Jamal was hungry, he made a sandwich.','Jamal was hungry, so he made a sandwich.','Jamal was hungry, but he made a sandwich.','Jamal was hungry or he made a sandwich.'],1,'Cause then result = so'),
+ {t:'dd',q:'Choose the answers that best complete the sentence.',parts:['',{o:["It's",'Its'],a:0},' too late to change ',{o:["it's",'its'],a:1},' name.'],r:"it's = it is; its = belongs to it"},
+ M('Which sentence has a mistake?',["The children's coats are in the hall.","My brother's bike is new.","The two dog's bowls are empty.","Sara's phone is on the desk."],2,"Two dogs own the bowls = dogs'")
+],
+prac:[
+ M('Choose the word that best completes the sentence.\nMy sister and I ___ to the same school.',['go','goes','going','has gone'],0,'Two people = plural verb'),
+ {t:'dd',q:'Choose the answers that best complete the sentence.',parts:['When the rain ',{o:['stops','stopped','will stop'],a:1},', we ',{o:['go','went','will go'],a:1},' outside and played soccer.'],r:'"played" shows past tense'},
+ M('Choose the sentence that is written correctly.',['I finished my homework, then I watched a movie.','I finished my homework then, I watched a movie.','I finished my homework, and then I watched a movie.','I finished my homework and, then I watched a movie.'],2,'Comma + and joins two full sentences'),
+ M('Choose the word that best completes the sentence.\n___ Leo studied all week, he felt ready for the test.',['Because','Although','Unless','But'],0,'Studying is the reason = because'),
+ M('Choose the words that best complete the sentence.\nShe speaks not only English ___ French.',['but also','and also','or','nor'],0,'Pair: not only ... but also'),
+ M('Choose the sentence that is written correctly.',["Their going to there cottage this weekend.","There going to their cottage this weekend.","They're going to their cottage this weekend.","They're going to there cottage this weekend."],2,"they're = they are; their = belongs to them"),
+ M('Choose the best way to combine the following sentences.\nThe library is quiet. It is a good place to study.',['The library is quiet, it is a good place to study.','The library is quiet, but it is a good place to study.','Because the library is quiet, it is a good place to study.','The library is quiet because it is a good place to study.'],2,'Quiet is the reason; D reverses cause and effect'),
+ M('Choose the word that best completes the sentence.\nThe coach told us to stretch, ___ and drink water.',['jogging','to jogging','jog','we jog'],2,'Parallel: stretch, jog, drink'),
+ M('Choose the word that best completes the sentence.\nThe teacher gave the books to Maya and ___.',['I','me','myself','mine'],1,'After "to" use me (gave the books to me)'),
+ M('Choose the word that best completes the sentence.\nThis is the ___ movie I have ever seen.',['most funniest','funnier','funniest','more funny'],2,'"the ... ever" = superlative, only one -est'),
+ M('Choose the word that best completes the sentence.\nI should have ___ earlier.',['went','gone','go','going'],1,'have + past participle (gone)'),
+ M('Choose the answer that best completes the sentence.\nMy family ___ in Toronto since 2020.',['lives','has lived','is living','live'],1,'"since" = has/have + past participle'),
+ {t:'multi',q:'Select TWO sentences that are written correctly.',o:['The dog wagged its tail.','Me and him went to the store.','There are three apples on the table.',"She don't like spicy food.",'We was late for class.'],a:[0,2],r:'Others: He and I went; She doesn\'t; We were'},
+ M('Choose the answer that best completes the sentences.\nThe team practised every day. ___, they won the championship.',['However','As a result','For example','Instead'],1,'Second sentence is the result'),
+ M('Choose the answer that best completes the sentences.\nThe phone is expensive. ___, many students still buy it.',['Therefore','However','For example','Because'],1,'Second sentence is a contrast'),
+ M('Choose the sentence that is written correctly.',['"Please close the door," said Mr. Lee.','"Please close the door", said Mr. Lee.','"Please close the door" said Mr. Lee.','Please close the door, "said Mr. Lee."'],0,'Comma goes inside the quotation marks'),
+ M('Choose the sentence that is written correctly.',['my friend maria moved to Canada in march.','My friend Maria moved to Canada in March.','My Friend Maria moved to canada in March.','My friend Maria Moved to Canada in march.'],1,'Capitals: first word, names, places, months'),
+ M('Which sentence does not belong in the paragraph?',['Sentence 1','Sentence 2','Sentence 3','Sentence 4'],2,'Sentence 3 is off topic','(1) Our school garden started last spring. (2) Students planted tomatoes, beans and herbs. (3) My cousin lives in Vancouver. (4) The vegetables are now used in the cafeteria.'),
+ M('Choose the best opening sentence for the paragraph.',['Many schools have gyms.','Joining a school team has many benefits for students.','Basketball was invented in 1891.','Some students do not like sports.'],1,'Topic sentence states the main idea of all the details','_____ It lets them meet new people. It also teaches teamwork. Finally, it keeps them active after school.'),
+ {t:'dd',q:'Choose the answers that best complete the sentence.',parts:['If it ',{o:['rain','rains','rained'],a:1},' tomorrow, we ',{o:['cancel','will cancel','cancelled'],a:1},' the picnic.'],r:'If + present, will + verb'}
+]};
+const PASS=[{"title": "Small Insects, Important Work", "kind": "Information text", "paras": ["[1] Animal waste may not seem useful, but for dung beetles, it is a valuable resource. These insects collect waste, shape it into balls and move it away. Some bury it underground, where it becomes food for themselves and their young. To a person walking through a field, a ball of waste might appear to be something worth avoiding. To the beetle, however, it represents a meal and a place to provide for the next generation. Collecting and moving it requires considerable effort, especially across rough ground.", "[2] Moving a ball in a straight line helps a beetle escape quickly from other beetles that might steal it. However, keeping a straight path is difficult when the insect is pushing backwards and cannot easily see where it is going. Every extra turn can bring the beetle back toward a crowded feeding place. Small stones, grass stems and uneven soil make the journey harder. A short, direct route reduces the time spent near rivals. This explains why finding a direction matters even when the insect has no distant nest to reach.", "[3] Researchers studying certain dung beetles discovered that the insects could use the night sky to find their way. Under a clear sky, the beetles travelled along fairly straight paths. When their view of the sky was blocked, they wandered instead. Patterns of light in the sky helped guide them. The researchers did not simply watch one successful journey and assume they understood it. They compared behaviour under different conditions. The important difference was whether the insects could see the sky. Such comparisons help scientists distinguish a useful explanation from a guess. The findings concerned the beetles studied; they did not establish that every insect uses the same method.", "[4] Dung beetles also benefit the environment. By burying animal waste, they return nutrients to the soil. Their tunnels allow air and water to enter the ground. Removing waste also leaves fewer places for some flies to lay their eggs. These benefits connect the beetles' daily activities with the health of a larger system. Nutrients do not remain locked inside waste on the surface. Instead, the insects move some of that material into the ground. Other living things can benefit even though the beetles are acting to meet their own needs rather than deliberately helping plants or farmers.", "[5] These insects are easy to overlook because of their size and unusual diet. Yet their work shows that even an animal with an unpleasant job can play an important role in nature. Their example also challenges the way people judge animals. Colourful birds and large mammals often attract attention immediately, while small creatures working close to the soil receive little notice. Looking more carefully reveals a different picture. An animal does not need to be attractive, familiar or large to have effects that extend well beyond its own life."]}, {"title": "Campus Repair Hub Gets Students Moving", "kind": "News report", "paras": ["[1] NORTHFIELD - Students at Northfield University opened a bicycle repair hub on Monday to help classmates keep their bicycles safe and affordable to use. The room is small, with two repair stands and shelves of labelled equipment, but the organizers hope its impact will reach beyond the bicycles brought through its door. They want students who depend on cycling to feel confident about maintaining their transportation.", "[2] The project began when student Maya Chen noticed several bicycles sitting unused outside her residence. \"One had a flat tire. Another had a loose chain,\" she said. \"Their owners wanted to ride, but they did not know how to fix them.\" When she spoke to the owners, she discovered that some had postponed repairs for weeks. They were uncertain about which tools to buy or where to begin. Maya realized that access to equipment alone would not solve the problem; beginners also needed someone willing to guide them.", "[3] Maya and eight volunteers asked the university for an unused storage room. A local bicycle shop donated tools, and a university sustainability fund provided $2,000 for equipment. After completing safety training, the volunteers began offering basic repairs. Preparing the space took several weekends. The volunteers cleaned the room, organized supplies and agreed on a system for recording visits. They also discussed how to explain repairs clearly to people who had never used the equipment. Their aim was to create a welcoming learning space rather than a place where beginners felt embarrassed.", "[4] Students can use the hub's tools for free, although they must pay for any new parts. Volunteers explain each step and encourage bicycle owners to help. \"If we do everything for them, they leave with a working bicycle,\" Maya explained. \"If we teach them, they leave with a skill as well.\" A typical visit begins with the owner describing the problem. The volunteer then checks whether it is suitable for the hub and explains what the repair may involve. Owners are encouraged to ask questions before trying a step themselves. Working this way sometimes takes longer, but the organizers consider the learning part essential.", "[5] During its first week, the hub helped 34 riders. One was first-year student Daniel Ross, who had been taking the bus because of a flat tire. With a volunteer's guidance, he replaced the inner tube himself. \"Next time, I'll know where to start,\" he said. Daniel admitted that he had expected to stand aside while someone else completed the job. Instead, he learned the names of the tools and practised the repair with help nearby. He plans to return for a workshop, even if his bicycle is still working, because he wants to understand routine maintenance.", "[6] The hub cannot handle every problem. Bicycles with damaged frames or complicated mechanical issues are referred to professional repair shops. Volunteers say recognizing their limits is part of keeping riders safe. The service does not promise that every bicycle can be repaired during one visit. When volunteers are uncertain, they explain the concern and recommend qualified help. Maya says students should leave knowing both what they can attempt and when they should seek additional assistance.", "[7] The team plans to offer evening workshops next term. Its goal is to make bicycle maintenance a regular part of campus life. Organizers will review common questions from the first term before choosing workshop topics. They hope students who learn a skill will eventually share it with others, allowing the small room to support a growing community of riders."]}, {"title": "A Different Kind of Portrait", "kind": "Narrative", "paras": ["[1] When Lena was invited to display a painting at the community centre, she immediately imagined a detailed portrait of her grandmother. She spent several evenings trying to make every feature accurate. Still, something about the painting felt empty. She had chosen a photograph with clear lighting and carefully measured the distance between the eyes. Each evening, she compared the painted face with the photograph. Friends said the resemblance was strong, yet Lena felt that the canvas could have belonged to someone she barely knew.", "[2] \"The eyes are the right shape,\" Lena told her art teacher, Mr. Patel, \"but it doesn't feel like her.\" She expected him to point out an incorrect proportion or suggest a different brush. Technical problems usually seemed easier to solve because there was something definite to measure. This time, she could not explain exactly what needed changing, and that uncertainty made her hesitate.", "[3] Instead of suggesting another drawing exercise, Mr. Patel asked a question: \"What do you notice first when you think about your grandmother?\" Lena did not answer immediately. At first she pictured her grandmother's face, just as it appeared in the photograph. Then she began thinking about movement, sound and familiar routines. Mr. Patel waited rather than supplying an answer, giving her time to move beyond the image she had already chosen.", "[4] Lena thought about the kitchen table covered with fabric, the quick movement of her grandmother's hands and the stories she told while sewing. That evening, Lena put her portrait aside. She began a new painting of two hands holding a piece of bright blue cloth. The cloth reminded her of afternoons spent choosing fabric for family celebrations. Her grandmother would let her arrange the pieces, even when the colours did not match. Painting the hands seemed less obvious than painting a face, but it connected with experiences that belonged specifically to their relationship.", "[5] The new work was difficult. Lena repeatedly changed the shadows, and once she nearly painted over the entire canvas. Her grandmother offered to sit beside her while she worked. As they talked, Lena noticed a small scar on one finger - a detail she had never included in earlier sketches. The scar changed the way she looked at the subject. Instead of trying to produce perfectly smooth skin, she began noticing marks, folds and uneven nails. These details suggested years of work. She still wanted the hands to look believable, but she now understood why accuracy mattered: it could help communicate a particular person's life.", "[6] At the exhibition, Lena worried that visitors would prefer paintings of faces. Then a woman stopped in front of her canvas. \"My mother used to sew,\" the woman said quietly. Soon, she was telling Lena about the clothes her mother had made for her. Lena had prepared an explanation of her painting, but she did not need to deliver it. The woman had found her own way into the image. As Lena listened, her worry about whether the subject counted as a portrait began to fade. The painting had started a conversation she had not expected.", "[7] By the end of the afternoon, several visitors had shared similar memories. Lena looked across the room at her grandmother, who was smiling. For the first time, she understood that a portrait could show who someone was without showing their face. She thought again about the first canvas waiting at home. It had taught her to observe a face carefully. The second had taught her to ask what she wanted another person to understand. Both required attention, but only one had begun with the memories she most wanted to share."]}, {"title": "Burgess Shale: A Window into Ancient Life", "kind": "Information text", "paras": ["[1] High in the Canadian Rocky Mountains in British Columbia, layers of rock hold evidence of an ancient sea. The Burgess Shale contains fossils of marine animals that lived more than 500 million years ago, long before dinosaurs appeared. Although the fossils are now found in mountains, the animals once lived underwater. This contrast between the present landscape and the ancient habitat can surprise visitors. A mountain location does not mean the animals were mountain creatures. The rock records conditions from a much earlier time, so understanding a fossil requires looking beyond the surroundings a visitor sees today.", "[2] Many familiar fossils preserve hard parts such as shells, bones or teeth. Soft tissues usually decay before they can become fossils. The Burgess Shale is unusual because it preserves delicate body features as well. Some specimens reveal eyes, digestive systems and other structures that are rarely visible in the fossil record. Without such preservation, a community made up of many kinds of animals could appear to contain only those with durable outer coverings. That would be like describing a room after most of its contents had been removed. The remaining objects might be real, but the picture would still be incomplete.", "[3] This exceptional preservation gives scientists a fuller picture of ancient life. Looking only at hard parts would leave many soft-bodied animals out of the story. By studying their shapes and body structures, researchers can investigate how these animals lived and compare them with other organisms. Researchers use visible features as evidence rather than treating an unfamiliar shape as a complete answer. A structure may suggest how an animal moved or obtained food, but interpretations need careful comparison. New specimens can reveal details that were missing before and lead scientists to reconsider an earlier explanation.", "[4] The fossils are also useful for understanding ancient communities. Scientists examine different specimens together to explore the variety of animals that shared an environment. A single fossil offers one clue; many carefully recorded fossils allow researchers to ask broader questions about life in an ancient sea. Recording specimens systematically makes these comparisons more useful. Researchers can examine similarities and differences instead of relying on the most striking example. The goal is not simply to collect unusual shapes. It is to assemble evidence that can support explanations about organisms and their relationships within a past environment.", "[5] Where a fossil is found matters too. Its position within a rock layer helps researchers understand its context. Removing a specimen without recording its location can separate it from information that makes it scientifically useful. A fossil is therefore more than an interesting object to display. A label describing a specimen's original location may look less impressive than the fossil itself, yet it helps connect the object to other discoveries. Good records allow later researchers to revisit questions and compare findings. Protecting a site therefore preserves possibilities for future research as well as objects already recognized as important.", "[6] Parks Canada offers guided hikes to Burgess Shale fossil sites. These visits let people learn about the fossils while supporting their protection. The greatest value of the rocks lies in the evidence they hold: they allow people to investigate a world that disappeared hundreds of millions of years ago. For learners, the site also demonstrates how scientific knowledge develops. Questions begin with observations, and explanations must remain connected to evidence. The fossils cannot tell their own stories in words; people interpret the traces they leave. Careful study and protection help ensure that those traces remain available for the next generation of questions."]}, {"title": "A Reading Partner with Four Paws", "kind": "Dialogue", "paras": ["[1] The following conversation takes place at a community library. A volunteer, Sam, and a librarian, Ms. Ali, are discussing a supervised reading program with a trained dog named Maple. Sam has prepared a table where participants can choose books. He is enthusiastic about helping but is unsure how a dog fits into the library's reading activities. Ms. Ali is checking the schedule before the first family arrives.", "[2] SAM: I thought Maple was coming for a demonstration. Why have you put a chair and a pile of books beside her mat? I assumed everyone would gather around while the handler explained what she could do. I brought extra chairs because I thought we would have a big audience.", "[3] MS. ALI: Children will read aloud to her. Maple and her handler have been assessed for visits like this. The handler will stay beside her throughout each session. Each child can choose a book from the table, and an adult will be nearby to help. We have arranged the area away from the busiest entrance so there will be fewer interruptions during reading.", "[4] SAM: But a dog cannot explain an unfamiliar word. Wouldn't reading to an adult be more useful? When I help at homework club, children often want to know whether they have said something correctly. I do not want families to think we are offering support that we cannot actually provide.", "[5] MS. ALI: We still help with unfamiliar words. This program offers something different. Some children worry about making mistakes in front of people. Maple listens without interrupting. We hope that helps them feel comfortable enough to practise. We should explain that clearly to families. A session is an extra opportunity to use reading skills, not a replacement for instruction. A child can pause, try a sentence again or ask an adult for help without having a whole group waiting.", "[6] SAM: Yesterday a boy asked me to read every page for him. Maybe he was worried, rather than uninterested. He kept turning the book toward me before he had tried a sentence. I wondered whether the story was too difficult, but he told me he had chosen it himself. I probably should have asked what kind of help he wanted.", "[7] MS. ALI: That is possible, but we should ask him instead of deciding for him. He can choose whether to join. We also have quiet reading sessions without a dog for anyone who prefers them. Some children enjoy an audience, and others prefer privacy. There is no single arrangement that suits everyone. Giving them a choice helps us offer support that responds to the person in front of us.", "[8] SAM: Could I invite the whole after-school group to read to Maple at once? That would make it possible for everyone to participate today. But perhaps all those voices would make the session feel more like a performance than relaxed practice.", "[9] MS. ALI: Let's begin with one reader at a time and short sessions. The handler will watch Maple and give her breaks. Keeping the experience comfortable for the dog matters too. We can offer more appointments later if there is interest. Starting carefully will help us notice what works before we expand. A busy program is not automatically a successful one if the experience is uncomfortable.", "[10] SAM: How will we know whether the program helps? Counting visitors would tell us how popular it is, but not whether children feel more confident. A large crowd might look impressive in a photograph. Still, if readers leave feeling just as nervous, we would need to rethink how the sessions are organized.", "[11] MS. ALI: Exactly. We can ask participants how they felt before and after reading, and whether they would like to read aloud again. Their answers will help us improve the program. We should also listen when someone says the activity was not helpful. That feedback can tell us whether to change the space, the session length or the choices we offer. Improvement begins with paying attention.", "[12] SAM: I understand now. Maple is not replacing a teacher. She is giving some children a reason to open a book. I will welcome the families and explain the choices before asking anyone to sign up. And I will keep the extra chairs nearby rather than filling this quiet corner with an audience."]}];
+SETS.read=[{"ps": 0, "q": "What is the main idea of the selection?", "o": ["Dung beetles need protection from all other insects.", "Dung beetles have useful abilities and help the environment.", "Animal waste prevents plants from growing.", "Researchers teach beetles to travel at night."], "r": "Only B covers the whole text: navigation (P2-3) + environment (P4).", "t": "mc", "a": 1}, {"ps": 0, "q": "Why does moving in a straight line help a dung beetle?", "o": ["It helps the beetle escape competitors that might steal its food.", "It helps the beetle find underground water.", "It makes the ball larger.", "It prevents the beetle from moving backwards."], "r": "P2: straight line helps escape beetles \"that might steal it\".", "t": "mc", "a": 0}, {"ps": 0, "q": "What does \"resource\" mean in paragraph 1?", "o": ["A dangerous obstacle", "A useful supply", "An unusual discovery", "A protected location"], "r": "P1: waste = food for them and their young = useful supply.", "t": "mc", "a": 1}, {"ps": 0, "q": "Which observation supports the researchers' conclusion?", "o": ["Beetles dug tunnels during the day.", "Beetles collected different amounts of waste.", "Beetles wandered when their view of the sky was blocked.", "Beetles travelled faster near other insects."], "r": "P3: sky blocked -> they wandered. That comparison is the proof.", "t": "mc", "a": 2}, {"ps": 0, "q": "Select TWO environmental benefits described in the selection.", "o": ["Returning nutrients to soil", "Preventing all insects from laying eggs", "Allowing air and water into the ground", "Producing light for other animals", "Removing the need for rain"], "r": "Both stated in P4. B says \"all insects\" (too strong).", "t": "multi", "a": [0, 2]}, {"ps": 0, "q": "Why does the writer mention \"an unpleasant job\" at the end?", "o": ["To discourage scientific research", "To suggest beetles need a different diet", "To emphasize that something people dislike can still be valuable", "To compare the sizes of insects"], "r": "P5: small, unpleasant work can still be important.", "t": "mc", "a": 2}, {"ps": 1, "q": "What is the main purpose of the selection?", "o": ["To persuade readers to buy bicycles", "To report on a student service and explain how it works", "To compare transportation costs at universities", "To explain how to qualify as a professional mechanic"], "r": "News report = tells what happened and how it works.", "t": "mc", "a": 1}, {"ps": 1, "q": "What first inspired Maya to start the project?", "o": ["A bicycle shop offered her a job.", "Volunteering became compulsory.", "She noticed unused bicycles with repairable problems.", "Daniel requested evening workshops."], "r": "P2: \"The project began when ... Maya noticed ... bicycles sitting unused.\"", "t": "mc", "a": 2}, {"ps": 1, "q": "Which statement accurately describes the cost?", "o": ["Tools and parts are always free.", "Students pay for tools but receive free parts.", "Tools are free to use; new parts must be purchased.", "Only first-year students receive free service."], "r": "P4: tools free, \"must pay for any new parts\". A says \"always\" (trap).", "t": "mc", "a": 2}, {"ps": 1, "q": "What does Maya's quotation in paragraph 4 reveal?", "o": ["She wants students to become more independent.", "She prefers repairs without explanations.", "She thinks every repair needs a professional.", "She wants all repair shops to close."], "r": "\"If we teach them, they leave with a skill\" = independence.", "t": "mc", "a": 0}, {"t": "dd", "ps": 1, "q": "Put the events in the order they happened.", "p": "A. Volunteers completed safety training.\nB. The hub helped 34 riders in its first week.\nC. Maya noticed unused bicycles.\nD. The team received space, tools and funding.", "parts": ["First ", {"o": ["A", "B", "C", "D"], "a": 2}, " then ", {"o": ["A", "B", "C", "D"], "a": 3}, " then ", {"o": ["A", "B", "C", "D"], "a": 0}, " last ", {"o": ["A", "B", "C", "D"], "a": 1}], "r": "Noticed bikes -> got room/tools/money -> safety training -> 34 riders."}, {"ps": 2, "q": "What is Lena's main problem at the beginning?", "o": ["She has no time to paint.", "Her accurate portrait does not express her grandmother's character.", "Her grandmother refuses to be painted.", "She does not know where the exhibition is."], "r": "P1: accurate (\"resemblance was strong\") but \"felt empty\".", "t": "mc", "a": 1}, {"ps": 2, "q": "How does Mr. Patel help Lena?", "o": ["He paints the difficult parts.", "He tells her to copy another artist.", "He asks a question that helps her reconsider her subject.", "He cancels her exhibition."], "r": "P3: \"Instead of suggesting another drawing exercise, Mr. Patel asked a question.\"", "t": "mc", "a": 2}, {"ps": 2, "q": "What can the reader infer from paragraph 5?", "o": ["Lena finishes without difficulty.", "Time with her grandmother helps Lena notice meaningful details.", "Her grandmother wants her to stop.", "The scar prevents her grandmother from sewing."], "r": "P5: talking with grandmother, she notices the scar.", "t": "mc", "a": 1}, {"ps": 2, "q": "Why does the writer include the visitor's comment?", "o": ["To show the painting creates a personal connection", "To prove all visitors dislike faces", "To reveal the painting's price", "To suggest Lena painted the wrong person"], "r": "P6: the visitor shares her own memory = personal connection.", "t": "mc", "a": 0}, {"ps": 2, "q": "Which word best describes Lena while she works on the second painting?", "o": ["Careless", "Uninterested", "Persistent", "Dishonest"], "r": "P5: keeps changing shadows, does not give up = persistent.", "t": "mc", "a": 2}, {"ps": 2, "q": "Which statement best expresses the central message?", "o": ["Artists should never paint faces.", "A meaningful portrait can communicate more than physical appearance.", "Art can be understood only by the artist's friends.", "Accuracy requires no emotional understanding."], "r": "P7: a portrait can show who someone is without the face.", "t": "mc", "a": 1}, {"ps": 3, "q": "What is the main idea of the selection?", "o": ["Burgess Shale is mainly valuable as a building material.", "Burgess Shale fossils provide important evidence about ancient marine life.", "All fossils preserve the same body structures.", "Dinosaurs once lived in the Burgess Shale sea."], "r": "Every paragraph = what the fossils tell us. D trap: \"long before dinosaurs\".", "t": "mc", "a": 1}, {"ps": 3, "q": "Why is the preservation described in paragraph 2 unusual?", "o": ["It includes soft body structures that usually decay.", "It includes only teeth and bones.", "It proves the animals lived on mountain peaks.", "It makes the animals look like dinosaurs."], "r": "P2: soft tissues usually decay; here they are kept.", "t": "mc", "a": 0}, {"ps": 3, "q": "What does \"context\" mean in paragraph 5?", "o": ["The price paid for an object", "The conditions and information surrounding a discovery", "The colour of a display case", "The size of a visitor group"], "r": "P5: position in the rock = information around the find.", "t": "mc", "a": 1}, {"ps": 3, "q": "What is the purpose of comparing a single fossil with many recorded fossils in paragraph 4?", "o": ["To show that individual fossils have no value", "To explain how combined evidence supports wider investigations", "To suggest every fossil belongs to the same species", "To prove that recording locations wastes time"], "r": "P4: one fossil = one clue; many = broader questions.", "t": "mc", "a": 1}, {"ps": 3, "q": "Select TWO research uses supported by the selection.", "o": ["Investigating the structures of ancient animals", "Predicting the exact date of the next earthquake", "Exploring the variety of animals in an ancient environment", "Proving all ancient animals had shells", "Measuring the height of living dinosaurs"], "r": "P3 body structures; P4 variety of animals. Others not in text.", "t": "multi", "a": [0, 2]}, {"ps": 3, "q": "Which conclusion is best supported by paragraph 5?", "o": ["A fossil's scientific value depends partly on information about where it was found.", "Every removed fossil becomes completely worthless.", "Scientists need only attractive specimens.", "The rock layer matters less than the display case."], "r": "P5: location info makes it useful. B \"completely worthless\" too strong.", "t": "mc", "a": 0}, {"ps": 4, "q": "What is Sam's main concern at first?", "o": ["The books are too heavy.", "A dog cannot provide the same reading help as an adult.", "The library has no chairs.", "The handler will leave Maple alone."], "r": "P4: \"a dog cannot explain an unfamiliar word\".", "t": "mc", "a": 1}, {"ps": 4, "q": "What does Ms. Ali suggest may help nervous readers?", "o": ["Having their mistakes announced to a group", "Choosing only books without unfamiliar words", "Reading to a listener who does not interrupt", "Avoiding all reading practice"], "r": "P5: \"Maple listens without interrupting.\"", "t": "mc", "a": 2}, {"ps": 4, "q": "Why does Ms. Ali say they should ask the boy?", "o": ["To respect his preferences instead of assuming what he needs", "To require him to join the program", "To prove Sam is a poor volunteer", "To persuade him to become a dog handler"], "r": "P7: \"ask him instead of deciding for him\".", "t": "mc", "a": 0}, {"ps": 4, "q": "Select TWO measures intended to keep Maple comfortable.", "o": ["Short reading sessions", "A whole group reading at once", "Breaks monitored by her handler", "Sessions without supervision", "Continuous reading throughout the day"], "r": "P9: short sessions + handler gives breaks.", "t": "multi", "a": [0, 2]}, {"ps": 4, "q": "What does Sam's final comment show?", "o": ["He thinks teachers are no longer necessary.", "He now understands the program's purpose.", "He wants to cancel the program.", "He believes Maple can explain every word."], "r": "P12: \"I understand now.\" His view changed.", "t": "mc", "a": 1}, {"ps": 4, "q": "Which evidence would best show whether the program meets its stated goal?", "o": ["The number of chairs in the library", "The price of the books used", "Participants reporting greater comfort and willingness to read aloud", "The length of Maple's leash"], "r": "Goal = comfort and confidence, not number of visitors.", "t": "mc", "a": 2}];
+SETS.gram=SETS.warm.concat(SETS.prac);
+const TILES=[
+{g:'?',n:'What they ask',cn:'题型',h:`<ul><li><b>Fill the blank</b> with the right word or verb.</li><li><b>Choose the sentence</b> that is written correctly.</li><li><b>Combine sentences</b> the best way.</li><li><b>Complete the sentence</b> with the right clause.</li><li><b>Organize a paragraph</b>: best opening sentence, or the sentence that does not belong.</li></ul>`},
+{g:'ed',n:'Tense',cn:'时态',h:`<p>Find the <b>time word</b> first. It decides the verb.</p><div class="ex"><span class="x">Yesterday she walks home.</span><span class="v">Yesterday she walked home.</span></div><p>yesterday, last week = past · every day = present · tomorrow = will · since 2020 = has/have + verb</p>`},
+{g:'s',n:'Subject and verb',cn:'主谓一致',h:`<p>The verb matches the <b>real subject</b>. Ignore the words in between.</p><div class="ex"><span class="x">The box of pens are here.</span><span class="v">The box of pens is here.</span></div><p>each, every, everyone = singular (has, is).</p>`},
+{g:',',n:'Comma splice',cn:'逗号误用',h:`<p>A comma alone <b>cannot join two full sentences</b>.</p><div class="ex"><span class="x">It rained, we stayed in.</span><span class="v">It rained, so we stayed in.</span></div><p>Fix with a period, or comma + and / but / so.</p>`},
+{g:'…',n:'Half sentences',cn:'不完整句',h:`<p>A <b>because / when / although</b> clause needs a main sentence.</p><div class="ex"><span class="x">Because it rained.</span><span class="v">Because it rained, we stayed in.</span></div><p>Clause first? Put a comma after it, and no capital letter after the comma.</p>`},
+{g:'&',n:'Joining words',cn:'连接词',h:`<ul><li><b>and</b> = add</li><li><b>but / however / although</b> = contrast (转折)</li><li><b>so / as a result</b> = result</li><li><b>because / since</b> = reason</li><li><b>or</b> = choice</li><li><b>if</b> = condition · <b>unless</b> = if not</li></ul><div class="ex"><span class="x">I was tired, so I kept working.</span><span class="v">I was tired, but I kept working.</span></div>`},
+{g:'or',n:'Word pairs',cn:'固定搭配',h:`<p>These words always come in pairs.</p><div class="ex"><span class="v">either ... or</span><span class="v">neither ... nor</span><span class="v">both ... and</span><span class="v">not only ... but also</span></div><div class="ex"><span class="x">Neither Ana or Tom came.</span><span class="v">Neither Ana nor Tom came.</span></div>`},
+{g:':',n:'Colon and list',cn:'冒号',h:`<p>Use a colon <b>after a full sentence</b>, before a list.</p><div class="ex"><span class="x">We need two things milk and eggs.</span><span class="v">We need two things: milk and eggs.</span></div>`},
+{g:'ing',n:'Same form in a list',cn:'平行结构',h:`<p>Items in a list use the <b>same form</b>.</p><div class="ex"><span class="x">She likes swimming, to read and baking.</span><span class="v">She likes swimming, reading and baking.</span></div>`},
+{g:'its',n:'Sound-alike words',cn:'易混词',h:`<div class="ex"><span class="v">it's = it is · its = belongs to it</span><span class="v">they're = they are · their = belongs to them · there = place</span><span class="v">you're = you are · your = belongs to you</span><span class="v">than = compare · then = time</span></div><p>Test: say "it is" in the sentence. If it works, write <b>it's</b>.</p>`},
+{g:"'s",n:'Apostrophes',cn:'所有格',h:`<div class="ex"><span class="v">one dog's bowl</span><span class="v">two dogs' bowls</span><span class="v">the children's coats</span></div><div class="ex"><span class="x">The two dog's bowls are empty.</span><span class="v">The two dogs' bowls are empty.</span></div>`},
+{g:'!',n:'Be careful',cn:'注意',h:`<ul><li>In "combine" questions, long "and ... and ... and" answers are usually wrong.</li><li>Pick the short answer with the right logic.</li><li>Read each option as a full sentence in your head.</li><li>Check: have + <b>gone</b> (not went), the <b>funniest</b> (not most funniest), to Maya and <b>me</b>.</li><li>Answer every question. A guess costs nothing.</li></ul>`}
+];
+const PT=[{"key": "arrow", "sel": "Part A", "title": "Project Arrow", "kind": "News report", "paras": ["[1] On January 5, 2023, the Canadian electric car prototype named Project Arrow was unveiled in the United States. The car was featured at an event showcasing technological innovation. The project began in 2020 when the Automotive Parts Manufacturers' Association launched a competition to design the best model of a zero-emission vehicle. Four students from Carleton University in Ottawa developed the winning concept.", "[2] The next step was to create a prototype of the vehicle. \"We had an exceptionally strong and committed Ontario Tech University team,\" says Paula Ambra, Assistant Chief Engineer for Project Arrow at the Ontario Tech University in Oshawa. As part of the team, a handful of students from the Faculty of Engineering and Applied Science worked long hours. They did this alongside industry professionals and staff from Ontario Tech University while attending university full-time. Izzy Cossarin, a student who worked on the project, loved contributing to the initiative: \"It was the best learning experience. I was able to apply my theoretical engineering knowledge to real-world applications.\"", "[3] When the vehicle was unveiled at a consumer electronics show in Las Vegas, thousands of people from the industry and the media visited the Project Arrow booth. This occurred over the four days of the event. People were intrigued by the project and wanted to know more, according to Ambra.", "[4] For now, this prototype will continue to be shown at events and auto shows around the world, as it demonstrates what Ontario's automotive talent is capable of. Perhaps one day the car will be mass produced, and we'll see it on the roads of the province!"], "credit": "Invest Ontario. Adaptation and reproduction permission granted, Photo: Ontario Tech University."}, {"key": "blake", "sel": "Part B", "title": "Blake Angeconeb", "kind": "Real-life narrative", "paras": ["[1] You wouldn't know by looking at Blake Angeconeb's work that he got a late start in painting.", "[2] Growing up, Angeconeb, who is a member of Lac Seul First Nation in northern Ontario, had little interest in art, and never took any art classes. One afternoon in 2013, he painted a cartoon character with his niece and immediately felt relaxed and impressed with having created something.", "[3] When he started painting at the age of 23, he felt his work looked like that of a little kid, but he took great comfort in painting.", "[4] \"I find art is very relaxing for me,\" said Angeconeb on the podcast Face to Face.", "[5] In 2020, Angeconeb quit his job to focus on painting, something he admits he didn't tell his mom for a few weeks. As his career picked up momentum, his parents became big supporters.", "[6] By 2021, Angeconeb, then 32, was going all-in on a career in art. He was invited to paint a giant mural (16.5 by 4.8 metres) on the wall of the Toronto headquarters of a social media company.", "[7] Angeconeb's art is a mash-up of two passions: video games and contemporary media. He often blends pop culture references like Star Wars or characters from video games with traditional Woodlands art. The colourful Woodlands art style is rooted in traditional stories and images, often exploring the interconnected relationships among humans, animals and plants.", "[8] Renowned Bingwi Neyaashi Anishinaabek First Nation artist Norval Morrisseau is a huge influence on Angeconeb's work. \"He was the artist I really dove into and learned [about], going to the library and reading books about him. Searching online, just really respecting and enjoying his art.... That's the best, when someone will message me and say 'that painting made my day'.... Spreading that good medicine. Anything that can uplift and make someone feel better is the main goal with my art. And that's what I got from Norval's art when I saw it.\""]}, {"key": "para", "sel": "Reading Selection 1", "title": "Paralympic Movement", "kind": "Information paragraph", "paras": ["Canada is recognized worldwide for its participation in the Paralympic Movement—a global sports movement committed to the inclusion of people with disabilities. The Paralympic Games run alongside the Olympic Games and are held immediately following at the same venues. They provide an opportunity for athletes who have trained intensely and pushed the boundaries of human achievement to compete and showcase their athleticism. Athletes compete for medals in a variety of sports, such as wheelchair racing and para swimming. The first edition of this international competition was held in Rome in 1960. Canadian doctor Robert Jackson was a spectator. He was disappointed to see that there was no Canadian team. He made it his mission to include Canadian athletes in the Paralympic Games.", "Eight years later, 25 Canadian athletes participated in the Paralympic Summer Games for the first time. They won 19 medals. In 1976, Canadian athletes participated in the first Paralympic Winter Games in Sweden, winning 4 medals. They have been competing ever since. In Albertville in 2018, Canadian paralympic athletes won 28 medals. More recently, at the Beijing 2022 Paralympic Winter Games, Canada won 25 medals to finish third in the medal standings. Canadian athletes achieved another first at these Games by winning medals in para snowboarding. Through the Athlete Assistance Program, Canada helps pay for various expenses of these athletes. This includes training, equipment and uniforms. In addition, Canada hosted the 1976 Games in Toronto and the 2010 Games in Vancouver. Now when you think of Canada, you can think of its involvement in the Paralympic Movement."]}, {"key": "jay", "sel": "Reading Selection 2", "title": "Jay Odjick: A Comic Book Enthusiast", "kind": "Real-life narrative", "paras": ["[1] When he was young, Jay Odjick dreamt of being a comic book writer and illustrator. This is indeed the career he has pursued. It feeds his passion and promotes his culture and language. Odjick is an artist, author and member of the Kitigan Zibi Anishinabeg Algonquin First Nation near Maniwaki, Quebec. He is the first person to create an Indigenous superhero, named Kagagi, whose origins lie in tradition, stories and traditional knowledge.", "[2] Odjick was born in Rochester, New York, where he lived up the street from a comic bookstore. This was the place where he discovered his passion for comic books. Odjick was attracted to the bright colours and adventures of superheroes. Reading comics not only improved his literacy skills but also cultivated his talent for drawing. At the age of five, he wrote and illustrated his first comic book. It featured an invented character called Arachnid-Man, who looked suspiciously like Spider-Man, his favourite superhero. Odjick admits that it wasn't a very original idea, but it was his first real effort. Around this same time, Odjick's family left the United States. They relocated to his father's home community, the Algonquin reserve of Kitigan Zibi. This event was an important one in Odjick's life.", "[3] Once in Quebec, his fascination for comic books continued. He was inspired by superheroes from movies. While watching a Superman movie with his father, Odjick began to wonder why there weren't any superheroes who looked like him or lived in a community like his own.", "[4] Nearly 20 years later, an Indigenous superhero named Kagagi was born. Created and illustrated by Odjick, Kagagi: The Raven is the story of a young Indigenous teenager who must defeat a legendary character in the Algonquin story. This comic book allows First Nations children to see themselves reflected in this superhero character. The book has been an incredible success. The publisher, Arcana Comics, printed and distributed Odjick's Kagagi: The Raven in three languages: English, Algonquin and French. The comic was also adapted for television in 2014 and broadcast in Canada, the United States and Australia.", "[5] Odjick's success didn't stop with the success of Kagagi. He was invited by Scholastic Canada to illustrate for the famous children's author Robert Munsch. The result was two children's books, Blackflies and Bear for Breakfast. Both books were based on Indigenous life and culture. Odjick even convinced the publisher and Robert Munsch to print bilingual versions of Bear for Breakfast in French-Algonquin and English-Algonquin. It was a proud and joyful moment for Odjick, whose goal has always been to promote his language.", "[6] He admits that he was a bit worried about drawing for Robert Munsch. Unlike typical artists, Odjick constructed his drawings digitally. Replacing paper with a tablet and digital pencil makes his creative process portable and versatile.", "[7] Looking back, Odjick turned his passion for comic books into a lifelong commitment to celebrate and promote his culture. It's a way for him to help his community preserve its language. He has always persevered. If he had given up after receiving his first rejection letter from the publisher of Marvel Comics at the age of ten, he would not have achieved the success he has today. Odjick's advice to anyone pursuing a dream is \"you shouldn't be afraid to pursue your dreams, because a superhero never gives up.\""], "credit": "Written for EQAO."}, {"key": "monarch", "sel": "Reading Selection 3", "title": "Monarch Waystation", "kind": "Dialogue", "paras": ["[1] It was a sunny spring morning. Marcel decided to ride his bike over to his friend Harvinder's house for a visit. When he arrived, he noticed that Harvinder was wandering around her front yard with a shovel and measuring tape.", "[2] \"Hey, Harvinder!\" Marcel called out. \"What are you doing? Calculating the area of your front yard?\"", "[3] Harvinder ambled over, pausing to put down the measuring tape. \"Something like that. I'm planning to create a monarch butterfly waystation, so I'm looking for an open spot that would be large enough.\"", "[4] \"A monarch what? Did you say train station?\"", "[5] Harvinder laughed. \"No—waystation! It's a habitat for monarch butterflies. I need to create a space to plant milkweed. Monarchs only lay their eggs on milkweed plants, and monarch caterpillars need milkweed for food and shelter after they hatch in the spring.\"", "[6] \"Caterpillars and butterflies?\" Marcel shrugged. \"What's the big deal?\"", "[7] \"Did you know that every year, hundreds of millions of monarch butterflies make their way from Canada down to Mexico so they can wait out the winter in a warmer climate? But the yearly monarch migration has been declining because the species' food sources have been gradually disappearing. That's why I'm also planting a variety of flowers for migrating monarch butterflies, so they can rest and eat the nectar they need to survive. Butterflies are so important to our ecosystem. They pollinate all kinds of plant species, let us know if our ecosystem is healthy and even predict environmental change.\"", "[8] \"So you're creating...a restaurant for butterflies!\"", "[9] Harvinder nodded. \"You could say that. With milkweed for breakfast, lavender for lunch, goldenrod for dinner and daisies for dessert! Goodbye, grass! Hello, butterflies!\""], "credit": "Written for EQAO."}, {"key": "inuk", "sel": "Reading Selection 4", "title": "My Inuktitut Computer", "kind": "News report", "paras": ["[1] Leena Tatiggaq Evic is a teacher and artist from Baffin Island, in Canada's Far North. She has been working for nearly a decade to translate basic computer tools into her language. When she sits in front of her computer screen, it's not the words \"print,\" \"file,\" \"folder,\" \"cancel\" or \"save\" that are displayed. What she reads are words like \"Paippaamuurli,\" \"Ini,\" \"Puurvik,\" \"Qujanaarli\" or \"Jagajjairli.\" There is also \"Qamilli\" (turn off), \"Ikiaqqijjut\" (Internet), \"Matuli\" (close) or \"Taima\" (quit).", "[2] \"In 2003, Microsoft offered to translate Windows into Inuktitut,\" says Leena Tatiggaq Evic. She is the founding director of the Pirurvik Centre, whose mission is to protect and promote the culture of the Far North. Today, the approximately 100 000 Inukophones around the world (including more than 30 000 in Canada) can download word-processing applications in their language for free.", "[3] This long and complex journey is supported by the Government of Nunavut. In 2008 they made a commitment to making Inuktitut the language of work, and to ensuring that Inuktitut is taught throughout elementary and secondary education.", "[4] In all, more than one million words had to be programmed in Inuktitut. A terminology committee, made up of several elders and representing the six dialects and 26 official communities of this immense territory spanning three time zones, created a basic glossary that has gradually expanded.", "[5] \"New technologies can be extremely effective tools in the preservation of rare languages. It is very important for young people to see that their language can be broadcast on the Internet or on a cellphone. It makes them feel that it [their language] has value in the modern world,\" says Leena Tatiggaq Evic."], "credit": "By Pascale Millat"}, {"key": "mosq", "sel": "Reading Selection 5", "title": "Mosquitoes", "kind": "Information paragraph", "paras": ["If you've ever felt like you get bitten by mosquitoes more than the average person, it's not your imagination. So why is that? There are several reasons. First, these tiny insects are very attracted to both carbon dioxide, which we all breathe out, and to lactic acid, which some people produce more than others, particularly when they sweat. Female mosquitoes are the only ones who bite, and they do it to provide blood to nourish their eggs. This means that washing off dirt and sweat is your first line of defense. Mosquitoes are also drawn to specific blood types more than others, so if you're type O, then mosquitoes may find you more appealing. They also love flowers, so don't apply floral fragrances if you're spending a lot of time outdoors. Avoid dark clothing during the day—mosquitoes don't have the best eyesight, and the contrast between bright light and dark clothes helps them spot you more easily. If possible, use environmentally friendly repellents, and make sure there's no standing water around you that can serve as a breeding ground for mosquitoes, who lay their eggs in still water. But if, after all precautions, you still get bitten and have become a meal for these tiny buzzing insects, remember that there are a variety of remedies, like calamine lotion and witch hazel, for that dreadful itch. You might even try honey, oatmeal or crushed ice!"], "credit": "Written for EQAO."}, {"key": "rama", "sel": "Reading Selection 6", "title": "Srinivasa Ramanujan", "kind": "Dialogue", "paras": ["[1] A few minutes before math class began, Supriya plunked down into her usual seat beside Carlos.", "[2] \"Hey, partner. Have you thought about who might be the subject of our math project?\" Supriya asked. \"It's due next week.\"", "[3] Carlos frowned. \"I did a quick search for famous mathematicians. Just as you'd expect, Pythagoras, Euclid and Pascal popped up. It would be cool to research someone more obscure.\"", "[4] \"Agreed!\" replied Supriya. \"How about a mathematician we haven't learned much about in class, like Srinivasa Ramanujan?\"", "[5] \"Huh?\" said Carlos as he typed the name into his computer.", "[6] Within seconds, Carlos's eyes widened as he read from the screen.", "[7] \"Ramanujan was a famous mathematician from India who lived from 1887 to 1920. He had no formal training in mathematics. However, he mastered trigonometry by age 12, and by the age of 17, he was developing his own math theorems.\"", "[8] \"I know!\" said Supriya. \"His goal was to study at a university, so he wrote many letters to professors of mathematics. By the age of 20, he was extended an invitation to study at a university in England.\"", "[9] \"This guy could be an interesting subject for our project! How did you get the idea?\" Carlos asked.", "[10] \"From my grandfather, who knew about Ramanujan's work from the film The Man Who Knew Infinity. It shows how Ramanujan's life was very difficult because he was living on the edge of poverty,\" stated Supriya.", "[11] \"Ironic, eh? We will teach our classmates about an autodidact,\" Carlos said.", "[12] \"An auto-what?\" asked Supriya.", "[13] \"Someone who is self-taught,\" laughed Carlos."], "credit": "Written for EQAO."}, {"key": "garden", "sel": "Reading Selection 7", "title": "Community Vegetable Garden", "kind": "Dialogue", "paras": ["[1] Drew cleared his throat and waited for Harpreet to notice him, but she didn't. \"Wow, you're really focused on those seed packets in your hands,\" he said. Harpreet was standing next to a patch of soil. There was a shovel planted in the dirt where she had been digging. Close by, several other people were in the process of excavating their own plots.", "[2] Harpreet looked up and gestured toward the three-metre-long rectangle she had created. \"Hey, Drew! What do you think of my vegetable garden?\"", "[3] \"A vegetable garden? What for?\"", "[4] Harpreet smiled. \"I've always wanted to grow my own vegetables. Last year, I grew tomatoes on the back porch in a big container. It was such a success that we gave two baskets full to our neighbours. This spring, I registered for a space in this community garden to grow even more produce.\"", "[5] Drew looked at the patch of dirt skeptically. \"It doesn't look like much of a garden.\"", "[6] Harpreet chuckled and passed him several colourful seed packets. \"Not yet. But, look! I'm planting yams, cilantro, beans...and tomatoes, of course! Everyone loves those.\"", "[7] \"Not everyone! I prefer cucumbers, but I am interested in this idea of being self-sustaining. How would I even know where to start?\"", "[8] \"You could start by planting some cucumber seeds in a container on your balcony or you could apply for a space here. There are still some available. The best part is, at the end of the summer, everyone shares what they've grown.\"", "[9] \"Fresh air, fresh vegetables and a community garden party? I'll apply right away!\""], "credit": "Written for EQAO."}, {"key": "runner", "sel": "Reading Selection 8", "title": "Sight-Impaired Runner Blazes New Trail", "kind": "News report", "paras": ["[1] With sweat drenching his jersey after completing a gruelling five-kilometre cross-country race, 14-year-old Ka Li had just enough energy left to smile and declare himself satisfied with his accomplishment.", "[2] Li is legally blind, but that didn't stop him from trail running. \"There was a time when I wondered how far I could go, but I'm not a quitter. When I heard the encouragement of people cheering me on, just as I was about to climb a big hill, it gave me a huge lift. It's been quite an accomplishment, my first high school race, and I feel like a winner for competing and finishing.\"", "[3] \"It was a big challenge—lots of stones and I could have easily tripped—but I feel great,\" said Li, who used schoolmate William Cornish to guide him through the run at Boyd Conservation Area in Woodbridge, Ontario.", "[4] Li can see shadows but no detail and requires a white cane—an aid used by people living with sight loss—to navigate. He is finalizing paperwork to apply for a guide dog.", "[5] Li, who admits he spends lots of time on the computer thanks to assistive technology, said, \"My parents thought I should take up a sport and get active.\"", "[6] Distance running wasn't his first foray into the world of sport. \"I tried wrestling, judo and some rock climbing, but this is by far the best for me,\" he says.", "[7] \"I used to hear... people talk about me being blind and feeling sorry. But I ignored it. My lifestyle is different from other kids my age..., but I can push myself and like doing what everyone else does.\""], "credit": "By David Grossman"}, {"key": "bryt", "sel": "Reading Selection 9", "title": "Brytnee Brough: My Identity, My Heritage", "kind": "Real-life narrative", "paras": ["[1] My name is Brytnee Brough and I am Kanyen'keha:ka (this is how we say Mohawk in the Mohawk language). The Kanyen'keha:ka are an Indigenous people who live in the territory we know today as Ontario and Quebec in Canada, and New York State in the United States.", "[2] The Kanyen'keha:ka are divided into eight communities, which we also call reserves, that have a vibrant culture, and even their own language! But me, I've always lived outside my Indigenous community, called Tyendinaga, which is located in the Belleville region of Ontario. I grew up in southwestern Ontario and consider myself an urban Indigenous person.", "[3] Living outside our Indigenous community can pose certain challenges. For example, I didn't always have access to my culture, and I didn't learn Kanyen'kéha as my first language. However, I have had other opportunities, such as learning French at school and participating in cultural activities at the Friendship Centre with other Indigenous youths from various nations. The Friendship Centre is an important place for urban Indigenous peoples. It's a place where we can celebrate our cultures and access services as if we were in our home communities.", "[4] It is the sum total of my experiences that defines my identity. Despite the fact that my culture and language have not always been accessible, I have still succeeded in learning many of our histories, traditions and cultural practices by reconnecting with my community. For example, I learned to bead using tiny beads and animal hide. I've even started my own business selling beaded items such as earrings, necklaces and moccasins. The art of beading is practised by Indigenous people all over Turtle Island (that's what North America is called), and I am very proud to have developed this talent!", "[5] In addition, for the past few years I have been working hard to reclaim my family language. In 2020, I started taking online Kanyen'kéha language courses. I was very excited to start the first course, but I was a little nervous since I had very little knowledge of the language. Fortunately, since I already spoke French, I found it quite easy to learn the basic rules of Kanyen'kéha, as the sounds are quite similar! Even though, in my opinion, the Kanyen'kéha language is much more complicated and does not follow the same sentence structures or grammar as French, I successfully learned to communicate using simple sentences.", "[6] Knowing my language is very important to me since there aren't many people who speak it, and it is in danger of disappearing. The latest census shows that it is spoken by only 3000 people in the world, most of them elderly people. Knowing your language gives you a better understanding of your nation's history and culture. If we stop speaking our language, we risk losing the richness of our culture. I am very proud to be who I am. I am a member of a First Nation from the Mohawk Nation and a French speaker of southwestern Ontario. I am grateful to all the people who have helped shape my identity. I hope one day to be able to pass on my knowledge and help young people, like me, on their own identity journey."]}, {"key": "authors", "sel": "Reading Selection 10", "title": "Black Authors' Panel", "kind": "Dialogue", "paras": ["[1] \"Marcus, did you hear about the Black authors' panel that was mentioned in the school announcements this morning? As the president and vice-president of student council, we should present a list of potential authors to the organizing committee by the end of the week,\" said Dylan.", "[2] \"I did. What a great opportunity to highlight Black writers!\" exclaimed Marcus.", "[3] Dylan grabbed his tablet from his backpack to show Marcus his list.", "[4] \"Wow! You've already started? There are so many authors to choose from!\"", "[5] \"I did get started! I think we should focus on Black Canadian authors since we are talking about representation. Canada has so much history, so many stories and so much culture to explore and learn from,\" Dylan replied.", "[6] Marcus took another look at the list and searched the Internet for a few of the authors. \"I think it would be great to showcase authors like Harrison Mooney, Ben Philippe, Francesca Ekwuyasi or Liselle Sambury. Who did you have in mind?\" he asked.", "[7] \"I really like Harrison Mooney. We share some similar experiences. Also, he is a best-selling memoirist, award-winning journalist, public speaker, educator and activist from the west coast,\" said Dylan.", "[8] \"Similar experiences? Like what? Hmm... now I'm curious to learn more about you.\"", "[9] Dylan chuckled. \"One day at a time, my friend. In the meantime, is our list complete?\""], "credit": "Written for EQAO."}, {"key": "gum", "sel": "Reading Selection 11", "title": "Chewing Gum", "kind": "Dialogue", "paras": ["[1] Every Saturday morning, Veronique and her cousin Matthieu go for a walk near their home.", "[2] \"Oh no! I just stepped on some sticky gum again! It's disgusting!\" says Veronique.", "[3] \"I know what you mean,\" says Matthieu, \"It brings back memories of my job at the convenience store last summer. I had to remove the gum that was stuck everywhere on the sidewalk in front of the store.\"", "[4] \"People don't realize that chewing gum doesn't break down completely and is bad for the environment. Did you know that in Singapore it is illegal to consume gum, because people were disposing of it all over the place?\" says Veronique.", "[5] \"It's a good initiative, but I don't know if it would work here. The sale of chewing gum is a major source of revenue. I've heard that people in North America spend billions of dollars a year on gum of all kinds,\" adds Matthieu.", "[6] \"All that money on gum? That's a lot of money,\" says Veronique. \"How can we promote awareness of the impact of gum on the environment?\"", "[7] \"Can we do this on Earth Day?\" suggests Matthieu.", "[8] \"Yes, we could organize activities where we make students aware of the lifespan of waste—not only chewing gum, but of everything buried in the ground,\" suggests Veronique.", "[9] \"That's a great idea!\" says Matthieu. \"I'm curious to know how long it takes chewing gum to decompose once it's in the ground,\" he states.", "[10] \"Five years,\" sighs Veronique, \"and after all that time, we're not even sure it's completely decomposed.\"", "\"How horrible!\" exclaims Matthieu. \"Let's hurry up... [the rest is cut off in the screenshot]"]}, {"key": "museum", "sel": "Reading Selection 12", "title": "Canadian Language Museum", "kind": "News report", "paras": ["[1] From November 2 to December 7, 2021, the Canadian Language Museum, located on the Glendon Campus of York University in Toronto, presented an exhibit featuring six sign languages used in Canada, including those developed by Indigenous peoples: Plains Sign Language, Inuit Sign Language and Oneida Sign Language.", "[2] This event was organized by Elaine Gold, executive director of the museum, who worked closely with four students from the University of Toronto. It took visitors about 30 minutes to absorb the seven informative displays. In addition, museum visitors could watch videos by using a QR (quick response) code or consult the museum's library, which is rich in children's books and dictionaries on Indigenous languages. The museum also has rare pieces, including a card game to learn Inuit Sign Language.", "[3] \"Coming to the museum means discovering much more than just the exhibit,\" explains Lyse Hébert, a professor at the School of Translation, Glendon College.", "[4] One of the special features of this exhibit was the focus on the sign languages specific to Indigenous peoples. Among the Inuit, sign language emerged at least 100 years ago. However, despite the fact that some 150 Inuit communicate with sign language, it is in danger of extinction. In the Canadian Prairies, Plains Sign Language is used by some 50 people from many groups, including the Blackfoot, Dakota, Cree and Assiniboine.", "[5] The sign languages of Indigenous peoples, which originated long ago, were utilized by both individuals with hearing loss and those who could hear. Signing was a practical means of communication among communities who spoke different languages. For this reason, Indigenous communities are organizing to save and revitalize their sign languages."], "credit": "By Clément Lechat. Adapted from \"À la découverte des langues des signes du Canada\", published on l-express.ca, November 19, 2021."}, {"key": "fashion", "sel": "Reading Selection 13", "title": "Accessible Fashion", "kind": "Information paragraph", "paras": ["The fashion industry has often ignored the needs of people with disabilities. However, accessibility is important for some fashion designers. People with various disabilities or medical conditions who do not have access to wearable clothes can find going out in public extremely limiting. Accessible fashion allows people of all abilities to interact in the world and to express themselves through their clothing choices. Accessible clothing is easier to put on and take off. It includes features like adjustable straps, one-handed zippers, elastic shoelaces, magnetic and Velcro closures, and elastic waistbands. Toronto designer Izzy Camilleri has designed clothing for wheelchair users. Her jackets split in half, so there is no need to reach behind the body. The centre back seam has also been removed from pants. These seams can cause pressure sores for people sitting for a long time. Camilleri has won recognition around the world for her clothing. The accessible clothing she creates blends beauty and functionality. Another Canadian designer, Alexa Jovanovic, is the founder of Aille (pronounced \"eye\") Design. Her designs include braille beading. The raised crystals in her first designs indicated colour and care instructions. The beads are also used to spell out messages of inspiration in braille. The goal is full inclusivity. Adaptive clothing is meant to be sold alongside mainstream clothing. Other innovative designers continue to create pieces that raise awareness, challenge stereotypes and push boundaries. These designers believe accessible clothing could allow for greater independence, dignity and personal expression."], "credit": "Written for EQAO."}, {"key": "siakam", "sel": "Reading Selection 14", "title": "Pascal Siakam", "kind": "Real-life narrative", "paras": ["[1] The journey of Pascal Siakam, a basketball player born in Douala, Cameroon, has been far from ordinary. To begin with, unlike many children, he was not interested in basketball. Rather, his favourite sport was soccer. He did not swap the black and white ball for the orange until the age of 16, a change that delighted his father and brothers, all of whom were keen fans of basketball. Despite being a late starter in the sport, his natural talent proved to be remarkable.", "[2] In 2011, he caught the eye of recruiters when he took part in the \"Basketball Sans Frontières\" summer camp. From there, he went on to South Africa alongside other talented young players to undergo a special training program. His performance earned him a university scholarship. He then flew to the United States, where he focused on his studies and his new-found sport. He later joined the New Mexico State University team.", "[3] Pascal trains constantly to improve his performance on the court. For two years, he gained experience with the university team. He was then drafted by an NBA team in 2016. This time, the Cameroonian flew to Toronto to join the Raptors. Still, in his first year with them, he spent more time on the bench than on the court, playing just five times! However, whenever he was given the ball, he showed his skill and intensity. Pascal is a master of the game, on both offense and defence. His speed is one of his greatest strengths, and one that surprises many.", "[4] In the spring of 2019, the forward helped his team reach the final and win its first NBA championship. Fans across Canada celebrated this historic victory in style. Throughout the season, Pascal Siakam broke records. He scored more than 30 points in a final. He was the youngest player to achieve this in a finals debut since 2012. His best season came in 2022–2023, when he played more minutes per game than any other NBA player. He also averaged 24.3 points per game, one of the highest totals ever for the Raptors. In January 2024, he was traded to the Indiana Pacers.", "[5] Not only was the player in the news for his jumping ability and his shots at the basket, his use of his first language had caught the attention of the media and basketball fans. During an interview, Pascal Siakam asked that questions be put to him in French, which prompted a wave of pride among francophones in Canada and elsewhere. Indeed, the star values the French language. Another cultural element that is close to his heart? His Cameroonian origins. He wants to be a positive role model for young people, particularly young Africans.", "[6] When interviewed by journalists about his success, Pascal is quick to mention his personal investment and the hard work he puts in to become better. But he also admits that, as a latecomer to the sport, he always has something to learn. This gives him the motivation to train and excel."], "credit": "Written for EQAO."}, {"key": "budget", "sel": "Reading Selection 15", "title": "Vanessa and Samirah", "kind": "Dialogue", "paras": ["[1] Vanessa and Samirah talk about their jobs after class. They work in a store every weekend.", "[2] \"I can't wait for Thursday; it's payday,\" says Samirah.", "[3] \"Do you have any plans for your paycheque?\" inquires Vanessa.", "[4] \"Yes, quite a few! A pizza dinner with my cousins, new sandals, a video game and...\"", "[5] \"That will cost you a lot!\"", "[6] \"I pay my cellphone bill too! I spend my entire paycheque every time, Vanessa. Don't you? That's why we work, right?\"", "[7] \"No, I try not to. I'm saving up to buy a new laptop. It's not easy, but I'll manage,\" asserts Vanessa.", "[8] \"Really? How are you doing it? I always thought it was complicated. I never seem to be able to save my money...\"", "[9] \"In my math class, Mr. Ibrahim taught us how to make a balanced budget. You have to divide your income into categories. I'm saving 45% of my wages for my post-secondary education. That's my long-term project. In the medium term, I save 35% for major expenses like my computer. In fact, I've calculated the cost of my computer, including sales tax. Soon, I'll have the money to buy it. The remaining 20% of my paycheque is for short-term purchases, like pizza or hair products.\"", "[10] \"That's great! Prioritizing is a win-win situation.\"", "[11] \"Absolutely, but making savings a priority some months is so difficult, especially when unexpected expenses come up,\" adds Vanessa. \"I also bring my own lunch and buy clothes on sale to cut back on spending. If you want, I can help you review your priorities and set a budget.\"", "[12] \"Yes, please! I was just wondering how I could save up for a bicycle,\" responds Samirah."], "credit": "Written for EQAO."}, {"key": "aurora", "sel": "Reading Selection 16", "title": "Aurora Borealis", "kind": "Dialogue", "paras": ["[1] The sun had long set, and the Boucher family gathered at the shore of the frozen lake. Siblings Giles and Noreen approached their dad, who gazed upward at the flickering night sky as it swirled with a dazzling array of colours.", "[2] \"What a sight!\" Giles exclaimed. \"Our last night here at the top of the world capped off with a beautiful display of aurora borealis.\"", "[3] \"You mean the northern lights?\" Noreen said.", "[4] \"The scientific name is aurora borealis,\" explained Giles, reading from a scientific website on his phone. \"What we see are flashes of colour, which are actually collisions between electrically charged particles from the sun that enter the earth's atmosphere—\"", "[5] \"Where they collide with gases,\" Noreen interjected. \"I know, I know. Dad quizzed us on this last night, remember? But it's not just science. I prefer a more poetic version. According to one Ojibwe legend, the northern lights were created by the Ojibwe's cultural hero Nanabozho, who lit large fires in the sky so that his people would know that he was always with them.\"", "[6] \"That's a beautiful image,\" Giles said as he looked back and forth from his phone to the sky, and then he added, \"But science explains that the different atmospheric gases create the colours. Green or red flashes mean the solar particles are mixing with oxygen, and purple or blue flashes mean the particles are mixing with nitrogen.\"", "[7] \"It's spectacular,\" Noreen said. \"We came outside just in time!\"", "[8] \"I'll take some credit for that,\" their dad remarked. \"Just like the weather, the aurora borealis can be forecast. By measuring geomagnetic activity in a given region, the odds of seeing aurora borealis on a given night can be predicted.\"", "[9] \"And I predict we'll be quizzed about that tonight at dinner!\" quipped Giles."], "credit": "Written for EQAO."}];
+const XTRA={"arrowSample": "I think teamwork and hard work are very important when making new technology. In the Project Arrow project, four university students came up with the winning car idea. Later, students from Ontario Tech University worked with engineers and other people to build the car. They worked for many hours while still going to school. This shows that they were hardworking and did not give up easily. They also used what they learned in class to help with the real project. I think people need to work together, learn new things and keep trying if they want to make something successful."};
+/* ---------- new sets: helpers ---------- */
+const X=(o,x)=>Object.assign(o,x||{});
+const MC=(q,o,a,r,x)=>X({t:'mc',q,o,a,r},x);
+const MU=(q,o,a,r,x)=>X({t:'multi',q,o,a,r},x);
+const DD=(q,parts,r,x)=>X({t:'dd',q,parts,r},x);
+const BK=(q,bank,parts,r,x)=>X({t:'bank',q,bank,parts,r},x);
+const BX=(q,bank,boxes,r,x)=>X({t:'bank',q,bank,boxes,r},x);
+const GR=(q,cols,rows,r,x)=>X({t:'grid',q,cols,rows,r},x);
+const OP=(q,x)=>X({t:'open',q,r:''},x);
+const TF=['True','False'];
+const grp=(g,list)=>list.map(q=>X(q,{g}));
+
+/* ---------- grammar questions from the PDFs (original wording) ---------- */
+SETS.pdfg=[].concat(
+grp('Part C: Language Conventions',[
+ MC('Choose the sentence that is written incorrectly.',['sentence 1','sentence 2','sentence 3','sentence 4'],3,
+  'Sentence 4: "before, instead of homework club" does not fit together. Better: We decided to go skating instead of going to homework club.',
+  {p:'(1) After class, Nick and I met at my locker. (2) I told him I needed to attend after school math help. (3) Nick was hoping we would go skating at the local rink. (4) We decided to go skating before, instead of homework club.',src:'question number not shown'}),
+ BK('Drag your two answer choices into the correct boxes to best complete the sentence.',['or','both','either','instead of'],
+  ['We will ',{a:'either'},' bake ',{a:'or'},' barbecue the chicken.'],'Pair: either ... or',{src:'Question 2'})
+]),
+grp('Language Conventions Set 1',[
+ DD('Which word from the drop-down menu best completes the sentence?',['They are running in the race, ',{o:['so','for','but','after'],a:'but'},' the finish line is still far away.'],
+  'The second part is a contrast = but',{src:'Question 1'}),
+ MC('Choose the sentence that is written correctly.',[
+  'After six months in space: the astronaut wanted to see her daughter, eat a hamburger and take a hot shower.',
+  "I found the coolest stuff: in my grandmother's attic, home movies, a trunk of vintage clothes and my dad's old toys.",
+  'On the last day of class, the teacher gave us the best gifts: no homework, a movie marathon and all the popcorn we could eat.',
+  'The veterinarian made me: promise to do these things to help my dog, exercise her more, brush her teeth every day and no more treats.'],2,
+  'The colon comes after a full sentence ("...gave us the best gifts") and right before the list.',{src:'Question 2'}),
+ DD('Choose the answers that best complete the sentence.',['I think ',{o:['its',"its'","it's"],a:"it's"},' going to be a long time before the turtle goes into ',{o:['its',"its'","it's"],a:'its'},' shell.'],
+  "it's = it is; its = belongs to it. The form its' is never correct.",{src:'Question 3'}),
+ MC('Choose the sentence that is written correctly.',[
+  'I was sleeping Stewart said. "In my bed!"',
+  '"Isn\'t the carnival in town" Martina responded?',
+  '"He was driving," Melinda exclaimed, "all night long!"',
+  '"They went to a lacrosse game," Chris said "At seven o\'clock."'],2,
+  'Comma inside the first quotation marks, comma after the speaker, small letter when the same sentence continues.',{src:'Question 4'}),
+ BK('Choose the options that best complete the sentence. Drag and drop your three answer choices into the correct boxes.',['61 m long','Montana',"the world's shortest river"],
+  ['The Roe River, considered ',{a:"the world's shortest river"},', is ',{a:'61 m long'},' and is located in ',{a:'Montana'},'.'],
+  'considered + what it is; is + length; located in + place',{src:'Question 5'}),
+ DD('Which words best complete the sentence below?',['Next week, Parry ',{o:['goes','went','is going'],a:'is going'},' to the gym. Once there, he ',{o:['did','will do','had done'],a:'will do'},' five sets of 20 sit-ups.'],
+  '"Next week" = future: is going, will do',{src:'Question 6'}),
+ BK('Drag the two best answer choices into the correct boxes to complete the sentence.',['only if','even though','now that','in order that'],
+  ['John applied for a lifeguard position ',{a:'even though'},' he had no experience, ',{a:'now that'},' he had his lifesaving certification.'],
+  'even though = contrast (no experience); now that = because he had the certificate at last',{src:'Question 7'})
+]),
+grp('Language Conventions Set 2',[
+ MC('Which sentence is written correctly?',[
+  'All the children seems happy about the ice cream, except for Sandro and Allison, who prefers to eat cake.',
+  'All the children seems happy about the ice cream, except for Sandro and Allison, who preferred to eat cake.',
+  'All the children seemed happy about the ice cream, except for Sandro and Allison, who prefers to eat cake.',
+  'All the children seemed happy about the ice cream, except for Sandro and Allison, who preferred to eat cake.'],3,
+  '"children" is plural, so not "seems". Two people, so not "prefers". Both verbs stay in the past: seemed, preferred.',{src:'Question 2'}),
+ DD('Which word best completes the sentence below?',['Both my brother and ',{o:['I','me','us','him'],a:'I'},' love to play baseball.'],
+  'It is the subject of "love": I love to play.',{src:'Question 3'}),
+ DD('Choose the option that best completes the sentence.',['Nayela dropped her eyeglasses ',{o:['at','on','from','above'],a:'from'},' the desk onto the floor.'],
+  'from ... onto = movement from one place to another',{src:'Question 4'}),
+ DD('Which options best complete the sentence below?',['I really enjoyed the presentation on Edgar Allan Poe, especially when Mrs. Agnew read us the story ',{o:[',',':','"'],a:'"'},' The Tell-Tale Heart ',{o:[',','-','"'],a:'"'},' so dramatically.'],
+  'The title of a short story goes inside quotation marks.',{src:'Question 6'}),
+ BK('Drag your three answer choices into the correct boxes to best complete the sentence.',['but','also','despite','because','however'],
+  ['Arlo, ',{a:'despite'},' being tired, went to choir practice ',{a:'because'},' his friends were going, and ',{a:'also'},' because he wanted to learn the new song they were starting.'],
+  'despite + -ing = contrast; because = reason; also = a second reason',{src:'Question 7'})
+]),
+grp('Language Conventions Set 3',[
+ BK('Drag your three answer choices into the correct boxes to best complete the sentence.',['or','so','for','and'],
+  ['We could go for hot chocolate ',{a:'or'},' watch a movie, ',{a:'or'},' we could go to the ice rink to skate ',{a:'so'},' we can get some exercise.'],
+  'or = choice (used twice); so = purpose',{src:'Question 1',reuse:true}),
+ BK('Drag the two best answer choices into the correct boxes to complete the sentence.',['He/he could not fall asleep','After/after Corbin came home','Rather/rather than going to bed'],
+  ['',{a:'After/after Corbin came home'},', ',{a:'He/he could not fall asleep'},'.'],
+  'The "after" clause comes first, then a comma, then the main sentence: After Corbin came home, he could not fall asleep.',{src:'Question 2'}),
+ DD('Choose the answers that best complete the sentence.',['The hamster was thirsty because she ',{o:['ran','runs','is running'],a:'ran'},' on her wheel this morning. That is likely why she ',{o:['looks','looked','is looking'],a:'looked'},' tired before she ate her lunch.'],
+  '"was", "this morning" and "ate" show past tense: ran, looked',{src:'Question 3'}),
+ MC('Choose the best way to combine the following sentences:\nEmily has a recital next month. She needs to practice her solo. The instructor wants her to devote at least two hours per night.',[
+  'Emily has a recital next month and she needs to practice her solo and the instructor wants her to devote at least two hours per night.',
+  'Emily has a recital next month since she needs to practice her solo and the instructor wants her to devote at least two hours per night.',
+  'Since Emily has her recital next month, she needs to practice her solo and the instructor wants her to devote at least two hours per night.',
+  'Since Emily has her recital next month, the instructor wants her to devote at least two hours per night because she needs to practice her solo.'],2,
+  'The recital is the reason, so "Since ..." comes first and the other two ideas follow. A is a long chain of "and". B and D mix up the reasons.',{src:'Question 4'}),
+ MC('Choose the sentence that is written correctly.',[
+  'The Pride Day event has many amazing features a panel discussion, a workshop and a film screening.',
+  'The Pride Day event has many amazing features a panel: discussion, a workshop and a film screening.',
+  'The Pride Day event has many amazing features a panel discussion: a workshop and a film screening.',
+  'The Pride Day event has many amazing features: a panel discussion, a workshop and a film screening.'],3,
+  'The colon goes after the full sentence and before the list.',{src:'Question 5'}),
+ BK('Drag the two best answer choices into the correct boxes to complete the sentence.',['I','I','me','me'],
+  ['When the coach invited my brother and ',{a:'me'},' to attend the tryout, she was pleased to hear that both he and ',{a:'I'},' had been practicing all summer.'],
+  'invited ... me (object); he and I had been practicing (subject)',{src:'Question 6'}),
+ MC('Choose the answer that best completes the sentence.\n___, she stocked up on necessary items.',[
+  'Adriana arrived early to the store','Adriana wanted to sell necklaces at the local fair','Because Adriana was opening up a beading business'],2,
+  'Only a "Because" clause can be joined to the main sentence with a comma. The other two are full sentences (comma splice).',{src:'Question 7'}),
+ BK('Drag the two best answer choices into the correct boxes to complete the sentence.',['but also','nor','both','not only'],
+  ['Neither Mariha ',{a:'nor'},' her sister Pardeep could decide on the two soups available; there was ',{a:'not only'},' lentil soup, but also vegetable soup.'],
+  'Pairs: neither ... nor; not only ... but also',{src:'Question 5 (PDF page 64)'}),
+ BK('Drag the two best answer choices into the correct boxes to complete the sentence.',['for','but','also','since'],
+  ['Mrs. Chung has been looking to hire a DJ ',{a:'for'},' the school dance on Friday ',{a:'since'},' she is supposed to supply the music.'],
+  'for = purpose (a DJ for the dance); since = because',{src:'Question 3 (PDF page 95)'})
+]),
+grp('Language Conventions Set 4',[
+ MC('Choose the sentence that is written correctly.',[
+  'It takes about three weeks for a caterpillar to being a butterfly.',
+  'It takes about three weeks for a caterpillar to become a butterfly.',
+  'It takes about three weeks for a caterpillar to have been a butterfly.',
+  'It takes about three weeks for a caterpillar to have become a butterfly.'],1,
+  'to + base verb: to become',{src:'Question 1'}),
+ MC('Choose the best opening sentence for this paragraph.',[
+  'Some historical mysteries may never be solved.',
+  'Steiff toys sell for thousands of dollars at auction.',
+  'Stuffed animals are popular toys for young children.',
+  'Shipping goods by sea was a common practice in the early twentieth century.'],0,
+  'The paragraph is about bears that vanished and were never found. Only the first option covers the whole paragraph.',
+  {p:'In 1903, the Steiff Toy Company in Germany shipped an order for 3000 stuffed bears to the United States. At some point during the journey, the valuable toys vanished. To this day, their whereabouts are unknown, even though it is recorded that the ship arrived safely. Antique toy collectors continue to hope that a few of these toys will surface in the future.',src:'Question 2'}),
+ DD('Which word best completes the sentence below?',['Fortunately, the raccoon caused no damage ',{o:['other','apart','except','besides'],a:'except'},' for the dented trash can.'],
+  'Fixed phrase: except for',{src:'Question 3'}),
+ BK('Drag your three answer choices into the correct boxes to best complete the sentence.',['then','when','where','because'],
+  ['Blake went to the kitchen, ',{a:'where'},' she filled her water bottle, and ',{a:'then'},' she put on her sunglasses before leaving ',{a:'because'},' it was hot and sunny outside.'],
+  'where = the place (kitchen); then = next step; because = reason',{src:'Question 4'}),
+ MC('Choose the sentence that is written correctly.',[
+  '"What time would you like me to be at your house" Olivia asked.',
+  '"What time would you like me to be at your house," Olivia asked?',
+  '"What time would you like me to be at your house"? Olivia asked.',
+  '"What time would you like me to be at your house?" Olivia asked.'],3,
+  'The question mark belongs to the spoken question, so it goes inside the quotation marks.',{src:'Question 5'}),
+ BK('Drag your two answer choices into the correct boxes to complete the sentence.',['are','was','were'],
+  ["My sister's friends ",{a:'were'},' playing soccer during lunch hour when one of them ',{a:'was'},' approached by the school soccer coach who asked her to be on the school team.'],
+  'friends (plural, past) = were; one of them (singular) = was',{src:'Question 6'})
+]),
+grp('Language Conventions Set 5',[
+ MC('Choose the sentence that is written correctly.',[
+  'Native plants are better if you want to attract butterflies.',
+  'Native shrubs will attract more birds as non-native shrubs.',
+  'Diseases occur more oftener in non-native species than in native species.',
+  'There are the fewer number of native Ontario trees in the region where I live.'],0,
+  'B needs "than" (more ... than). C: "more oftener" is a double comparative. D: "the fewer number" is not correct English.',{src:'Question 3'}),
+ DD('Choose the option that best completes the sentence.',['We did not miss the introduction to the presentation ',{o:['though','because','although','therefore'],a:'because'},' we arrived early.'],
+  'Arriving early is the reason = because',{src:'Question 4'})
+]),
+grp('Language Conventions Set 6',[
+ DD('Choose the answer that best completes the sentence.',['Amanda, Morgan and their two children will go to the parade on Saturday, ',{o:['for','and','unless','whether'],a:'unless'},' there are thunderstorms.'],
+  'unless = if not',{src:'Question 1'}),
+ BK('Drag your three answer choices into the correct boxes to best complete the sentence.',['is','are','was','being'],
+  ['Han, who ',{a:'was'},' recently elected as school council president, ',{a:'is'},' known for organizing many well-attended school events and is admired by her peers for ',{a:'being'},' so involved.'],
+  'recently elected = past (was); is known = present; after "for" use -ing (being)',{src:'Question 2'}),
+ BK('Drag your two answer choices into the correct boxes to complete the sentence.',['on','to','by','in','over'],
+  ['While ',{a:'on'},' the way to the show, she stopped ',{a:'by'}," her aunt's house to drop off some treats."],
+  'Fixed phrases: on the way; stop by a place',{src:'Question 3'}),
+ BK('Drag the two best answer choices into the correct boxes to complete the sentence.',['meet','return','returned','will meet'],
+  ['Two months from now, Julia and her cousin ',{a:'will meet'},' their grandparents in Thunder Bay. Then they will camp at Kakabeka Falls Provincial Park before they ',{a:'return'},'.'],
+  '"Two months from now" = future (will meet). After "before", use the present for a future event (return).',{src:'Question 4'}),
+ MC('Choose the sentence that is written correctly.',[
+  'Because there were ants we packed up our picnic early.',
+  'Because there were ants, we packed up our picnic early.',
+  'Because there were ants; we packed up our picnic early.',
+  'Because there were ants: we packed up our picnic early.'],1,
+  'A "Because" clause at the start is followed by a comma.',{src:'Question 5'}),
+ DD('Choose the answers that best complete the sentence.',['"Finally! Our Internet is back on. Will it go out again',{o:[',','!','?','?"'],a:'?"'},' wondered Osman.'],
+  'It is a question and the speech ends there: question mark, then closing quotation mark.',{src:'Question 6'}),
+ MC('Choose the sentence that adds the best supporting details to the following paragraph:',[
+  'They can fly.','They actually do a lot of good.','Many people are afraid of bats.','Other bats eat fruit, nectar or pollen.'],0,
+  'The sentence before says bats are different from all other mammals. "They can fly" is a detail that shows how.',
+  {p:'Bats are some of the most fascinating creatures in the animal kingdom. They are vastly different from all other mammals. ___. They lower their body heat to match the air temperature when it is cold; in doing so, they save energy. In addition, they live much longer than other animal species of similar size.',src:'Question 7'})
+])
+);
+
+/* ---------- extension: 30 new grammar questions (written for this page, not from the PDFs) ---------- */
+SETS.ext=[
+ BK('Drag your three answer choices into the correct boxes to best complete the sentence.',['but','so','because','or'],
+  ['Mina wanted to join the swim team, ',{a:'but'},' practices started at 6 a.m., ',{a:'so'},' she set two alarms ',{a:'because'},' she did not trust herself to wake up.'],
+  'but = problem; so = result; because = reason'),
+ DD('Choose the answers that best complete the sentences.',['By the time the bus arrived, we ',{o:['wait','had waited','will wait'],a:'had waited'},' for twenty minutes. Next time, we ',{o:['took','will take','had taken'],a:'will take'},' the earlier bus.'],
+  'Before another past event = had + past participle. "Next time" = future.'),
+ MC('Choose the sentence that is written correctly.',[
+  'For the camping trip, we packed: a tent, two sleeping bags and a stove.',
+  'For the camping trip, we packed three things: a tent, two sleeping bags and a stove.',
+  'For the camping trip: we packed three things, a tent, two sleeping bags and a stove.',
+  'For the camping trip, we packed three things a tent: two sleeping bags and a stove.'],1,
+  'A colon needs a full sentence before it. "we packed" alone is not complete, so A is wrong.'),
+ DD('Choose the answers that best complete the sentence.',['The students ',{o:["who's",'whose','who'],a:'whose'},' project won first prize said ',{o:['their','there',"they're"],a:"they're"},' going to enter again next year.'],
+  "whose = belongs to them; they're = they are"),
+ MC('Choose the sentence that is written correctly.',[
+  '"If we leave now," said Tariq, "we can catch the early train."',
+  '"If we leave now" said Tariq, "we can catch the early train."',
+  '"If we leave now," said Tariq, "We can catch the early train."',
+  '"If we leave now", said Tariq "we can catch the early train."'],0,
+  'Split sentence: comma inside the first quotation marks, comma after the speaker, and no capital letter when the same sentence continues.'),
+ BK('Drag the two best answer choices into the correct boxes to complete the sentence.',['I','me','myself','mine'],
+  ['My sister and ',{a:'I'},' share a room, so our parents bought new desks for her and ',{a:'me'},'.'],
+  'Take the other person away to test it: "I share a room", "desks for me".'),
+ DD('Choose the answers that best complete the sentence.',['The museum is closed ',{o:['in','on','at'],a:'on'},' Mondays, but it stays open ',{o:['until','by','since'],a:'until'},' 9 p.m. on Fridays.'],
+  'on + day; until + the time something stops'),
+ MC('Choose the best way to combine the following sentences:\nThe power went out. The game was almost over. The referee ended it early.',[
+  'The power went out and the game was almost over and the referee ended it early.',
+  'Because the power went out when the game was almost over, the referee ended it early.',
+  'The power went out, the game was almost over, the referee ended it early.',
+  'The referee ended it early because the game was almost over, so the power went out.'],1,
+  'The power failure is the reason. A is a chain of "and", C is a comma splice, D turns the cause into a result.'),
+ MC('Choose the answer that best completes the sentence.\n___, the hikers reached the summit before noon.',[
+  'The trail was steep and rocky','Although the trail was steep and rocky','The trail was steep, it was rocky','Despite the trail was steep and rocky'],1,
+  'although + subject + verb. "Despite" needs a noun (despite the steep trail). A and C are full sentences.'),
+ BK('Drag the two best answer choices into the correct boxes to complete the sentence.',['nor','or','and','but also'],
+  ['The new phone is not only faster ',{a:'but also'},' lighter, and it comes in both black ',{a:'and'},' silver.'],
+  'Pairs: not only ... but also; both ... and'),
+ BK('Drag your three answer choices into the correct boxes to best complete the sentence.',['is','are','was','were'],
+  ['The box of old photos ',{a:'was'},' found in the attic last week, the photos ',{a:'are'},' now on display in the hallway, and everyone in my family ',{a:'is'},' still talking about them.'],
+  'The box (one box) + last week = was. The photos + now = are. Everyone is singular = is.'),
+ MC('Choose the sentence that is written correctly.',[
+  "This year's science fair was more better than last year's.",
+  'Of the three routes, the river path is the shorter.',
+  'Lina runs faster than anyone else on the team.',
+  'The second movie was the most scariest of the series.'],2,
+  'Never double up (more better, most scariest). With three things use -est: the shortest.'),
+ DD('Which words best complete the sentence below?',['We missed the first act. If we ',{o:['left','had left','have left'],a:'had left'},' earlier yesterday, we ',{o:['saw','would see','would have seen'],a:'would have seen'},' the whole play.'],
+  'Something that did not happen in the past: if + had + past participle, would have + past participle.'),
+ MC('Choose the sentence that is written incorrectly.',['sentence 1','sentence 2','sentence 3','sentence 4'],2,
+  'Sentence 3 should be "Carlos and I tried" (subject). Test: "I tried", not "Me tried".',
+  {p:'(1) Our class visited the science centre last Thursday. (2) The guide showed us a model of the solar system. (3) Me and Carlos tried the earthquake simulator twice. (4) Before we left, everyone bought a postcard.'}),
+ BK('Drag your three answer choices into the correct boxes to best complete the sentence.',['where','who','which','while'],
+  ['Sana stopped at the bakery, ',{a:'where'},' she bought fresh bread, ',{a:'while'},' her brother was waiting in the car, ',{a:'which'},' was parked across the street.'],
+  'where = place; while = at the same time; which = the car (a thing, so not "who")'),
+ MC('Choose the sentence that is written correctly.',[
+  'Our class read the short story "The Lottery" before the test.',
+  'Our class read the short story, The Lottery before the test.',
+  'Our class read the short story: The Lottery, before the test.',
+  'Our class read the "short story" The Lottery before the test.'],0,
+  'Titles of short works (stories, poems, chapters, songs) go inside quotation marks.'),
+ DD('Choose the answer that best completes the sentence.',['"Where did you put my jacket',{o:[',"','?"','"?','?",'],a:'?"'},' asked Noor.'],
+  'The question mark belongs to the spoken question: it goes inside the quotation marks, with no comma after.'),
+ MC('Choose the sentence that is written correctly.',[
+  'The concert was sold out; however, we found two tickets online.',
+  'The concert was sold out, however we found two tickets online.',
+  'The concert was sold out however, we found two tickets online.',
+  'The concert was sold out; however we found, two tickets online.'],0,
+  'Two full sentences joined by "however": semicolon before it, comma after it.'),
+ MC('Choose the best opening sentence for this paragraph.',[
+  'Animal shelters always need more help.',
+  'Students can earn their community involvement hours in many different ways.',
+  'Many students find it hard to graduate on time.',
+  'Reading is an important skill for young children.'],1,
+  'An opening sentence covers every detail that follows: dogs, food bank, reading and the 40 hours.',
+  {p:'___ Some students walk dogs at the animal shelter every weekend. Others collect food for the local food bank or help younger children learn to read. All of these activities count toward the 40 hours that students need to graduate.'}),
+ MC('Choose the sentence that adds the best supporting detail to the following paragraph:',[
+  'Beavers are the national animal of Canada.',
+  'They build dams of sticks and mud across streams.',
+  'Many people have never seen a beaver in the wild.',
+  'Their fur was once used to make hats.'],1,
+  'The next sentence says "these dams", so the missing sentence must introduce the dams.',
+  {p:'Beavers change the land around them more than almost any other animal. ___ The ponds that form behind these dams become homes for fish, frogs and ducks. In this way, one family of beavers can create a whole new wetland.'}),
+ MC('Which sentence does not belong in the paragraph?',['Sentence 2','Sentence 3','Sentence 4','Sentence 5'],2,
+  'The paragraph is about winter cycling. Sentence 4 changes the topic to hockey.',
+  {p:'(1) Winter cycling is becoming more common in Canadian cities. (2) Many cities now clear snow from bike lanes as quickly as from roads. (3) Riders use wider tires and bright lights to stay safe. (4) Hockey is also a popular winter sport. (5) With the right equipment, cycling can continue all year.'}),
+ BK('Drag your three answer choices into the correct boxes to best complete the sentence.',['despite','although','because','and'],
+  ['The school stayed open ',{a:'despite'},' the heavy snow, ',{a:'and'},' most students arrived on time ',{a:'because'},' the buses left early.'],
+  'despite + noun (the heavy snow); and = adds an idea; because = reason. "Although" needs a subject and a verb after it.'),
+ DD('Choose the answers that best complete the sentence.',['The list of volunteers ',{o:['is','are','were'],a:'is'},' posted on the door, and there ',{o:['is','are','was'],a:'are'},' still three empty spots.'],
+  'The subject is "list" (one list) = is. "three empty spots" is plural = there are.'),
+ MC('Choose the sentence that is written correctly.',[
+  'On weekends, Amira likes hiking, to swim and reading novels.',
+  'On weekends, Amira likes hiking, swimming and to read novels.',
+  'On weekends, Amira likes hiking, swimming and reading novels.',
+  'On weekends, Amira likes to hike, swimming and reads novels.'],2,
+  'Items in a list use the same form: hiking, swimming, reading.'),
+ DD('Choose the answers that best complete the sentence.',['The storm had a bigger ',{o:['affect','effect'],a:'effect'},' on the coast ',{o:['than','then'],a:'than'},' anyone expected.'],
+  'effect = the result (a noun); than = compare'),
+ MC('Choose the sentence that is written correctly.',[
+  "The two teacher's cars were parked beside the gym.",
+  "The two teachers' cars were parked beside the gym.",
+  "The two teachers cars' were parked beside the gym.",
+  "The two teachers's cars were parked beside the gym."],1,
+  "Two teachers own the cars: plural first (teachers), then the apostrophe (teachers')."),
+ BK('Drag the two best answer choices into the correct boxes to complete the sentence.',['She/she missed the opening scene','Because/because Farah forgot her ticket','Then/then going back home'],
+  ['',{a:'Because/because Farah forgot her ticket'},', ',{a:'She/she missed the opening scene'},'.'],
+  'Clause with "because" first, comma, then the main sentence: Because Farah forgot her ticket, she missed the opening scene.'),
+ DD('Choose the answers that best complete the sentence.',['The author ',{o:['who','which','whom'],a:'who'},' wrote the novel will visit our school, ',{o:['who','which','what'],a:'which'},' is planning a book fair.'],
+  'who = a person doing the action; which = a thing (the school)'),
+ MC('Which sentence is written correctly?',[
+  'Because the bridge was closed for repairs.',
+  'The bridge was closed, drivers had to take the long way.',
+  'The bridge was closed for repairs, so drivers had to take the long way.',
+  'The bridge was closed for repairs drivers had to take the long way.'],2,
+  'A is half a sentence. B is a comma splice. D has no joining word. C uses comma + so.'),
+ MU('Select TWO sentences that are written correctly.',[
+  'Neither the players nor the coach was ready for the storm.',
+  'Everyone on the buses were singing.',
+  'The news about the two games is surprising.',
+  'There is many reasons to join the club.',
+  'My brother and me have the same teacher.'],[0,2],
+  'Others: Everyone ... was singing; There are many reasons; My brother and I have.')
+];
+
+/* ---------- reading questions from the PDFs (original wording), keyed by text ---------- */
+const RQ={
+arrow:[
+ DD('Which option is closest in meaning to "prototype" as used in paragraph 2?',['The next step was to create a ',{o:['design','project','concept','trial model'],a:'trial model'},' of the vehicle.'],
+  'A prototype is a first model built to test a design.',{src:'Question 2'}),
+ BX('What would be an appropriate sub-heading for each paragraph? Drag and drop your three answer choices into the correct boxes.',['Successful launch','Award-winning idea','From design to reality','From prototypes to future roads'],
+  [{l:'Paragraph 1',a:'Award-winning idea'},{l:'Paragraph 2',a:'From design to reality'},{l:'Paragraph 3',a:'Successful launch'}],
+  'P1: students win the design competition. P2: the prototype is built. P3: the car is shown in Las Vegas.',{src:'Question 3'}),
+ MC('A project to develop safer hockey helmets starts. Who is most likely to be a similar kind of sponsor to the one Project Arrow had?',['parents','sport leagues','the government','helmet manufacturers'],3,
+  "Project Arrow was launched by the Automotive Parts Manufacturers' Association, the companies that make the product. For helmets, that is helmet manufacturers.",{src:'Question 4'}),
+ MC('Why was this project a great learning experience for the university students?',['Their idea was award-winning.','Their car will be mass produced in Ontario.','They made practical use of their classroom learning.','They are protecting the environment with a zero-emission car.'],2,
+  'P2: "I was able to apply my theoretical engineering knowledge to real-world applications."',{src:'Question 5'}),
+ OP('What qualities are necessary to be successful in designing and building new technology like the Project Arrow car? Use specific details from the reading selection to support your answer.',{src:'Question 6',sample:XTRA.arrowSample})
+],
+blake:[
+ MC('Why was it surprising that Blake Angeconeb chose a career in art?',['He had not studied art.','His artwork was child-like.','He was passionate about video games.','His parents were supporters of his career in art.'],0,
+  'P2: he "had little interest in art, and never took any art classes."',{src:'Question 1'}),
+ MC('What does the phrase "going all-in" in paragraph 6 refer to?',['combining interests','making a commitment','studying other Indigenous artists','including traditional elements in art'],1,
+  'P5-6: he quit his job to paint full time. That is a full commitment.',{src:'Question 2'}),
+ MC('Why is Angeconeb\'s art called a "mash-up" (paragraph 7)?',['It has a child-like quality.',"It incorporates Morriseau's style.",'It makes creative use of many bold colours.','It combines Woodlands art and pop culture.'],3,
+  'P7: he "blends pop culture references ... with traditional Woodlands art."',{src:'Question 3'}),
+ MU('According to the reading selection, where does Angeconeb get his inspiration? Choose two sources of inspiration.',['parents','Star Wars','comic books','Woodlands art'],[1,3],
+  'P7 names both: pop culture such as Star Wars, and Woodlands art.',{src:'Question 4'}),
+ MC('What is the "good medicine" referred to in paragraph 8?',['valuing living things','bringing joy to people','spending money for things you love','gaining the support and respect of your family'],1,
+  'P8: "Anything that can uplift and make someone feel better is the main goal with my art."',{src:'Question 6'})
+],
+para:[
+ MC('Why is Robert Jackson included in the reading selection?',['He won several medals in the Paralympic Games.','He was the inspiration for the first Paralympic Games.','He paid to train athletes who participated in the Paralympic Games.','He was committed to Canadian participation in the Paralympic Games.'],3,
+  'He saw there was no Canadian team and "made it his mission to include Canadian athletes."',{src:'Question 1'}),
+ DD('Which word is closest in meaning to "hosted" (line 21)?',['In addition, Canada ',{o:['won','closed','welcomed','discovered'],a:'welcomed'},' the 1976 Games in Toronto and the 2010 Games in Vancouver.'],
+  'To host an event = to welcome it to your country or city.',{src:'Question 2'}),
+ GR('Why was Robert Jackson disappointed to see there were no Canadian athletes at the Paralympic Games?',TF,[
+  {s:'He wanted to realize his dream of touching a gold medal.',a:'False'},
+  {s:'He would have liked to encourage athletes from his country.',a:'True'},
+  {s:'He thought it was important to give Canadian athletes a chance to shine.',a:'True'}],
+  'He was a spectator who wanted Canadians to take part. Nothing says he wanted a medal himself.',{src:'Question 3'}),
+ MC('What is emphasized by the phrase "more recently" in line 16?',['the cost of training the athletes','the amount of time that has passed','the number of medals that were won','the number of cities who have hosted the games'],1,
+  '"More recently" moves the timeline forward from 2018 to 2022. It points to time.',{src:'Question 4'}),
+ MC('Which option best describes how the information in lines 10–13 is organized?',['pro and con','idea and example','events in a sequence','comparison and contrast'],2,
+  '"Eight years later ... In 1976 ... ever since": dates in time order.',{src:'Question 5',n:'Line numbers are not shown here. Lines 10–13 begin at "Eight years later, 25 Canadian athletes..."'}),
+ BX('Identify which one of the statements is the main idea and which two provide details to support the main idea. Drag and drop your three answer choices into the correct boxes.',[
+  'Canada has hosted two Paralympic Games.','Canadian doctor Robert Jackson was a spectator.','The first Paralympic Games were held in Rome.','Canada is well-known for its participation in the Paralympic Games.','Canada supports its paralympic athletes by paying for training, equipment and uniforms.'],
+  [{l:'Main Idea',a:'Canada is well-known for its participation in the Paralympic Games.'},{l:'Supporting Detail',a:'Canada has hosted two Paralympic Games.'},{l:'Supporting Detail',a:'Canada supports its paralympic athletes by paying for training, equipment and uniforms.'}],
+  'The main idea is the general statement in the first and last sentences. Hosting the Games and paying for athletes are examples of that participation.',{src:'Question 6'})
+],
+jay:[
+ DD('Which word means the same as "cultivated" as used in paragraph 2?',['Reading comics not only improved his literacy skills but also ',{o:['developed','captivated','challenged','intimidated'],a:'developed'},' his talent for drawing.'],
+  'To cultivate a talent = to help it grow, to develop it.',{src:'Question 1'}),
+ MC('What is the name of one book that Jay Odjick illustrated for author Robert Munsch?',['Kagagi','The Raven','Spider-Man','Bear for Breakfast'],3,
+  'P5: "two children\'s books, Blackflies and Bear for Breakfast."',{src:'Question 2'}),
+ MC('What is the purpose of the colon as used in the title "Kagagi: The Raven"?',['to introduce a list','to add an expression','to introduce a quotation','to separate the title from the subtitle'],3,
+  'In a title, a colon separates the main title from the subtitle.',{src:'Question 3'}),
+ MC('What do the details in paragraph 3 reveal about Odjick?',['He inspired others.','He became interested in comics.','He realized what was missing in superhero movies.','He did not like the superheroes in movies he watched.'],2,
+  'P3: he wondered "why there weren\'t any superheroes who looked like him."',{src:'Question 4'}),
+ MC('Why does Odjick digitally construct his drawings?',['to work with famous authors','to stand out from other illustrators','to have publishing companies notice his work','to make his creative process easy and adaptable'],3,
+  'P6: a tablet "makes his creative process portable and versatile."',{src:'Question 5'}),
+ MU('According to the reading selection, what are two goals that Jay Odjick hopes to achieve by pursuing his passion? Choose two goals.',['to celebrate Indigenous culture','to promote Indigenous community','to promote the Algonquin language',"to collaborate with children's picture book authors"],[0,2],
+  'P1 and P7: his career "promotes his culture and language."',{src:'Question 6'}),
+ BX('Organize the following events in the order in which they actually happened. Drag and drop your three answer choices into the correct boxes.',[
+  'Odjick received his first rejection letter.','Odjick created the Arachnid-Man character.','Odjick created and illustrated Kagagi: The Raven.',"Odjick partnered with children's author Robert Munsch."],
+  [{l:'First Event',a:'Odjick created the Arachnid-Man character.'},{l:'Second Event',a:'Odjick received his first rejection letter.'},{l:'Third Event',a:'Odjick created and illustrated Kagagi: The Raven.'},{l:'Last Event',a:"Odjick partnered with children's author Robert Munsch."}],
+  'Arachnid-Man at age five (P2), rejection letter at age ten (P7), Kagagi nearly 20 years later (P4), then the Munsch books (P5).',{src:'Question 7'})
+],
+monarch:[
+ DD('Which word is closest in meaning to "ambled" in paragraph 3?',['Harvinder ',{o:['raced','walked','tripped','stomped'],a:'walked'},' over, holding up the measuring tape.'],
+  'To amble = to walk slowly and calmly.',{src:'Question 1'}),
+ MC('Why does Marcel shrug (paragraph 6)?',['He disagrees with Harvinder.','He feels helpless about the situation.',"He doesn't care about what Harvinder is saying.","He doesn't understand the importance of the topic."],3,
+  'P6: "What\'s the big deal?" He does not see yet why it matters.',{src:'Question 2'}),
+ BX('Which of the following best describe how the information is presented in the following paragraphs? Drag and drop your two answer choices into the correct boxes.',['cause and effect','term and explanation','compare and contrast'],
+  [{l:'Paragraph 5',a:'term and explanation'},{l:'Paragraph 7',a:'cause and effect'}],
+  'P5 gives a term (waystation) and explains it. P7 gives a cause (food sources disappearing) and its effect (migration declining).',{src:'Question 3'}),
+ MC('What is the purpose of the ellipsis (...) in paragraph 8?',['to indicate a pause','to replace a colon','to provide an example','to set off an interruption'],0,
+  'Marcel stops to think before he finishes: "So you\'re creating...a restaurant for butterflies!"',{src:'Question 4'}),
+ GR('According to the reading selection, which of the following statements are true about monarch waystations?',TF,[
+  {s:'Waystations can increase butterfly migration.',a:'True'},
+  {s:'Waystations should include only local plants.',a:'False'},
+  {s:'Waystations are temporary places for butterflies and caterpillars.',a:'True'}],
+  'P7: migration is declining because food is disappearing, so waystations help. Butterflies "rest" there and move on. The text never says "only local plants".',{src:'Question 5'})
+],
+inuk:[
+ MC('What is the purpose of the Pirurvik Centre?',['language instruction','program development','government support','cultural promotion'],3,
+  'P2: its mission is "to protect and promote the culture of the Far North."',{src:'Question 1'}),
+ MC('Why might it be important for students to have access to Windows in their own language?',['to work in their own language','to teach others their language','to discover the origin of their language','to facilitate translation of their language'],0,
+  'P3: the aim is to make Inuktitut "the language of work" and of school.',{src:'Question 2'}),
+ MC('Why are time zones mentioned in paragraph 4?',['to present the project','to highlight the size of the region','to show the importance of the work','to show how technology has evolved'],1,
+  '"this immense territory spanning three time zones" shows how large the region is.',{src:'Question 3'}),
+ DD('Choose the option that best completes the sentence below.',['According to the reading selection, a terminology committee is responsible for ',{o:['downloading texts','creating a glossary','programming words','preserving rare languages'],a:'creating a glossary'},'.'],
+  'P4: the committee "created a basic glossary."',{src:'Question 4'}),
+ BX('Which paragraph best answers the following questions? Drag and drop your three answer choices into the correct boxes.',['Where?','How?','Why?','What?'],
+  [{l:'Paragraph 2',a:'What?'},{l:'Paragraph 4',a:'How?'},{l:'Paragraph 5',a:'Why?'}],
+  'P2 says what was done (Windows in Inuktitut). P4 says how (a committee built a glossary). P5 says why (young people see their language has value).',{src:'Question 5'}),
+ OP('Explain how new technologies can be effective tools in preserving languages. Use specific details from the reading selection to support your answer.',{src:'Question 6',pts:[
+  'Basic computer tools such as Windows and word processing now exist in Inuktitut, so people can work in their own language.',
+  'About 100 000 Inuktitut speakers around the world can download these tools for free.',
+  'Young people see their language on the Internet or on a cellphone and feel that it has value in the modern world.',
+  'More than one million words were programmed and the glossary keeps growing, so the language is recorded and kept in use.']})
+],
+mosq:[
+ MC('What does "it" in line 6 refer to?',['bite','sweat','lay eggs','provide blood'],0,
+  '"Female mosquitoes are the only ones who bite, and they do it..." it = bite.',{src:'Question 1',n:'Line numbers are not shown here. Look for the sentence that begins "Female mosquitoes..."'}),
+ DD('Which word is closest in meaning to "spot" in line 12?',["Avoid dark clothing during the day—mosquitoes don't have the best eyesight, and the contrast between bright light and dark clothes helps them ",{o:['bite','mark','repel','notice'],a:'notice'},' you more easily.'],
+  'To spot = to see, to notice.',{src:'Question 2'}),
+ GR('According to the reading selection, how can people treat the itch from a mosquito bite?',TF,[
+  {s:'Apply honey.',a:'True'},{s:'Wear dark clothing.',a:'False'},{s:'Use calamine lotion.',a:'True'}],
+  'The last sentences list the remedies: calamine lotion, witch hazel, honey, oatmeal, crushed ice. Dark clothing helps mosquitoes find you.',{src:'Question 3'}),
+ MC('Why is "crushed ice" mentioned in the reading selection?',['It is used to attract mosquitoes.','It is a remedy to treat a mosquito bite.','It is used to rid an area full of mosquitoes.','It is used as an environmentally friendly insect repellant.'],1,
+  'It is in the list of remedies "for that dreadful itch."',{src:'Question 4'}),
+ MC('How is the information in this reading selection organized?',['term and definition','problem and solution','least to most important','comparison and contrast'],1,
+  'Problem: mosquitoes bite. Solutions: ways to avoid bites and to treat them.',{src:'Question 5'}),
+ BX('Identify which of the statements is the main idea and which two provide details to support the main idea.',[
+  'Humans should avoid applying fragrances.','Humans can use repellents, especially if near still water.','Humans can take different measures to combat the annoying mosquito.','Humans should avoid female mosquitoes.','Humans with type O blood are more susceptible to mosquito bites.'],
+  [{l:'Main Idea',a:'Humans can take different measures to combat the annoying mosquito.'},{l:'Supporting Detail',a:'Humans should avoid applying fragrances.'},{l:'Supporting Detail',a:'Humans can use repellents, especially if near still water.'}],
+  'The main idea is the general one: there are different measures. Avoiding fragrances and using repellents are two of those measures.',{src:'Question 6'})
+],
+rama:[
+ DD('Which word would best replace "obscure" in paragraph 3?',['It would be cool to research someone more ',{o:['famous','unknown','mysterious','unimportant'],a:'unknown'},'.'],
+  'Obscure = not well known. Carlos wants someone other than the famous names.',{src:'Question 1'}),
+ BX('Identify the two events that most likely occur around the same time. Drag and drop your two answer choices into the correct boxes.',['Carlos reads about Ramanujan.','Carlos researches famous mathematicians.',"Supriya's grandfather watches the film The Man Who Knew Infinity."],
+  [{l:'First Event',fix:'Supriya talks with her grandfather.'},{l:'Second Event',a:'Carlos researches famous mathematicians.'},{l:'Last Event',a:'Carlos reads about Ramanujan.'}],
+  'Carlos searched for famous mathematicians before this conversation (P3). He reads about Ramanujan during it (P6-7).',{src:'Question 2'}),
+ MC('Why do Carlos and Supriya think Ramanujan is more appealing than Pythagoras, Euclid or Pascal?',['Supriya knows all about Ramanujan.','Ramanujan overcame many challenges.','Ramanujan lived in more modern times.','Students will be unfamiliar with Ramanujan.'],3,
+  'P3-4: they want "someone more obscure", "a mathematician we haven\'t learned much about in class."',{src:'Question 3'}),
+ MC("What is indicated by the exclamation point in Carlos's response in paragraph 9?",['He is relieved.','He is annoyed.','He is frustrated.','He is enthusiastic.'],3,
+  '"This guy could be an interesting subject for our project!" shows excitement.',{src:'Question 4'}),
+ GR('Which statements support the idea that Ramanujan was a "genius"?',TF,[
+  {s:'He taught himself trigonometry.',a:'True'},{s:'He developed his own theorems at age 17.',a:'True'},{s:'He corresponded with mathematics professors.',a:'False'}],
+  'P7: no formal training, trigonometry by 12, his own theorems at 17. Writing letters shows effort, not genius.',{src:'Question 5'})
+],
+garden:[
+ DD('What word is closest in meaning to "plots" as it is used in paragraph 1?',['Close by, several other people were in the process of excavating their own ',{o:['piles','areas','holes','containers'],a:'areas'},'.'],
+  'A plot is a small area of ground for a garden.',{src:'Question 1'}),
+ MC("In which paragraph does Drew's attitude toward gardening change?",['paragraph 3','paragraph 5','paragraph 7','paragraph 9'],2,
+  'In P5 he still doubts. In P7 he says "but I am interested in this idea" and asks how to start. By P9 he has already decided.',{src:'Question 2'}),
+ GR('Which traits best describe Drew and Harpreet?',['Drew','Harpreet','Both'],[
+  {s:'Proud',a:'Harpreet'},{s:'Generous',a:'Harpreet'},{s:'Enthusiastic',a:'Both'}],
+  'Harpreet is proud of her garden and her tomatoes, and she gave two baskets to neighbours. Both are enthusiastic by the end ("I\'ll apply right away!").',{src:'Question 3'}),
+ MC('What is the function of the dash in paragraph 8?',['to link two related options','to indicate a change in tone','to introduce a contrasting idea','to connect an idea with an example'],0,
+  'P8 gives two ways to start: plant seeds on your balcony, or apply for a space. The dash joins the two options.',{src:'Question 4',n:'The dash is missing from this copy of the text. It most likely comes after "balcony".'}),
+ BX('According to the reading selection, which of the statements is a fact and which is an opinion? Drag and drop your two answer choices into the correct boxes.',['Potatoes should be started in containers.','A variety of vegetables can be grown from seed.','Parties and produce are reasons to plant a community garden.'],
+  [{l:'Fact',a:'A variety of vegetables can be grown from seed.'},{l:'Opinion',a:'Parties and produce are reasons to plant a community garden.'}],
+  'P6: Harpreet plants several vegetables from seed packets (fact). P9 is Drew\'s own view of why to join (opinion). Potatoes are not in the text.',{src:'Question 5'})
+],
+runner:[
+ MC('Which word means the same as "gruelling" (paragraph 1)?',['uphill','difficult','outdoor','successful'],1,
+  'Gruelling = very hard and tiring. The race left him drenched in sweat.',{src:'Question 1'}),
+ MC('Why was it important to Li to hear the spectators?',['It increased his motivation.','It guided him along the trail.','It showed him that he was famous.','It told him he was near the finish line.'],0,
+  'P2: hearing people cheer "gave me a huge lift."',{src:'Question 2'}),
+ MC("What do Li's parents likely think is important for their son?",['winning a race','getting involved in a team sport','learning to live with using a cane','balancing physical and mental activity'],3,
+  'P5: he spends lots of time on the computer, so his parents wanted him to "take up a sport and get active."',{src:'Question 3'}),
+ BX('What would be an appropriate sub-heading for each paragraph? Drag and drop your three answer choices into the correct boxes.',['Tools to Navigate','Getting Active','A Helping Hand','Finding a Good Fit'],
+  [{l:'Paragraph 3',a:'A Helping Hand'},{l:'Paragraph 4',a:'Tools to Navigate'},{l:'Paragraph 6',a:'Finding a Good Fit'}],
+  'P3: a schoolmate guides him. P4: white cane and guide dog. P6: he tried other sports and running suits him best.',{src:'Question 4'}),
+ MC('What is the main topic of this news report?',["Li's running routine",'how Li handles his sight loss',"the support of Li's family and friends",'the partnership between Li and Cornish'],1,
+  'Every paragraph shows how he lives and competes with sight loss: the guide, the cane, the sports he tried, his attitude.',{src:'Question 5'}),
+ OP('Explain how Li\'s actions demonstrate his words "I can push myself" (paragraph 7). Use specific details from the reading selection to support your answer.',{src:'Question 6',pts:[
+  'He finished a gruelling five-kilometre cross-country race, his first high school race, although he is legally blind.',
+  'He kept going on a course with lots of stones and a big hill: "I\'m not a quitter."',
+  'He tried wrestling, judo and rock climbing before he chose running.',
+  'He ignores people who feel sorry for him and does what other students his age do.']})
+],
+bryt:[
+ MC('What does "Kanyen\'keha:ka" refer to?',['people','territory','language','community'],0,
+  'P1: "The Kanyen\'keha:ka are an Indigenous people."',{src:'Question 1'}),
+ MC("Which paragraph best explains what Brough's life is like as an urban Indigenous person?",['paragraph 2','paragraph 3','paragraph 5','paragraph 6'],1,
+  'P3 gives the challenges (less access to her culture and language) and the opportunities (French, the Friendship Centre) of living outside her community.',{src:'Question 2'}),
+ DD('What word is closest in meaning to "defines" in paragraph 4?',['It is the sum total of my experiences that ',{o:['fixes','inherits','maintains','determines'],a:'determines'},' my identity.'],
+  'Her experiences decide who she is = determine.',{src:'Question 3'}),
+ MC('What is the tone of the last sentence in paragraph 4?',['urgent','optimistic','descriptive','celebratory'],3,
+  '"...and I am very proud to have developed this talent!" She celebrates what she has achieved.',{src:'Question 4'}),
+ MU('Which two experiences have helped Brough connect to her Indigenous culture? Choose two experiences.',['learning French','starting her own business','taking an online language course','participating at the Friendship Centre'],[2,3],
+  'P3: cultural activities at the Friendship Centre. P5: online courses to reclaim her family language.',{src:'Question 5'}),
+ BX('Organize the following events in the order in which Brough experiences them. Drag and drop your three answer choices into the correct boxes.',['She learns how to bead.','She learns to speak French.','She opens her own business.','She moves to the Tyendinaga community.'],
+  [{l:'First Event',a:'She learns to speak French.'},{l:'Second Event',a:'She learns how to bead.'},{l:'Third Event',a:'She opens her own business.'},{l:'Last Event',fix:'She hopes to share what she has learned with others.'}],
+  'French at school (P3), then beading, then her beading business (P4). She never moves to Tyendinaga.',{src:'Question 6'}),
+ MC('Which of the following statements best expresses the main idea of the reading selection?',['Learning the language of your family is important.','The art of beading is both relaxing and therapeutic.','An identity journey begins with connecting to your culture.','Friendship Centres are an important support for urban Indigenous youth.'],2,
+  'The whole text is about building her identity by reconnecting with her culture. The other options are single details.',{src:'Question 7'})
+],
+authors:[
+ MC('Which paragraph suggests that not a lot of time has passed since the school announcement?',['paragraph 2','paragraph 4','paragraph 5','paragraph 9'],1,
+  'P4: "Wow! You\'ve already started?" Marcus is surprised because the announcement was only this morning.',{src:'Question 1'}),
+ MC('What word is closest in meaning to "showcase" in paragraph 6?',['feature','expose','produce','advertise'],0,
+  'To showcase = to present someone in a way that gets attention, to feature.',{src:'Question 2'}),
+ MC('What is the purpose of the ellipsis (...) in paragraph 8?',['It creates suspense.','It indicates a pause.','It shows an unfinished thought.','It indicates that words have been omitted.'],1,
+  '"Hmm... now I\'m curious": Marcus stops to think, then goes on.',{src:'Question 3'}),
+ GR('What are examples of Dylan and Marcus showing initiative?',['Example','Not an Example'],[
+  {s:'"As the president and vice-president of student council, we should present a list of potential authors to the organizing committee by the end of the week," said Dylan. (paragraph 1)',a:'Example'},
+  {s:'"I did get started!" (paragraph 5)',a:'Example'},
+  {s:'"One day at a time, my friend. In the meantime, is our list complete?" (paragraph 9)',a:'Example'}],
+  'All three are marked "Example" in the PDF: they decide to act, they start early, and they push to finish the list.',{src:'Question 4'}),
+ BX('Organize the events in the order in which they actually happened. Drag and drop your two answer choices into the correct boxes.',['Marcus begins to research authors for the list.','Marcus and Dylan are elected to student council.','Marcus and Dylan present their list to the organizing committee.'],
+  [{l:'First Event',a:'Marcus and Dylan are elected to student council.'},{l:'Second Event',fix:'Dylan creates a list of Black authors.'},{l:'Last Event',a:'Marcus and Dylan present their list to the organizing committee.'}],
+  'They are already president and vice-president when the story starts. Presenting the list is planned for the end of the week, after everything else.',{src:'Question 5'})
+],
+gum:[
+ MC('What would be the most appropriate title for this reading selection?',['Lifespan of Waste','Stepping on Gum','Environmental Impact of Gum','Raising Awareness on Earth Day'],2,
+  'The whole conversation is about gum and what it does to the environment. The other titles fit only one part.',{src:'Question 1'}),
+ MC('What does the word "it" in paragraph 3 refer to?',['the sidewalk',"Matthieu's summer job",'the gum being stepped on',"Veronique and Matthieu's walk"],2,
+  '"It brings back memories": "it" is what just happened, Veronique stepping on gum.',{src:'Question 2'}),
+ DD('What word is closest in meaning to "decompose" in paragraph 9?',['"I\'m curious to know how long it takes chewing gum to ',{o:['spoil','compost','disappear','break down'],a:'break down'},' once it\'s in the ground," he states.'],
+  'To decompose = to break down. P4 says gum "doesn\'t break down completely."',{src:'Question 3'}),
+ BX('Which of the following facts is a cause and which is an effect? Drag and drop your two answer choices into the correct boxes.',['Gum was banned in Singapore.','Gum is bad for the environment.','People were throwing gum everywhere.'],
+  [{l:'Cause',a:'People were throwing gum everywhere.'},{l:'Effect',a:'Gum was banned in Singapore.'}],
+  'P4: gum is illegal in Singapore "because people were disposing of it all over the place."',{src:'Question 4'}),
+ GR('Which character is more likely to be the speaker of each option?',['Veronique','Matthieu'],[
+  {s:'"It took hours to clean it all."',a:'Matthieu'},{s:'"Do you think it takes as long as a water bottle?"',a:'Matthieu'},{s:'"It could be another five years, for all we know."',a:'Veronique'}],
+  'Matthieu cleaned gum at his job (P3) and asks how long things take (P9). Veronique is the one who knows the facts (P10).',{src:'Question 5'})
+],
+museum:[
+ MC('What does "absorb" in paragraph 2 refer to?',['watching movies','consulting the library',"reading children's books",'understanding the exhibit'],3,
+  'P2: 30 minutes "to absorb the seven informative displays" = to take them in and understand them.',{src:'Question 1'}),
+ MC('Why was Lyse Hébert included in the reading selection?',['She helps to organize the event.','She explains the benefits of visiting the exhibit.','She confirms there are Indigenous sign languages.','She highlights the fact that sign language is in danger of extinction.'],1,
+  'P3: "Coming to the museum means discovering much more than just the exhibit."',{src:'Question 2'}),
+ MC('What are "Blackfoot," "Dakota," "Cree" and "Assiniboine" (paragraph 4)?',['names of cities','names of prairies','names of sign languages','names of Indigenous nations'],3,
+  'P4: the language is used by people "from many groups, including the Blackfoot, Dakota, Cree and Assiniboine."',{src:'Question 3'}),
+ DD('Which option best replaces "emerged" (paragraph 4) in the sentence below?',['Among the Inuit, sign language ',{o:['worked','originated','was located','was organized'],a:'originated'},' at least 100 years ago.'],
+  'To emerge = to appear, to begin.',{src:'Question 4'}),
+ BX('Which paragraph answers the following questions? Drag and drop your three answer choices into the correct boxes.',['Paragraph 1','Paragraph 2','Paragraph 3','Paragraph 4'],
+  [{l:'WHY?',a:'Paragraph 3'},{l:'WHAT?',a:'Paragraph 2'},{l:'WHERE?',a:'Paragraph 1'}],
+  'P1 gives the place (Glendon Campus, Toronto). P2 tells what there was to see and do. P3 gives a reason to visit.',{src:'Question 5'}),
+ OP('Explain how the Canadian Language Museum exhibit demonstrates diversity. Use specific details from the reading selection to support your answer.',{src:'Question 6',pts:[
+  'The exhibit featured six different sign languages used in Canada, not only one.',
+  'It included sign languages developed by Indigenous peoples: Plains Sign Language, Inuit Sign Language and Oneida Sign Language.',
+  'Plains Sign Language is used by people from many groups, including the Blackfoot, Dakota, Cree and Assiniboine.',
+  'Signing was used by people with hearing loss and by people who could hear, and between communities that spoke different languages.']})
+],
+fashion:[
+ MC('Why is Alexa Jovanovic included in this reading selection?',['She invented the one-handed zipper.','She is an example of an inclusive designer.','She is a designer despite being blind herself.','She works with Toronto designer Izzy Camilleri.'],1,
+  'She is introduced as "Another Canadian designer". Her braille beading aims at "full inclusivity."',{src:'Question 1'}),
+ MC('What is enclosed in the parentheses (line 13)?',['an example','a definition','a translation','an explanation'],3,
+  '(pronounced "eye") explains how to say the name Aille. It does not give its meaning or put it into another language.',{src:'Question 2'}),
+ DD('Which word best replaces "innovative" (line 16) in the following sentence?',['Other ',{o:['creative','productive','traditional','experienced'],a:'creative'},' designers continue to create pieces that raise awareness, challenge stereotypes and push boundaries.'],
+  'Innovative = using new ideas = creative.',{src:'Question 3'}),
+ GR('According to the reading selection, why is accessible clothing important?',TF,[
+  {s:'Accessible clothing is good for people of all abilities.',a:'True'},{s:'Accessible clothing highlights Canadian design talent.',a:'False'},{s:'Accessible clothing allows greater expression of personal style.',a:'True'}],
+  'It lets "people of all abilities" take part and "express themselves through their clothing choices." Showing off Canadian talent is not given as a reason.',{src:'True or False table'}),
+ MC('How is the reading selection organized overall?',['comparison','cause and effect','term and definition','problem and solution'],3,
+  'Problem: fashion has ignored people with disabilities. Solution: designers who make accessible clothing.',{src:'Organization question'}),
+ BX('Identify which one of the following statements is the main idea and which two provide details to support the main idea.',[
+  'Accessible fashion is easier for people to put on and take off.','A Canadian designer uses beads to spell out messages of inspiration in braille.','Innovative designers are creating clothing that gives people with disabilities greater independence, dignity and personal expression.','Accessible clothing can be sold in the same stores as mainstream clothing.','Izzy Camilleri has won recognition around the world for her accessible clothing.'],
+  [{l:'Main Idea',a:'Innovative designers are creating clothing that gives people with disabilities greater independence, dignity and personal expression.'},{l:'Supporting Detail',a:'Accessible fashion is easier for people to put on and take off.'},{l:'Supporting Detail',a:'A Canadian designer uses beads to spell out messages of inspiration in braille.'}],
+  'The main idea is the general statement about designers and what their clothing gives people. Easy-on clothing and braille beading are details that show it.',{src:'Main idea question'})
+],
+siakam:[
+ MC('What surprised journalists in their interviews with Siakam (paragraph 5)?',['his sense of humour','his humble personality','his Cameroonian origins','his willingness to speak French'],3,
+  'P5: he "asked that questions be put to him in French," which caught the attention of the media.',{src:'Question 1'}),
+ DD('Which word is closest in meaning to "swap" as used in paragraph 1?',['He did not ',{o:['sell','prefer','discard','exchange'],a:'exchange'},' the black and white ball for the orange until the age of 16...'],
+  'To swap = to exchange one thing for another (the soccer ball for the basketball).',{src:'Question 2'}),
+ MC('When did Pascal Siakam begin playing in the NBA?',['2011','2012','2016','2019'],2,
+  'P3: "He was then drafted by an NBA team in 2016."',{src:'Question 3'}),
+ MC('What is introduced by "However" in paragraph 3?',['an opinion','a definition','an explanation','a contradiction'],3,
+  'Before: he mostly sat on the bench. After "However": he showed his skill whenever he played. The second idea goes against the first.',{src:'Question 4'}),
+ MU('Why is Pascal Siakam described as "a master of the game"? Choose two reasons.',['He plays both soccer and basketball.','He plays both offense and defence well.','He was very young when he broke records.','He is a player with many skills and strengths.'],[1,3],
+  'P3: "a master of the game, on both offense and defence. His speed is one of his greatest strengths."',{src:'Question 5'}),
+ MC('Why does Pascal Siakam train constantly to improve his performance?',['He always has something new to learn.','He wants to win another NBA championship.','He wants to make his father and brothers proud.','He only started playing basketball when he was 16 years old.'],0,
+  'P6: "he always has something to learn. This gives him the motivation to train and excel."',{src:'Question 6'}),
+ BX('Organize the events in the order in which they actually happened. Drag and drop your three answer choices into the correct boxes.',['The Toronto Raptors drafted Pascal Siakam.','Pascal Siakam went to summer camp in South Africa.','Pascal Siakam went to New Mexico State University.','Pascal Siakam played more minutes per game than any other NBA player.'],
+  [{l:'First Event',a:'Pascal Siakam went to summer camp in South Africa.'},{l:'Second Event',a:'Pascal Siakam went to New Mexico State University.'},{l:'Third Event',a:'The Toronto Raptors drafted Pascal Siakam.'},{l:'Last Event',fix:'Pascal Siakam won his first championship.'}],
+  'Camp in 2011, then university (P2), drafted in 2016 (P3), champion in 2019 (P4). The minutes record came later, in 2022–2023.',{src:'Question 7'})
+],
+budget:[
+ MC('What are the ellipsis points in paragraph 4 used to indicate?',['a new idea','an opinion','a change in topic','an incomplete thought'],3,
+  'Samirah\'s list stops in the middle ("a video game and...") when Vanessa cuts in.',{src:'Question 1'}),
+ DD('Which words are closest in meaning to "manage" as used in paragraph 7?',['"No. I try not to. I\'m saving up to buy a new laptop. It\'s not easy, but I\'ll ',{o:['save up','handle it','direct others','purchase again'],a:'handle it'},'," asserts Vanessa.'],
+  '"It\'s not easy, but I\'ll manage" = I will cope, I will handle it.',{src:'Question 2'}),
+ MC('Why does Samirah say "Yes, please!" in paragraph 12?',["She wants to join Mr. Ibrahim's class.",'She wants to purchase a bicycle for Vanessa.','She wants to create a budget like Vanessa does.','She wants to increase her spending on short-term purchases.'],2,
+  'P11: Vanessa offers to help her "set a budget." Samirah accepts.',{src:'Question 3'}),
+ BX('Organize the events in the order in which they actually happened. Drag and drop your two answer choices into the correct boxes.',['Vanessa and Samirah discuss their paycheque plans.','Vanessa assists Samirah with creating her own budget.',"Vanessa's math teacher, Mr. Ibrahim, teaches her how to make a balanced budget."],
+  [{l:'First Event',fix:'Vanessa prioritizes her paycheque spending.'},{l:'Second Event',a:'Vanessa and Samirah discuss their paycheque plans.'},{l:'Last Event',a:'Vanessa assists Samirah with creating her own budget.'}],
+  "Mr. Ibrahim's lesson came before Vanessa started budgeting, so it cannot follow the first event. The talk comes next, and helping Samirah comes after it.",{src:'Question 4'}),
+ GR('What lessons can be learned from this reading selection?',TF,[
+  {s:'Time is money.',a:'False'},{s:'Invest in the future now.',a:'True'},{s:"It's never too late to learn.",a:'True'}],
+  'Vanessa saves 45% for her education (invest in the future). Samirah decides to learn to budget (never too late). Nothing in the text is about time being money.',{src:'Question 5'})
+],
+aurora:[
+ MC('What does "they" (paragraph 5) refer to?',['flashes of colour','charged particles','oxygen and nitrogen','geomagnetic activity'],1,
+  'P4 ends with "charged particles from the sun that enter the earth\'s atmosphere" and P5 goes on: "Where they collide with gases."',{src:'Question 1'}),
+ BX('Which of the following options best describe how the information is presented in the following paragraphs? Drag and drop your two answer choices into the correct boxes.',['cause and effect','a term and an explanation'],
+  [{l:'Paragraph 4',a:'a term and an explanation'},{l:'Paragraph 8',a:'cause and effect'}],
+  'P4 gives a term (aurora borealis) and explains it. P8 links a cause (measuring geomagnetic activity) to an effect (the lights can be forecast).',{src:'Question 2'}),
+ DD('What is the meaning of "quipped" as it is used in paragraph 9?',['"And I predict we\'ll be quizzed about that tonight at dinner!" ',{o:['joked','objected','promised','suggested'],a:'joked'},' Giles.'],
+  'To quip = to make a quick, funny remark.',{src:'Question 3'})
+]
+};
+
+/* ---------- reading tips (same card format as the grammar rules) ---------- */
+const RTIPS=[
+{g:'★',n:'Main idea',cn:'主旨大意',h:`<p>The main idea covers the <b>whole text</b>. A detail covers only one part.</p><div class="ex"><span class="x">Canada has hosted two Games. (one detail)</span><span class="v">Canada is well-known for taking part in the Games. (whole text)</span></div><p>Read the first and last sentences again. The best title says the main idea too.</p>`},
+{g:'Aa',n:'Word meaning',cn:'词义和指代',h:`<p>Put each choice into the sentence. Keep the one that still makes sense.</p><div class="ex"><span class="v">ambled over = walked over</span><span class="v">a gruelling race = a difficult race</span></div><p>For <b>it / they / this</b>, look back one sentence. The word points to something just named.</p>`},
+{g:'( )',n:'Punctuation clues',cn:'标点的作用',h:`<ul><li><b>...</b> = a pause, or a thought that is not finished</li><li><b>!</b> = strong feeling (excited, surprised)</li><li><b>:</b> in a title = title, then subtitle</li><li><b>—</b> = joins or adds an idea</li><li><b>( )</b> = extra explanation</li></ul>`},
+{g:'→',n:'How it is organized',cn:'文章结构',h:`<ul><li><b>Problem and solution</b>: something is wrong, then ways to fix it</li><li><b>Cause and effect</b>: because, so, that is why</li><li><b>Events in a sequence</b>: dates, then, later</li><li><b>Term and explanation</b>: a new word, then what it means</li></ul><p>To put events in order, find each one's date or age in the text.</p>`},
+{g:'T/F',n:'True, false, fact, opinion',cn:'判断题',h:`<p><b>True</b> only if the text says it. Do not use what you already know.</p><div class="ex"><span class="x">Waystations should include only local plants.</span><span class="v">Watch for: only, all, always, never.</span></div><p><b>Fact</b> = can be checked. <b>Opinion</b> = what someone thinks (should, best, great).</p>`},
+{g:'✎',n:'Written answer',cn:'简答题',h:`<p>About 100 words. Four steps:</p><ul><li>Answer the question in your <b>first sentence</b>.</li><li>Give <b>two or three details</b> from the text.</li><li>Say how each detail supports your answer.</li><li>End with one closing sentence.</li></ul>`}
+];
+
+/* ---------- Chinese notes: rule and tip cards (same order as the cards), and grammar explanations ---------- */
+const TZH=[
+'语法部分常见五种题型：选词或动词填空；选出写得正确的句子；用最好的方式合并句子；用正确的从句补全句子；段落组织（选最佳开头句，或找出不属于段落的句子）。',
+'先找时间词，它决定动词的时态。yesterday / last week 用过去时；every day 用一般现在时；tomorrow 用 will；since 2020 用 has/have + 过去分词。',
+'动词要和真正的主语一致，忽略中间插入的词。the box of pens 的主语是 box（单数），所以用 is。each、every、everyone 都算单数。',
+'逗号不能单独连接两个完整的句子。改法：用句号分开，或者用“逗号 + and / but / so”。',
+'because / when / although 引导的从句不能单独成句，必须接一个主句。从句在前时，后面加逗号，逗号后不用大写。',
+'and 表示补充；but / however / although 表示转折；so / as a result 表示结果；because / since 表示原因；or 表示选择；if 表示条件；unless = if not（除非）。先判断前后两部分的逻辑关系，再选连接词。',
+'这些词总是成对出现：either…or（要么…要么）、neither…nor（既不…也不）、both…and（两者都）、not only…but also（不仅…而且）。看到前一个词，就去找它的搭档。',
+'冒号前面必须是一个完整的句子，后面接列举的内容。动词后面不能直接加冒号（we packed: … 是错的）。',
+'列举的各项要用相同的形式：都用 -ing，或都用 to + 动词，或都用名词，不能混用。',
+'it\'s = it is，its = 它的；they\'re = they are，their = 他们的，there = 那里；you\'re = you are，your = 你的；than 用于比较，then 表示“然后”。检验方法：把 it is 放进句子里读，读得通就写 it\'s。',
+'单数名词加 \'s（one dog\'s bowl）；以 s 结尾的复数名词只加撇号（two dogs\' bowls）；不以 s 结尾的复数加 \'s（children\'s coats）。',
+'合并句子题里，用一长串 and 连起来的选项通常是错的，选逻辑正确又简洁的那个。把每个选项当成完整的句子在心里读一遍。注意：have + gone（不是 went）、the funniest（不是 most funniest）、to Maya and me。每题都要作答，猜错不扣分。',
+'主旨概括整篇文章，细节只讲其中一部分。重读第一句和最后一句；最合适的标题也体现主旨。只讲一个例子的选项是细节，不是主旨。',
+'词义题：把每个选项代入原句，选读起来意思仍然通顺的那个，靠上下文判断。it / they / this 指代题：往前看一句，它指的是刚刚提到的人或事。',
+'省略号 ... 表示停顿或话没说完；感叹号 ! 表示强烈的情绪（兴奋、惊讶）；标题里的冒号 : 分开主标题和副标题；破折号 — 用来连接或补充一个想法；括号 ( ) 里是补充说明。',
+'常见结构：问题与解决办法；原因与结果（because、so、that is why）；按时间顺序（日期、then、later）；术语与解释（先给新词，再解释意思）。排序题：在文中找出每件事对应的日期或年龄。',
+'判断对错：只有文章里写了才算 True，不要凭自己的常识判断。小心 only、all、always、never 这类绝对的词。Fact（事实）可以被查证；Opinion（观点）是某人的看法，常带 should、best、great。',
+'简答题约100词，分四步：第一句直接回答问题；从文中举两到三个细节；说明每个细节怎样支持你的答案；最后用一句话收尾。'
+];
+const ZH={
+pdfg:[
+'第4句有误：before 和 instead of 不能这样连用。应改为 We decided to go skating instead of going to homework club.',
+'固定搭配：either … or（要么…要么）',
+'后半句是转折，用 but',
+'冒号要放在完整句子之后、列举内容之前',
+'it\'s = it is；its = 它的。its\' 这种写法永远是错的',
+'第一段引语末尾的逗号在引号内，说话人后面加逗号；同一句话继续时不大写',
+'considered 后接“是什么”；is 后接长度；located in 后接地点',
+'Next week 表示将来：is going、will do',
+'even though 表示让步（虽然没有经验）；now that 表示“既然已经”（已经拿到证书）',
+'children 是复数，不能用 seems；两个人不能用 prefers；两个动词都保持过去时：seemed、preferred',
+'这里是 love 的主语，用主格 I（I love to play）',
+'from … onto 表示从一处移到另一处',
+'短篇小说的标题要放在引号里',
+'despite + -ing 表示让步；because 表示原因；also 引出第二个原因',
+'or 表示选择（用了两次）；so 表示目的',
+'after 从句在前，加逗号，再接主句：After Corbin came home, he could not fall asleep.',
+'was、this morning、ate 都说明是过去时：ran、looked',
+'演奏会是原因，所以 Since… 放在前面，另外两点跟在后面。A 是一长串 and；B 和 D 把因果关系弄乱了',
+'冒号放在完整句子之后、列举内容之前',
+'invited … me（宾语用 me）；he and I had been practicing（主语用 I）',
+'只有 Because 从句可以用逗号接主句；另外两个是完整的句子，用逗号连接就成了逗号误用',
+'固定搭配：neither … nor；not only … but also',
+'for 表示目的（为舞会请 DJ）；since = because（因为）',
+'to 后面接动词原形：to become',
+'这段讲玩具熊神秘消失、至今没有找到，只有第一个选项能概括全段',
+'固定短语：except for（除了）',
+'where 指地点（厨房）；then 表示下一步；because 表示原因',
+'问号属于引语里的问句，所以放在引号内',
+'friends 是复数、过去时，用 were；one of them 是单数，用 was',
+'B 应该用 than（more … than）；C 的 more oftener 是双重比较级；D 的 the fewer number 不是正确的英语',
+'早到是原因，用 because',
+'unless = if not（除非）',
+'recently elected 是过去的事，用 was；is known 是现在的情况；介词 for 后面用 -ing（being）',
+'固定短语：on the way（在路上）；stop by（顺路去）',
+'Two months from now 表示将来，用 will meet；before 后面用一般现在时表示将来（return）',
+'Because 从句放在句首时，后面要加逗号',
+'这是问句，而且引语到这里结束：先写问号，再写后引号',
+'前一句说蝙蝠和其他哺乳动物很不一样，They can fly 正是说明哪里不一样的细节'],
+gram:[
+'时间词 last night 表示过去，用过去时',
+'each 算单数，用 has',
+'两个完整的句子要用“逗号 + so / and / but”连接',
+'Because 从句 + 逗号 + 主句',
+'or 表示选择，but 表示转折，so 表示结果',
+'固定搭配：neither … nor',
+'冒号放在完整句子之后、列举之前',
+'先原因后结果，用 so',
+'it\'s = it is；its = 它的',
+'两只狗的碗：复数所有格写作 dogs\'',
+'两个人做主语，动词用复数形式 go',
+'played 说明是过去时，前面也用过去时',
+'“逗号 + and”连接两个完整的句子',
+'努力复习是原因，用 Because',
+'固定搭配：not only … but also',
+'they\'re = they are；their = 他们的',
+'安静是原因；D 把因果关系说反了',
+'平行结构：stretch、jog、drink 都用动词原形',
+'介词 to 后面用宾格 me（gave the books to me）',
+'the … ever 用最高级，而且只能用一个 -est',
+'have + 过去分词（gone）',
+'since 要用现在完成时：has/have + 过去分词',
+'其余应改为：He and I went；She doesn\'t；We were',
+'第二句是结果，用 As a result',
+'第二句是转折，用 However',
+'逗号要放在引号里面',
+'需要大写：句首、人名、地名、月份',
+'第3句跑题了',
+'主题句要概括后面所有的细节',
+'if + 一般现在时，主句用 will + 动词'],
+ext:[
+'but 引出问题；so 表示结果；because 表示原因',
+'发生在另一个过去动作之前，用 had + 过去分词；Next time 表示将来',
+'冒号前必须是完整的句子。we packed 不完整，所以 A 错',
+'whose 表示所属（他们的）；they\'re = they are',
+'一句话被拆开：前半句的逗号在引号内，说话人后加逗号；同一句继续时不大写',
+'去掉另一个人来检验：I share a room；desks for me',
+'on + 星期几；until 表示持续到某个时间',
+'停电是原因。A 是一串 and；C 是逗号误用；D 把原因变成了结果',
+'although + 主语 + 动词；despite 后面只能接名词；A 和 C 是完整的句子',
+'固定搭配：not only … but also；both … and',
+'The box（一个盒子）+ last week 用 was；the photos + now 用 are；everyone 算单数，用 is',
+'不能双重比较（more better、most scariest）；三者比较用最高级 the shortest',
+'对过去没有发生的事做假设：if + had + 过去分词，主句用 would have + 过去分词',
+'第3句应为 Carlos and I tried（主语用 I）。检验：说 I tried，不说 Me tried',
+'where 指地点；while 表示同时；which 指物（车），所以不用 who',
+'短篇作品（故事、诗、章节、歌曲）的标题放在引号里',
+'问号属于引语里的问句，放在引号内，后面不再加逗号',
+'however 连接两个完整的句子：前面用分号，后面加逗号',
+'开头句要概括后面所有细节：遛狗、食物银行、辅导阅读和40小时',
+'下一句说 these dams，所以空缺的句子必须先提到水坝',
+'这段讲冬季骑车，第4句把话题换成了冰球',
+'despite + 名词（the heavy snow）；and 补充一点；because 表示原因。although 后面要有主语和动词',
+'主语是 list（一份名单），用 is；three empty spots 是复数，用 there are',
+'列举的各项形式要一致：hiking、swimming、reading',
+'effect 是名词“影响”；than 用于比较',
+'两位老师的车：先写复数 teachers，再加撇号（teachers\'）',
+'because 从句在前，加逗号，再接主句：Because Farah forgot her ticket, she missed the opening scene.',
+'who 指做动作的人；which 指物（学校）',
+'A 只是半句话；B 是逗号误用；D 缺连接词；C 用了“逗号 + so”',
+'其余应改为：Everyone … was singing；There are many reasons；My brother and I have']
+};
+/* ---------- wire the new sets into the page ---------- */
+const PASS0=PASS.length;
+PT.forEach(p=>PASS.push(p));
+SETS.pdfr=[];
+PT.forEach((p,i)=>(RQ[p.key]||[]).forEach(q=>{q.ps=PASS0+i;SETS.pdfr.push(q)}));
+const ix=(arr,v,q)=>{if(typeof v!=='string')return v;const i=arr.indexOf(v);if(i<0)console.error('Answer not in choices:',v,q.q);return i};
+['pdfg','ext','pdfr'].forEach(k=>SETS[k].forEach(q=>{
+ if(q.t==='dd')q.parts.forEach(p=>{if(typeof p==='object')p.a=ix(p.o,p.a,q)});
+ if(q.t==='bank')(q.boxes||q.parts).forEach(p=>{if(typeof p==='object'&&p.fix==null)p.a=ix(q.bank,p.a,q)});
+ if(q.t==='grid')q.rows.forEach(r=>{r.a=ix(q.cols,r.a,q)})}));
+
+Object.keys(ZH).forEach(k=>SETS[k].forEach((q,i)=>{q.z=ZH[k][i]}));
+const A=document.getElementById('app'),VEIL=document.getElementById('veil'),MENU=document.getElementById('menu');
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const br=s=>esc(s).replace(/\n/g,'<br>');
+let seen={},best={},exam=false,Q=null;
+const SEEN='osslt-seen-2';try{localStorage.removeItem('osslt-seen');seen=JSON.parse(localStorage.getItem(SEEN)||'{}')||{}}catch(e){}
+try{best=JSON.parse(localStorage.getItem('osslt-best')||'{}')||{}}catch(e){}
+const dds=q=>q.parts.filter(p=>typeof p==='object');
+const slots=q=>q.boxes?q.boxes.filter(b=>b.fix==null):dds(q);
+const words=s=>(String(s||'').trim().match(/\S+/g)||[]).length;
+function slotOk(q,a,i){const s=slots(q),v=a?a[i]:null;if(v==null)return false;
+ if(!q.boxes)return q.bank[v]===q.bank[s[i].a];
+ return s.filter(x=>x.l===s[i].l).some(x=>q.bank[x.a]===q.bank[v])}
+function isRight(q,a){if(a==null)return false;
+ if(q.t==='mc')return a===q.a;
+ if(q.t==='multi')return a.length===q.a.length&&q.a.every(x=>a.includes(x));
+ if(q.t==='grid')return q.rows.every((r,i)=>a[i]===r.a);
+ if(q.t==='bank')return slots(q).every((_,i)=>slotOk(q,a,i));
+ if(q.t==='open')return false;
+ return dds(q).every((d,i)=>a[i]===d.a)}
+function ready(q,a){if(a==null)return false;
+ if(q.t==='mc')return true;
+ if(q.t==='multi')return a.length===q.a.length;
+ if(q.t==='grid')return q.rows.every((_,i)=>a[i]!=null);
+ if(q.t==='bank')return slots(q).every((_,i)=>a[i]!=null);
+ if(q.t==='open')return words(a)>0;
+ return dds(q).every((d,i)=>a[i]!=null)}
+function sentence(q,pick){let k=0;return q.parts.map(p=>typeof p==='object'?pick(p,k++):p).join('')}
+function boxLines(q,pick){let k=0;return q.boxes.map(b=>b.l+': '+(b.fix!=null?b.fix:pick(b,k++))).join('\n')}
+function correctText(q){
+ if(q.t==='mc')return q.o[q.a];
+ if(q.t==='multi')return q.a.map(i=>q.o[i]).join('  ·  ');
+ if(q.t==='grid')return q.rows.map(r=>r.s+' = '+q.cols[r.a]).join('\n');
+ if(q.t==='bank')return q.boxes?boxLines(q,b=>q.bank[b.a]):sentence(q,p=>q.bank[p.a]);
+ if(q.t==='open')return q.sample||q.pts.map(p=>'• '+p).join('\n');
+ return sentence(q,p=>p.o[p.a])}
+function yourText(q,a){
+ if(q.t==='open')return words(a)?String(a):'No answer';
+ if(!ready(q,a))return 'No answer';
+ if(q.t==='mc')return q.o[a];
+ if(q.t==='multi')return a.map(i=>q.o[i]).join('  ·  ');
+ if(q.t==='grid')return q.rows.map((r,i)=>r.s+' = '+q.cols[a[i]]).join('\n');
+ if(q.t==='bank')return q.boxes?boxLines(q,(b,i)=>q.bank[a[i]]):sentence(q,(p,i)=>q.bank[a[i]]);
+ return sentence(q,(p,i)=>p.o[a[i]])}
+const scoredCount=k=>SETS[k].filter(q=>q.t!=='open').length;
+const bestTag=key=>{const b=best[key];return b?`<span class="bst">Best ${b[0]}/${b[1]}</span>`:''};
+const TEXTS=PT.map((_,i)=>PASS0+i);
+function big(attr,cls,n,title,sub,tag){return `<button class="big ${cls}" ${attr}><span class="ic"><b>${n}</b><small>questions</small></span><span class="bw"><b>${title}</b><span>${sub}</span></span>${tag||''}</button>`}
+function mini(set,cls,title,sub){const b=best[set];return `<button class="mini ${cls}" data-set="${set}"><span class="mw"><b>${title}</b><span>${sub}${b?` · best ${b[0]}/${b[1]}`:''}</span></span><span class="mgo" aria-hidden="true">Start ›</span></button>`}
+const ALL=TILES.map((t,i)=>Object.assign({key:i},t)).concat(RTIPS.map((t,j)=>Object.assign({key:'r'+j},t)));
+ALL.forEach((t,i)=>{t.zh=TZH[i]});
+function tileGrid(from,to){return `<div class="tiles">${ALL.slice(from,to).map((t,k)=>{const i=from+k;return `<button class="tile c${i%5+1}" data-tile="${i}" id="tile-${i}"><span class="g">${esc(t.g)}</span><span class="n">${esc(t.n)}<small>${t.cn}</small></span>${seen[t.key]?'<span class="ck" aria-label="opened">✓</span>':''}</button>`}).join('')}</div>`}
+function home(){Q=null;A.className='';const R=TILES.length,opened=(f,t)=>ALL.slice(f,t).filter(x=>seen[x.key]).length,any=Object.keys(seen).length,tdone=TEXTS.filter(i=>best['pdfr:'+i]).length;
+ A.innerHTML=`<div><h1>OSSLT Grammar Practice</h1><p class="sub">Learn the rules, then practise. 先学规则，再练习。</p></div>
+ <h2>Grammar 语法</h2>
+ <div class="sets">
+  ${big('data-set="pdfg"','',SETS.pdfg.length,'Practice test grammar','Original questions from the PDFs, unchanged',bestTag('pdfg'))}
+  <div class="minis">${mini('gram','a','Extra practice',`${SETS.gram.length} questions`)}${mini('ext','b','Extension',`${SETS.ext.length} harder questions`)}</div>
+ </div>
+ <h2>Reading 阅读</h2>
+ <div class="sets">
+  ${big('data-nav="texts"','sun',SETS.pdfr.length,'Practice test reading',`${TEXTS.length} texts from the PDFs, every question`,tdone?`<span class="bst">${tdone}/${TEXTS.length} texts</span>`:'')}
+  <div class="minis">${mini('read','c','Extra reading',`5 texts, ${SETS.read.length} questions`)}</div>
+  <label class="switch"><input type="checkbox" id="exam" ${exam?'checked':''}> Exam mode: show answers only at the end<br>考试模式：全部做完再看答案</label>
+ </div>
+ <h2 class="hrow"><span>Grammar rules 语法规则 · ${opened(0,R)} of ${R} opened</span>${any?'<button class="lnk" id="unseen">Clear ticks</button>':''}</h2>
+ ${tileGrid(0,R)}
+ <h2>Reading tips 阅读技巧 · ${opened(R,ALL.length)} of ${RTIPS.length} opened</h2>
+ ${tileGrid(R,ALL.length)}`}
+function texts(){Q=null;A.className='';
+ const rows=TEXTS.map(i=>{const P=PASS[i],n=SETS.pdfr.filter(q=>q.ps===i).length,b=best['pdfr:'+i];
+  return `<button class="trow" data-text="${i}"><span class="tt"><b>${esc(P.title)}</b><span>${esc(P.sel)} · ${P.kind} · ${n} questions</span></span>${b?`<span class="bst">${b[0]}/${b[1]}</span>`:''}</button>`}).join('');
+ A.innerHTML=`<div class="top"><button class="x-btn" id="home" aria-label="Back to home">←</button><h1>Practice test reading</h1></div>
+ <p class="sub">${TEXTS.length} texts, ${SETS.pdfr.length} questions. Every reading question from the PDFs, in the original wording. Pick a text to start. 选一篇文章开始。</p>
+ <div class="tlist">${rows}</div>
+ <button class="go ghost" data-set="pdfr">All ${SETS.pdfr.length} questions in order</button>
+ <p class="fine">Not in the PDFs: Project Arrow Question 1 and Blake Angeconeb Question 5 (no screenshot of them).</p>`;window.scrollTo(0,0)}
+function openTile(i){const t=ALL[i],el=document.getElementById('tile-'+i),r=el.getBoundingClientRect();
+ VEIL.hidden=false;VEIL.innerHTML=`<div class="sheet c${i%5+1}" role="dialog" aria-modal="true" aria-label="${esc(t.n)}"><div class="g">${esc(t.g)}</div><h3>${esc(t.n)}</h3><p class="cn">${t.cn}</p>${t.h}${t.zh?`<p class="zh" lang="zh">${t.zh}</p>`:''}<button class="go" id="close">Got it 明白了</button></div>`;
+ const s=VEIL.firstChild,b=s.getBoundingClientRect();
+ const tf=`translate(${r.left+r.width/2-(b.left+b.width/2)}px,${r.top+r.height/2-(b.top+b.height/2)}px) scale(${r.width/b.width},${r.height/b.height})`;
+ s.dataset.tf=tf;s.style.transition='none';s.style.transform=tf;s.style.opacity='.4';s.getBoundingClientRect();
+ s.style.transition='';requestAnimationFrame(()=>{VEIL.classList.add('on');s.style.transform='none';s.style.opacity='1'});
+ VEIL.dataset.i=i;document.getElementById('close').focus({preventScroll:true})}
+function closeTile(){const s=VEIL.firstChild;if(!s)return;const i=VEIL.dataset.i;VEIL.classList.remove('on');s.style.transform=s.dataset.tf;s.style.opacity='0';
+ setTimeout(()=>{VEIL.hidden=true;VEIL.innerHTML='';seen[ALL[i].key]=1;try{localStorage.setItem(SEEN,JSON.stringify(seen))}catch(e){}if(!Q&&document.getElementById('tile-'+i)){home();const el=document.getElementById('tile-'+i);if(el)el.focus({preventScroll:true})}},300)}
+VEIL.addEventListener('click',e=>{if(e.target===VEIL||e.target.id==='close')closeTile()});
+const mixes=k=>k==='gram'||k==='ext';
+function start(k,shuffle,ps){let order=SETS[k].map((_,i)=>i);if(ps!=null)order=order.filter(i=>SETS[k][i].ps===ps);
+ if(shuffle&&mixes(k))for(let i=order.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[order[i],order[j]]=[order[j],order[i]]}
+ Q={k,ps:ps==null?null:ps,order,i:0,ans:{},chk:{},exam,act:null};quiz(true)}
+function leave(){if(Q&&Q.k==='pdfr')texts();else home()}
+const stateOf=(id)=>{const q=SETS[Q.k][id],a=Q.ans[id];return Q.chk[id]?(q.t==='open'?'done':isRight(q,a)?'ok':'no'):ready(q,a)?'done':''};
+function go(i){if(i<0||i>=Q.order.length)return;const fwd=i>Q.i;Q.i=i;Q.act=null;quiz(true,fwd?1:-1);window.scrollTo(0,0)}
+function quiz(anim,dir){const qs=SETS[Q.k],id=Q.order[Q.i],q=qs[id],a=Q.ans[id],n=Q.order.length,sh=!!Q.chk[id],dis=sh?'disabled':'';
+ const [instr,...rest]=q.q.split('\n');let pass='',b='';
+ if(q.ps!=null){const P=PASS[q.ps];pass=`<details class="pass" ${Q.passOpen===false?'':'open'}><summary>${esc(P.title)} <small>${P.kind}</small></summary><div class="ptxt">${P.paras.map(p=>`<p>${esc(p)}</p>`).join('')}${P.credit?`<p class="cred">${esc(P.credit)}</p>`:''}</div></details>`}
+ const tag=[q.ps!=null?PASS[q.ps].sel:q.g,q.src].filter(Boolean).join(' · ');
+ if(tag)b+=`<p class="src">${esc(tag)}</p>`;
+ b+=`<p class="instr">${esc(instr)}</p>`;
+ if(q.n)b+=`<p class="note">${esc(q.n)}</p>`;
+ if(q.p)b+=`<p class="para">${esc(q.p)}</p>`;
+ if(rest.length)b+=`<p class="stem">${esc(rest.join(' '))}</p>`;
+ if(q.t==='dd'){let k=0;const many=dds(q).length>1;b+='<p class="stem">'+q.parts.map(p=>{if(typeof p!=='object')return esc(p);const idx=k++,v=a?a[idx]:null;
+   return `<span class="slot ${sh?(v===p.a?'right':'wrong'):''}">${v!=null?esc(p.o[v]):'&nbsp;'}</span>`}).join('')+'</p>';
+  b+=dds(q).map((d,idx)=>`<div class="blank">${many?`<label>Blank ${idx+1}</label>`:''}<div class="chips">${d.o.map((o,j)=>`<button class="chip ${a&&a[idx]===j?'sel':''}" data-b="${idx}" data-j="${j}" ${dis}>${esc(o)}</button>`).join('')}</div></div>`).join('')}
+ else if(q.t==='bank'){const s=slots(q),arr=a||[];
+  const act=Q.act!=null&&arr[Q.act]==null?Q.act:s.findIndex((_,i)=>arr[i]==null);
+  const cls=i=>sh?(slotOk(q,arr,i)?'right':'wrong'):(arr[i]!=null?'full':i===act?'act':'');
+  const txt=i=>arr[i]!=null?esc(q.bank[arr[i]]):'&nbsp;';
+  if(q.boxes){let k=0;b+='<div class="boxes">'+q.boxes.map(x=>{if(x.fix!=null)return `<div class="bx"><span class="bl">${esc(x.l)}</span><span class="bt fixd">${esc(x.fix)}</span></div>`;const i=k++;
+    return `<div class="bx"><span class="bl">${esc(x.l)}</span><button class="bt ${cls(i)}" data-s="${i}" ${dis} aria-label="${esc(x.l)}">${txt(i)}</button></div>`}).join('')+'</div>'}
+  else{let k=0;b+='<p class="stem">'+q.parts.map(p=>{if(typeof p!=='object')return esc(p);const i=k++;return `<button class="slot ${cls(i)}" data-s="${i}" ${dis} aria-label="Box ${i+1}">${txt(i)}</button>`}).join('')+'</p>'}
+  if(!sh)b+=`<div class="chips ${q.bank.some(t=>t.length>24)?'long':''}">`+q.bank.map((t,j)=>{const used=!q.reuse&&arr.includes(j);return `<button class="chip ${used?'used':''}" data-k="${j}" ${used?'disabled':''}>${esc(t)}</button>`}).join('')+'</div><p class="hint">Tap a choice to put it in the highlighted box. Tap a box to empty it.<br>点选项放进高亮的空格；点空格可以清空。</p>';
+  else if(q.boxes&&!isRight(q,a))b+=`<div class="key"><b>Correct answer</b>${br(correctText(q))}</div>`}
+ else if(q.t==='grid'){b+='<div class="grid">'+q.rows.map((r,i)=>`<div class="gr"><p class="gs">${esc(r.s)}</p><div class="chips">${q.cols.map((c,j)=>{const sel=!!a&&a[i]===j,cl=sh?(j===r.a?'right':sel?'wrong':''):(sel?'sel':'');
+    return `<button class="chip ${cl}" data-r="${i}" data-j="${j}" ${dis} aria-pressed="${sel}">${esc(c)}</button>`}).join('')}</div></div>`).join('')+'</div>'}
+ else if(q.t==='open'){b+=`<p class="hint">Type your response in the box below (approximately 100 words).<br>在下面的框里作答（约100词）。</p><textarea class="ta" id="ta-${Q.k}-${id}" rows="7" aria-label="Your response" ${sh?'readonly':''}>${esc(a||'')}</textarea><p class="wc" id="wc">${words(a)} words</p>`;
+  if(sh)b+=`<div class="key"><b>${q.sample?'Sample answer':'A strong answer could include'}</b>${br(correctText(q))}</div>`}
+ else{const multi=q.t==='multi';b+='<div class="opts">'+q.o.map((o,j)=>{const sel=multi?(a||[]).includes(j):a===j,good=multi?q.a.includes(j):q.a===j;
+   const cls=sh?(good?'right':sel?'wrong':''):(sel?'sel':'');return `<button class="opt ${cls}" data-o="${j}" ${dis} aria-pressed="${sel}"><span class="k">${j+1}</span><span>${esc(o)}</span></button>`}).join('')+'</div>'}
+ const ok=isRight(q,a),last=Q.i===n-1,done=Q.order.filter(x=>Q.exam?ready(qs[x],Q.ans[x]):Q.chk[x]).length;
+ const arrows=(mid)=>`<div class="row"><button class="arr" id="up" aria-label="Previous question" ${Q.i===0?'disabled':''}>▲</button>${mid}<button class="arr" id="down" aria-label="Next question" ${last?'disabled':''}>▼</button></div>`;
+ let foot;
+ if(sh&&q.t==='open')foot=`<div class="foot"><p class="msg">Compare your answer 对照参考答案</p><p class="why">Written answers are not scored. Check that you used details from the text.<br>简答题不计分。检查你是否用了文中的细节。</p>${arrows(`<button class="go" id="next">${last?'See my score':'Continue'}</button>`)}</div>`;
+ else if(sh){const inBody=q.t==='grid'||(q.t==='bank'&&q.boxes),zh=q.z?`<p class="zh" lang="zh">${esc(q.z)}</p>`:'';
+  foot=`<div class="foot ${ok?'ok':'no'}"><p class="msg">${ok?'Correct! 正确':inBody?'Not quite 再想想':'Correct answer 正确答案:'}</p>${ok?`<p class="ans">${esc(q.r)}</p>`:`${inBody?'':`<p class="ans">${br(correctText(q))}</p>`}<p class="why">${esc(q.r)}</p>`}${zh}${arrows(`<button class="go ${ok?'good':'bad'}" id="next">${last?'See my score':'Continue'}</button>`)}</div>`}
+ else foot=`<div class="foot">${arrows(Q.exam?`<button class="go" id="next">${last?'Finish':'Next'}</button>`:`<button class="go" id="check" ${q.t==='open'||ready(q,a)?'':'disabled'}>${q.t==='open'?'Show sample answer':'Check'}</button>`)}</div>`;
+ const old=A.querySelector('.ptxt'),st=old&&Q.seenPs===q.ps?old.scrollTop:0;Q.seenPs=q.ps;
+ A.className=q.ps!=null?'rd':'';
+ A.innerHTML=`<div class="top"><button class="x-btn" id="quit" aria-label="Close quiz">✕</button><div class="prog"><i style="width:${done/n*100}%"></i></div><span class="cnt">${Q.i+1}/${n}</span><button class="x-btn" id="burger" aria-label="Question list">☰</button></div>
+ <div class="q" style="${anim?`--dx:${(dir||1)*24}px`:'animation:none'}">${pass}<div class="qb">${b}</div></div>${foot}`;
+ const d=A.querySelector('.pass');if(d){d.addEventListener('toggle',()=>{Q.passOpen=d.open});const nt=d.querySelector('.ptxt');if(nt&&st)nt.scrollTop=st}}
+function openMenu(){const qs=SETS[Q.k];let h='',last=null;
+ Q.order.forEach((id,j)=>{const q=qs[id],g=q.ps!=null?PASS[q.ps].title:(mixes(Q.k)?'':q.g||'');
+  if(j===0||g!==last){h+=(j?'</div>':'')+(g?`<p class="mh">${esc(g)}</p>`:'')+'<div class="mg">';last=g}
+  h+=`<button class="dot ${stateOf(id)} ${j===Q.i?'cur':''}" data-go="${j}">${j+1}</button>`});
+ MENU.hidden=false;MENU.innerHTML=`<div class="sheet menu" role="dialog" aria-modal="true" aria-label="Question list"><div class="top"><h3 style="margin:0;flex:1">Questions</h3><button class="x-btn" id="mclose" aria-label="Close list">✕</button></div>${h}</div>
+ <p class="leg"><span class="dot done"></span> answered <span class="dot ok"></span> correct <span class="dot no"></span> wrong</p>
+ <button class="go" id="finish">Finish and see score</button></div>`;
+ const s=MENU.firstChild;s.style.transform='translateY(-20px) scale(.96)';s.style.opacity='0';requestAnimationFrame(()=>{MENU.classList.add('on');s.style.transform='none';s.style.opacity='1'})}
+function closeMenu(){MENU.classList.remove('on');MENU.hidden=true;MENU.innerHTML=''}
+MENU.addEventListener('click',e=>{const b=e.target.closest('button');if(e.target===MENU||(b&&b.id==='mclose')){closeMenu();return}if(!b)return;
+ if(b.dataset.go!=null){closeMenu();go(+b.dataset.go)}else if(b.id==='finish'){closeMenu();results()}});
+function results(){const qs=SETS[Q.k];let right=0,n=0;
+ const rows=Q.order.map((id,j)=>{const q=qs[id],a=Q.ans[id],head=`<b>${j+1}.</b> <span class="rq">${esc(q.q.split('\n')[0])}</span><br>`;
+  if(q.t==='open')return `<div class="rv">${head}${words(a)?`<span class="mine">${br(a)}</span><br>`:''}<small>${q.sample?'Sample answer':'A strong answer could include'} (not scored)</small><br><span class="v">${br(correctText(q))}</span></div>`;
+  n++;const ok=isRight(q,a);if(ok)right++;
+  return `<div class="rv ${ok?'':'no'}">${head}${ok?'':`<span class="x">${br(yourText(q,a))}</span><br>`}<span class="v">${br(correctText(q))}</span><br><small>${esc(q.r)}${q.z?`<br><span lang="zh">${esc(q.z)}</span>`:''}</small></div>`}).join('');
+ const p=n?Math.round(right/n*100):0,key=Q.k+(Q.ps!=null?':'+Q.ps:'');Q.done=true;
+ if(n&&(!best[key]||right>=best[key][0])){best[key]=[right,n];try{localStorage.setItem('osslt-best',JSON.stringify(best))}catch(e){}}
+ A.className='';
+ A.innerHTML=`<div class="res"><h1>${p>=80?'Great work!':p>=60?'Good progress':'Keep practising'}</h1><div class="ring" style="--p:${p}"><span>${right}/${n}</span></div>
+ <button class="go" id="again">Try again${mixes(Q.k)?' (new order)':''}</button><button class="go ghost" id="quit">${Q.k==='pdfr'?'Back to the texts':'Back to home'}</button>
+ <h2 style="align-self:flex-start">Review</h2><div class="rev">${rows}</div></div>`;window.scrollTo(0,0)}
+A.addEventListener('change',e=>{if(e.target.id==='exam')exam=e.target.checked});
+A.addEventListener('input',e=>{if(!Q||!e.target.classList||!e.target.classList.contains('ta'))return;Q.ans[Q.order[Q.i]]=e.target.value;const w=document.getElementById('wc');if(w)w.textContent=words(e.target.value)+' words'});
+A.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;
+ if(b.dataset.nav==='texts'){texts();return}
+ if(b.dataset.text!=null){start('pdfr',false,+b.dataset.text);window.scrollTo(0,0);return}
+ if(b.dataset.set){start(b.dataset.set,false);window.scrollTo(0,0);return}
+ if(b.dataset.tile){openTile(+b.dataset.tile);return}
+ if(b.id==='home'){home();window.scrollTo(0,0);return}
+ if(b.id==='unseen'){seen={};try{localStorage.removeItem(SEEN)}catch(e){}home();return}
+ if(b.id==='quit'){leave();return}
+ if(!Q)return;
+ if(b.id==='again'){start(Q.k,true,Q.ps);window.scrollTo(0,0);return}
+ if(b.id==='burger'){openMenu();return}
+ if(b.id==='up'){go(Q.i-1);return}
+ if(b.id==='down'){go(Q.i+1);return}
+ const id=Q.order[Q.i],q=SETS[Q.k][id];
+ if(b.dataset.o!=null){const j=+b.dataset.o;if(q.t==='multi'){let a=Q.ans[id]||[];a=a.includes(j)?a.filter(x=>x!==j):a.length<q.a.length?[...a,j]:a;Q.ans[id]=a}else Q.ans[id]=j;quiz(false);return}
+ if(b.dataset.b!=null){const a=Q.ans[id]||[];a[+b.dataset.b]=+b.dataset.j;Q.ans[id]=a;quiz(false);return}
+ if(b.dataset.r!=null){const a=Q.ans[id]||q.rows.map(()=>null);a[+b.dataset.r]=+b.dataset.j;Q.ans[id]=a;quiz(false);return}
+ if(b.dataset.k!=null){const a=Q.ans[id]||slots(q).map(()=>null),i=Q.act!=null&&a[Q.act]==null?Q.act:a.findIndex(x=>x==null);if(i<0)return;a[i]=+b.dataset.k;Q.act=null;Q.ans[id]=a;quiz(false);return}
+ if(b.dataset.s!=null){const a=Q.ans[id]||slots(q).map(()=>null),i=+b.dataset.s;a[i]=null;Q.act=i;Q.ans[id]=a;quiz(false);return}
+ if(b.id==='check'){Q.chk[id]=true;quiz(false);return}
+ if(b.id==='next'){if(Q.i<Q.order.length-1)go(Q.i+1);else results()}});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){if(!VEIL.hidden)closeTile();else if(!MENU.hidden)closeMenu();return}
+ if(e.target&&e.target.matches&&e.target.matches('textarea,input'))return;
+ if(!Q||Q.done||!VEIL.hidden||!MENU.hidden)return;
+ if(e.key==='Enter'){const g=A.querySelector('.foot .go:not(:disabled)');if(g){e.preventDefault();g.click()}}
+ else if(e.key==='ArrowUp'||e.key==='ArrowLeft'){e.preventDefault();go(Q.i-1)}else if(e.key==='ArrowDown'||e.key==='ArrowRight'){e.preventDefault();go(Q.i+1)}
+ else if(/^[1-5]$/.test(e.key)){const o=A.querySelector(`.opt[data-o="${e.key-1}"]:not(:disabled)`);if(o)o.click()}});
+home();
+</script>
+</body></html>
