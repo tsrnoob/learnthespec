@@ -1013,7 +1013,8 @@ function home(){Q=null;A.className='';const R=TILES.length,opened=(f,t)=>ALL.sli
  <h2 class="hrow"><span>Grammar rules 语法规则 · ${opened(0,R)} of ${R} opened</span>${any?'<button class="lnk" id="unseen">Clear ticks</button>':''}</h2>
  ${tileGrid(0,R)}
  <h2>Reading tips 阅读技巧 · ${opened(R,ALL.length)} of ${RTIPS.length} opened</h2>
- ${tileGrid(R,ALL.length)}`}
+ ${tileGrid(R,ALL.length)}
+ ${any||Object.keys(best).length?'<button class="go ghost" id="reset">Reset all progress 重置进度</button><p class="fine">Clears best scores and opened ticks so you can start everything again.</p>':''}`}
 function texts(){Q=null;A.className='';
  const rows=TEXTS.map(i=>{const P=PASS[i],n=SETS.pdfr.filter(q=>q.ps===i).length,b=best['pdfr:'+i];
   return `<button class="trow" data-text="${i}"><span class="tt"><b>${esc(P.title)}</b><span>${esc(P.sel)} · ${P.kind} · ${n} questions</span></span>${b?`<span class="bst">${b[0]}/${b[1]}</span>`:''}</button>`}).join('');
@@ -1108,6 +1109,8 @@ A.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;
  if(b.dataset.set){start(b.dataset.set,false);window.scrollTo(0,0);return}
  if(b.dataset.tile){openTile(+b.dataset.tile);return}
  if(b.id==='home'){home();window.scrollTo(0,0);return}
+ if(b.id==='reset'){if(!b.dataset.sure){b.dataset.sure=1;b.className='go bad';b.textContent='Tap again to reset 再点一次确认';setTimeout(()=>{if(b.isConnected){delete b.dataset.sure;b.className='go ghost';b.textContent='Reset all progress 重置进度'}},4000);return}
+  seen={};best={};try{localStorage.removeItem(SEEN);localStorage.removeItem('osslt-best')}catch(e){}home();window.scrollTo(0,0);return}
  if(b.id==='unseen'){seen={};try{localStorage.removeItem(SEEN)}catch(e){}home();return}
  if(b.id==='quit'){leave();return}
  if(!Q)return;
